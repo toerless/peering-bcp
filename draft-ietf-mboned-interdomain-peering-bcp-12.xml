@@ -72,87 +72,79 @@
    content/data across administrative domains via inter-domain peering
    points.</t>
 
-	<t><list style="hanging" hangIndent="3">
-	<t hangText="The objective of this Best Current Practices document is twofold:">
-	<vspace blankLines="0"/>
-	<list style="symbols"><t>Describe the technical process and establish guidelines for
-        setting up multicast-based delivery of application content/data
-        across inter-domain peering points via a set of use cases.</t>
-
-	</list>
+	<t>The objective of this Best Current Practices document is twofold:
 	<list style="symbols">
-	<t>Catalog all required information exchange between the
-        administrative domains to support multicast-based delivery.
-        This enables operators to initiate necessary processes to
-        support inter-domain peering with multicast.</t>
+            <t>Describe the technical process and establish guidelines for
+            setting up multicast-based delivery of application content/data
+            across inter-domain peering points via a set of use cases.</t>
+    
+	    <t>Catalog all required information exchange between the
+            administrative domains to support multicast-based delivery.
+            This enables operators to initiate necessary processes to
+            support inter-domain peering with multicast.</t>
+	</list>
+	</t>
+
+	<t>The scope and assumptions for this document are stated as follows:
+	<list style="symbols">
+            <t>For the purpose of this document, the term "peering point"
+            refers to an interface between two networks/administrative
+            domains over which traffic is exchanged between them. A
+            Network-Network Interface (NNI) is an example of a peering
+            point.</t>
+
+	   <t>Administrative Domain 1 (AD-1) is enabled with native
+            multicast. A peering point exists between AD-1 and AD-2.</t>
+   
+	   <t>It is understood that several protocols are available for this
+            purpose including PIM-SM and Protocol Independent Multicast -
+            Source Specific Multicast (PIM-SSM) <xref target="RFC7761"/>, Internet Group
+            Management Protocol (IGMP) <xref target="RFC3376"/>, and Multicast Listener
+            Discovery (MLD) <xref target="RFC3810"/>.</t>
+   
+	   <t>As described in <xref target="section-2"/>, the source IP address of the
+            multicast stream in the originating AD (AD-1) is known. Under
+            this condition, PIM-SSM use is beneficial as it allows the
+            receiver's upstream router to directly send a JOIN message to
+            the source without the need of invoking an intermediate
+            Rendezvous Point (RP). Use of SSM also presents an improved
+            threat mitigation profile against attack, as described in
+            <xref target="RFC4609"/>. Hence, in the case of inter-domain peering, it is
+            recommended to use only SSM protocols; the setup of inter-
+            domain peering for ASM (Any-Source Multicast) is not in scope
+            for this document.</t>
+   
+	   <t>AD-1 and AD-2 are assumed to adopt compatible protocols. The
+            use of different protocols is beyond the scope of this
+            document.</t>
+   
+	   <t>An Automatic Multicast Tunnel (AMT) <xref target="RFC7450"/> is setup at the
+            peering point if either the peering point or AD-2 is not
+            multicast enabled. It is assumed that an AMT Relay will be
+            available to a client for multicast delivery. The selection of
+            an optimal AMT relay by a client is out of scope for this
+            document. Note that AMT use is necessary only when native
+            multicast is unavailable in the peering point (Use Case 3.3) or
+            in the downstream administrative domain (Use Cases 3.4, and
+            3.5).</t>
+   
+	   <t>The collection of billing data is assumed to be done at the
+            application level and is not considered to be a networking
+            issue. The settlements process for end user billing and/or
+            inter-provider billing is out of scope for this document.</t>
+   
+	   <t>Inter-domain network connectivity troubleshooting is only
+            considered within the context of a cooperative process between
+            the two domains.</t>
 
 	</list>
 	</t>
 
-	<t hangText="The scope and assumptions for this document are stated as follows:">
-	<vspace blankLines="0"/>
-	<list style="symbols"><t>For the purpose of this document, the term "peering point"
-         refers to an interface between two networks/administrative
-         domains over which traffic is exchanged between them. A
-         Network-Network Interface (NNI) is an example of a peering
-         point.</t>
-
-	<t>Administrative Domain 1 (AD-1) is enabled with native
-         multicast. A peering point exists between AD-1 and AD-2.</t>
-
-	<t>It is understood that several protocols are available for this
-         purpose including PIM-SM and Protocol Independent Multicast -
-         Source Specific Multicast (PIM-SSM) <xref target="RFC7761"/>, Internet Group
-         Management Protocol (IGMP) <xref target="RFC3376"/>, and Multicast Listener
-         Discovery (MLD) <xref target="RFC3810"/>.</t>
-
-	<t>As described in <xref target="section-2"/>, the source IP address of the
-         multicast stream in the originating AD (AD-1) is known. Under
-         this condition, PIM-SSM use is beneficial as it allows the
-         receiver's upstream router to directly send a JOIN message to
-         the source without the need of invoking an intermediate
-         Rendezvous Point (RP). Use of SSM also presents an improved
-         threat mitigation profile against attack, as described in
-         <xref target="RFC4609"/>. Hence, in the case of inter-domain peering, it is
-         recommended to use only SSM protocols; the setup of inter-
-         domain peering for ASM (Any-Source Multicast) is not in scope
-         for this document.</t>
-
-	<t>AD-1 and AD-2 are assumed to adopt compatible protocols. The
-         use of different protocols is beyond the scope of this
-         document.</t>
-
-	<t>An Automatic Multicast Tunnel (AMT) <xref target="RFC7450"/> is setup at the
-         peering point if either the peering point or AD-2 is not
-         multicast enabled. It is assumed that an AMT Relay will be
-         available to a client for multicast delivery. The selection of
-         an optimal AMT relay by a client is out of scope for this
-         document. Note that AMT use is necessary only when native
-         multicast is unavailable in the peering point (Use Case 3.3) or
-         in the downstream administrative domain (Use Cases 3.4, and
-         3.5).</t>
-
-	<t>The collection of billing data is assumed to be done at the
-         application level and is not considered to be a networking
-         issue. The settlements process for end user billing and/or
-         inter-provider billing is out of scope for this document.</t>
-
-	<t>Inter-domain network connectivity troubleshooting is only
-         considered within the context of a cooperative process between
-         the two domains.</t>
-
-	</list>
-	</t>
-
-	<t hangText="Thus, the primary purpose of this document is to describe a scenario">
-	<vspace blankLines="0"/>
-	where two AD's interconnect via a a peering point  with each other.
-   Security and operational aspects for exchanging traffic on a public
-   Internet Exchange Point (IXP) with a large shared broadcast domain
-   between many operators, is not in scope for this document.
-	</t>
-
-	</list>
+	<t>Thus, the primary purpose of this document is to describe a scenario
+	 where two AD's interconnect via a a peering point  with each other.
+         Security and operational aspects for exchanging traffic on a public
+         Internet Exchange Point (IXP) with a large shared broadcast domain
+         between many operators, is not in scope for this document.
 	</t>
 
 	<t>
@@ -169,21 +161,22 @@
 
 	</section>
 
-	<section title="Overview of Inter-domain Multicast Application Transport" anchor="section-2">
+<section title="Overview of Inter-domain Multicast Application Transport" anchor="section-2">
 
-<t><list style="hanging" hangIndent="3">
-	<t hangText="A multicast-based application delivery scenario is as follows:">
-	<vspace blankLines="0"/>
-	<list style="symbols"><t>Two independent administrative domains are interconnected via a
-        peering point.</t>
+<t>A multicast-based application delivery scenario is as follows:
 
-	</list>
-	<list style="symbols"><t>The peering point is either multicast enabled (end-to-end
+<list style="symbols">
+        <t>Two independent administrative domains are interconnected via a peering point.</t>
+
+        <t>The peering point is either multicast enabled (end-to-end
         native multicast across the two domains) or it is connected by
-        one of two possible tunnel types:<list style="symbols"><t>A Generic Routing Encapsulation (GRE) Tunnel <xref target="RFC2784"/>
-          allowing multicast tunneling across the peering point, or</t>
+        one of two possible tunnel types:
 
-	<t>An Automatic Multicast Tunnel (AMT) <xref target="RFC7450"/>.</t>
+        <list style="symbols">
+            <t>A Generic Routing Encapsulation (GRE) Tunnel <xref target="RFC2784"/>
+            allowing multicast tunneling across the peering point, or</t>
+
+	    <t>An Automatic Multicast Tunnel (AMT) <xref target="RFC7450"/>.</t>
 
 	</list>
 	</t>
@@ -205,9 +198,6 @@
         The mechanisms by which the application client learns the
         appropriate (S,G)s are an implementation detail of the
         application, and are out of scope for this document.</t>
-
-	</list>
-	</t>
 
 	</list>
 	</t>
@@ -269,16 +259,12 @@ I1 = AD-1 and AD-2 Multicast Interconnection (e.g., MBGP)
 I2 = AD-2 and EU Multicast Connection
 ]]></artwork>
 	</figure>
-	<t><list style="hanging" hangIndent="3"><t hangText="Advantages of this configuration are:">
-	<vspace blankLines="0"/>
-	<list style="symbols"><t>Most efficient use of bandwidth in both domains.</t>
+	<t>Advantages of this configuration are:
+	<list style="symbols">
+        <t>Most efficient use of bandwidth in both domains.</t>
 
 	<t>Fewer devices in the path traversed by the multicast stream when
         compared to an AMT enabled peering point.</t>
-
-	</list>
-	</t>
-
 	</list>
 	</t>
 
@@ -295,9 +281,9 @@ I2 = AD-2 and EU Multicast Connection
    are satisfactorily met. The specifics of these methods are beyond
    the scope of this document.</t>
 
-	<t><list style="hanging" hangIndent="3"><t hangText="Architectural guidelines for this configuration are as follows:">
-	<vspace blankLines="0"/>
-	<list style="letters"><t>Dual homing for peering points between domains is recommended
+   <t>Architectural guidelines for this configuration are as follows:
+   <list style="letters">
+        <t>Dual homing for peering points between domains is recommended
         as a way to ensure reliability with full BGP table visibility.</t>
 
 	<t>If the peering point between AD-1 and AD-2 is a controlled
@@ -327,11 +313,8 @@ I2 = AD-2 and EU Multicast Connection
         systems <xref target="BCP38"/>. Filtering guidelines specific to the multicast
         control-plane and data-plane are described in section 6.</t>
 
-	</list>
-	</t>
-
-	</list>
-	</t>
+    </list>
+    </t>
 
 </section>
 <section title="Peering Point Enabled with GRE Tunnel" anchor="section-3.2">
@@ -347,9 +330,9 @@ I2 = AD-2 and EU Multicast Connection
    multicast link between AD-1 and AD-2, BGP (SAFI2) is now run across
    the GRE tunnel.</t>
 
-	<t><list style="hanging" hangIndent="3"><t hangText="Advantages of this configuration:">
-	<vspace blankLines="0"/>
-	<list style="symbols"><t>Highly efficient use of bandwidth in both domains, although not
+   <t>Advantages of this configuration:
+   <list style="symbols">
+        <t>Highly efficient use of bandwidth in both domains, although not
         as efficient as the fully native multicast Use Case.</t>
 
 	<t>Fewer devices in the path traversed by the multicast stream
@@ -363,12 +346,12 @@ I2 = AD-2 and EU Multicast Connection
 	<t>GRE is an existing technology and is relatively simple to
         implement.</t>
 
-	</list>
-	</t>
+   </list>
+   </t>
 
-	<t hangText="Disadvantages of this configuration:">
-	<vspace blankLines="0"/>
-	<list style="symbols"><t>Per Use Case 3.1, current router technology cannot count the
+   <t>Disadvantages of this configuration:
+   <list style="symbols">
+        <t>Per Use Case 3.1, current router technology cannot count the
         number of end users or the number bytes transmitted.</t>
 
 	<t>GRE tunnel requires manual configuration.</t>
@@ -377,11 +360,8 @@ I2 = AD-2 and EU Multicast Connection
 
 	<t>The GRE tunnel is often left pinned up.</t>
 
-	</list>
-	</t>
-
-	</list>
-	</t>
+    </list>
+    </t>
 
 	<t>
    Architectural guidelines for this configuration include the
@@ -391,23 +371,22 @@ I2 = AD-2 and EU Multicast Connection
    Guidelines (a) through (d) are the same as those described in Use
    Case 3.1. Two additional guidelines are as follows:</t>
 
-	<t><list hangIndent="3" style="hanging"><t>
-      e. GRE tunnels are typically configured manually between peering
-      points to support multicast delivery between domains.</t>
+   <t><list hangIndent="3" style="hanging">
+        <t hangText="e.">
+         GRE tunnels are typically configured manually between peering
+         points to support multicast delivery between domains.</t>
 
-	</list>
-	</t>
+      <t hangText="f.">
+         It is recommended that the GRE tunnel (tunnel server)
+         configuration in the source network is such that it only
+         advertises the routes to the application sources and not to the
+         entire network. This practice will prevent unauthorized delivery
+         of applications through the tunnel (e.g., if application - e.g.,
+         content - is not part of an agreed inter-domain partnership).</t>
 
-	<t><list hangIndent="3" style="hanging"><t>
-      f. It is recommended that the GRE tunnel (tunnel server)
-      configuration in the source network is such that it only
-      advertises the routes to the application sources and not to the
-      entire network. This practice will prevent unauthorized delivery
-      of applications through the tunnel (e.g., if application - e.g.,
-      content - is not part of an agreed inter-domain partnership).</t>
+   </list></t>
 
-	</list>
-	</t>
+
 
 </section>
 <section title="Peering Point Enabled with an AMT - Both Domains Multicast Enabled" anchor="section-3.3">
@@ -440,59 +419,56 @@ I1 = AMT Interconnection between AD-1 and AD-2
 I2 = AD-2 and EU Multicast Connection
 ]]></artwork>
 	</figure>
-	<t><list style="hanging" hangIndent="3"><t hangText="Advantages of this configuration:">
-	<vspace blankLines="0"/>
-	<list style="symbols"><t>Highly efficient use of bandwidth in AD-1.</t>
+	<t>Advantages of this configuration:
+	<list style="symbols">
 
-	<t>AMT is an existing technology and is relatively simple to
-        implement. Attractive properties of AMT include the following:<list style="symbols"><t>Dynamic interconnection between Gateway-Relay pair across
-             the peering point.</t>
+            <t>Highly efficient use of bandwidth in AD-1.</t>
 
-	<t>Ability to serve clients and servers with differing
-             policies.</t>
+	    <t>AMT is an existing technology and is relatively simple to
+            implement. Attractive properties of AMT include the following:
+            <list style="symbols">
+                <t>Dynamic interconnection between Gateway-Relay pair across
+                 the peering point.</t>
+    
+	        <t>Ability to serve clients and servers with differing
+                 policies.</t>
+    
+	    </list>
+	    </t>
+	</list>
+	</t>
+    
+	<t>Disadvantages of this configuration:
+	<list style="symbols">
+            <t>Per Use Case 3.1 (AD-2 is native multicast), current router
+            technology cannot count the number of end users or the number
+            of bytes transmitted to all end users.</t>
+
+            <t>Additional devices (AMT Gateway and Relay pairs) may be
+            introduced into the path if these services are not incorporated
+            in the existing routing nodes.</t>
+
+            <t>Currently undefined mechanisms for the AG to automatically
+            select the optimal AR.</t>
 
 	</list>
 	</t>
 
-	</list>
-	</t>
-
-	<t hangText="Disadvantages of this configuration:">
-	<vspace blankLines="0"/>
-	<list style="symbols"><t>Per Use Case 3.1 (AD-2 is native multicast), current router
-        technology cannot count the number of end users or the number
-        of bytes transmitted to all end users.</t>
-
-	<t>Additional devices (AMT Gateway and Relay pairs) may be
-        introduced into the path if these services are not incorporated
-        in the existing routing nodes.</t>
-
-	<t>Currently undefined mechanisms for the AG to automatically
-        select the optimal AR.</t>
-
-	</list>
-	</t>
-
-	<t hangText="Architectural guidelines for this configuration are as follows:">
-	<vspace blankLines="0"/>
-	</t>
-
-	</list>
-	</t>
+	<t>Architectural guidelines for this configuration are as follows:</t>
 
 	<t>
    Guidelines (a) through (d) are the same as those described in Use
    Case 3.1. In addition,</t>
 
-	<t><list hangIndent="2" style="hanging"><t>
-     e. It is recommended that AMT Relay and Gateway pairs be
+   <t><list hangIndent="3" style="hanging">
+        <t hangText="e.">
+     It is recommended that AMT Relay and Gateway pairs be
      configured at the peering points to support multicast delivery
      between domains. AMT tunnels will then configure dynamically
      across the peering points once the Gateway in AD-2 receives the
      (S, G) information from the EU.</t>
 
-	</list>
-	</t>
+   </list></t>
 
 </section>
 <section title="Peering Point Enabled with an AMT - AD-2 Not Multicast Enabled" anchor="section-3.4">
@@ -532,12 +508,12 @@ I2 = AMT Tunnel Connecting EU/G to AR in AD-1 through Non-Multicast
    tunnels between the two domains. Each AMT tunnel can provide the
    data usage associated with each End User.</t>
 
-	<t><list style="hanging" hangIndent="3"><t hangText="Advantages of this configuration:">
-	<vspace blankLines="0"/>
+	<t>Advantages of this configuration:
 	<list style="symbols"><t>Highly efficient use of bandwidth in AD-1.</t>
 
 	<t>AMT is an existing technology and is relatively simple to
-        implement. Attractive properties of AMT include the following:<list style="symbols"><t>Dynamic interconnection between Gateway-Relay pair across
+        implement. Attractive properties of AMT include the following:
+        <list style="symbols"><t>Dynamic interconnection between Gateway-Relay pair across
              the peering point.</t>
 
 	<t>Ability to serve clients and servers with differing
@@ -552,44 +528,33 @@ I2 = AMT Tunnel Connecting EU/G to AR in AD-1 through Non-Multicast
 	</list>
 	</t>
 
-	<t hangText="Disadvantages of this configuration:">
-	<vspace blankLines="0"/>
-	<list style="symbols"><t>Additional devices (AMT Gateway and Relay pairs) are introduced
-        into the transport path.</t>
+	<t>Disadvantages of this configuration:
+	<list style="symbols">
+            <t>Additional devices (AMT Gateway and Relay pairs) are introduced
+            into the transport path.</t>
 
-	<t>Assuming multiple peering points between the domains, the EU
-        Gateway needs to be able to find the "correct" AMT Relay in AD-<list style="numbers"><t><vspace blankLines="1"/>
-	</t>
-
-	</list>
-	</t>
+	    <t>Assuming multiple peering points between the domains, the EU
+            Gateway needs to be able to find the "correct" AMT Relay in AD-1.</t>
 
 	</list>
 	</t>
 
-	<t hangText="Architectural guidelines for this configuration are as follows:">
-	<vspace blankLines="0"/>
-	</t>
-
-	</list>
-	</t>
+	<t>Architectural guidelines for this configuration are as follows: </t>
 
 	<t>
    Guidelines (a) through (c) are the same as those described in Use
    Case 3.1.</t>
 
-	<t><list hangIndent="2" style="hanging"><t>
-     d. It is recommended that proper procedures are implemented such
+   <t><list hangIndent="3" style="hanging">
+        <t hangText="d.">
+     It is recommended that proper procedures are implemented such
      that the AMT Gateway at the End User device is able to find the
      correct AMT Relay in AD-1 across the peering points. The
      application client in the EU device is expected to supply the (S,
      G) information to the Gateway for this purpose.</t>
 
-	</list>
-	</t>
-
-	<t><list hangIndent="2" style="hanging"><t>
-     e. The AMT tunnel capabilities are expected to be sufficient for
+        <t hangText="e.">
+     The AMT tunnel capabilities are expected to be sufficient for
      the purpose of collecting relevant information on the multicast
      streams delivered to End Users in AD-2.</t>
 
@@ -599,12 +564,7 @@ I2 = AMT Tunnel Connecting EU/G to AR in AD-1 through Non-Multicast
 </section>
 <section title="AD-2 Not Multicast Enabled - Multiple AMT Tunnels Through AD-2" anchor="section-3.5">
 
-	<t><list style="hanging" hangIndent="-1"><t hangText="This is a variation of Use Case 3.4 as follows:">
-	<vspace blankLines="0"/>
-	</t>
-
-	</list>
-	</t>
+        <t>This is a variation of Use Case 3.4 as follows:</t>
 
 	<figure title="- AMT Tunnel Connecting AMT Relay and Relays" anchor="ref-amt-tunnel-connecting-amt-relay-and-relays"><artwork><![CDATA[
    -------------------               -------------------
@@ -638,7 +598,6 @@ I3 = AMT Tunnel Connecting EU/G to AR in AGAR2
    - and unicast streams - through the peering point. This situation
    can be alleviated as follows:</t>
 
-	<t><list style="empty" hangIndent="3">
 	<t><list style="symbols"><t>Provisioning of strategically located AMT nodes at the edges of
         AD-2. An AMT node comprises co-location of an AMT Gateway and
         an AMT Relay. One such node is at the AD-2 side of the peering
@@ -660,9 +619,6 @@ I3 = AMT Tunnel Connecting EU/G to AR in AGAR2
 	</list>
 	</t>
 
-	</list>
-	</t>
-
 	<t>
    The advantage for such a chained set of AMT tunnels is that the
    total number of unicast streams across AD-2 is significantly
@@ -675,30 +631,23 @@ I3 = AMT Tunnel Connecting EU/G to AR in AGAR2
    device. A suitable mechanism for such dynamic configurations is
    therefore critical.</t>
 
-	<t><list style="hanging" hangIndent="-1"><t hangText="Architectural guidelines for this configuration are as follows:">
-	<vspace blankLines="0"/>
-	</t>
-
-	</list>
-	</t>
+    <t>Architectural guidelines for this configuration are as follows:</t>
 
 	<t>
    Guidelines (a) through (c) are the same as those described in Use
    Case 3.1.</t>
 
-	<t><list hangIndent="2" style="hanging"><t>
-     d. It is recommended that proper procedures are implemented such
+   <t><list hangIndent="3" style="hanging">
+        <t hangText="d.">
+     It is recommended that proper procedures are implemented such
      that the various AMT Gateways (at the End User devices and the AMT
      nodes in AD-2) are able to find the correct AMT Relay in other AMT
      nodes as appropriate. The application client in the EU device is
      expected to supply the (S, G) information to the Gateway for this
      purpose.</t>
 
-	</list>
-	</t>
-
-	<t><list hangIndent="2" style="hanging"><t>
-     e. The AMT tunnel capabilities are expected to be sufficient for
+        <t hangText="e.">
+     The AMT tunnel capabilities are expected to be sufficient for
      the purpose of collecting relevant information on the multicast
      streams delivered to End Users in AD-2.</t>
 
@@ -725,7 +674,6 @@ I3 = AMT Tunnel Connecting EU/G to AR in AGAR2
    agreed to between the two administrative domains to support
    multicast delivery.</t>
 
-	<t><list style="empty" hangIndent="3">
 	<t><list style="symbols"><t>Number of Peering Points.</t>
 
 	<t>Peering Point Addresses and Locations.</t>
@@ -758,9 +706,6 @@ I3 = AMT Tunnel Connecting EU/G to AR in AGAR2
 	</list>
 	</t>
 
-	</list>
-	</t>
-
 </section>
 <section title="Routing Aspects and Related Guidelines" anchor="section-4.2">
 
@@ -769,14 +714,10 @@ I3 = AMT Tunnel Connecting EU/G to AR in AGAR2
    the End User receives the multicast stream from the "most optimal"
    source <xref target="INF_ATIS_10"/> which typically:</t>
 
-	<t><list style="empty" hangIndent="3">
 	<t><list style="symbols"><t>Maximizes the multicast portion of the transport and minimizes
         any unicast portion of the delivery, and</t>
 
 	<t>Minimizes the overall combined network(s) route distance.</t>
-
-	</list>
-	</t>
 
 	</list>
 	</t>
@@ -786,7 +727,6 @@ I3 = AMT Tunnel Connecting EU/G to AR in AGAR2
    methodology of the solution will be different for each. Regardless,
    the routing solution is expected:</t>
 
-	<t><list style="empty" hangIndent="4">
 	<t><list style="symbols"><t>To be scalable,</t>
 
 	<t>To avoid/minimize new protocol development or modifications,
@@ -795,9 +735,6 @@ I3 = AMT Tunnel Connecting EU/G to AR in AGAR2
 	<t>To be robust enough to achieve high reliability and
          automatically adjust to changes/problems in the multicast
          infrastructure.</t>
-
-	</list>
-	</t>
 
 	</list>
 	</t>
@@ -831,8 +768,8 @@ I3 = AMT Tunnel Connecting EU/G to AR in AGAR2
         unicast address of the stream.</t>
 
 	<t>The client uses the join message with S,G to join the multicast
-        stream <xref target="RFC4604"/>.<list style="hanging" hangIndent="3"><t hangText="To facilitate this process, the two AD's need to do the following:">
-	<vspace blankLines="0"/>
+        stream <xref target="RFC4604"/>. To facilitate this process, the two AD's need to do the following:
+
 	<list style="symbols"><t>Advertise the source id(s) over the Peering Points.</t>
 
 	<t>Exchange relevant Peering Point information such as Capacity
@@ -844,11 +781,8 @@ I3 = AMT Tunnel Connecting EU/G to AR in AGAR2
 	</list>
 	</t>
 
-	</list>
-	</t>
-
-	</list>
-	</t>
+    </list>
+    </t>
 
 </section>
 <section title="GRE Tunnel over Interconnecting Peering Point" anchor="section-4.2.2">
@@ -1188,7 +1122,6 @@ I3 = AMT Tunnel Connecting EU/G to AR in AGAR2
    (metrics may be specified for SLA use or otherwise). Associated
    guidelines are as follows:</t>
 
-	<t><list style="empty" hangIndent="3">
 	<t><list style="symbols"><t>Both AD's are expected to monitor, collect, and analyze service
         performance metrics for multicast applications. AD-2 provides
         relevant performance information to AD-1; this enables AD-1 to
@@ -1209,9 +1142,6 @@ I3 = AMT Tunnel Connecting EU/G to AR in AGAR2
 	</list>
 	</t>
 
-	</list>
-	</t>
-
 	<t>
    Service Monitoring generally refers to a service (as a whole)
    provided on behalf of a particular multicast application source
@@ -1223,7 +1153,6 @@ I3 = AMT Tunnel Connecting EU/G to AR in AGAR2
    own network or in AD-2. It is expected that each AD will have tools
    to monitor multicast service status in its own network.</t>
 
-	<t><list style="empty" hangIndent="3">
 	<t><list style="symbols"><t>Both AD's will determine how best to deploy multicast service
         monitoring tools. Typically, each AD will deploy its own set of
         monitoring tools; in which case, both AD's are expected to
@@ -1297,9 +1226,6 @@ I3 = AMT Tunnel Connecting EU/G to AR in AGAR2
 	</list>
 	</t>
 
-	</list>
-	</t>
-
 </section>
 <section title="Client Reliability Models/Service Assurance Guidelines" anchor="section-4.5">
 
@@ -1347,7 +1273,6 @@ I3 = AMT Tunnel Connecting EU/G to AR in AGAR2
    in section 4.4 (Service Performance and Monitoring). Some general
    communications issues are stated as follows.</t>
 
-	<t><list style="empty" hangIndent="3">
 	<t><list style="symbols"><t>Appropriate communications channels will be established between
         the customer service and operations groups from both AD's to
         facilitate information sharing related to diagnostic
@@ -1361,9 +1286,6 @@ I3 = AMT Tunnel Connecting EU/G to AR in AGAR2
 	</list>
 	</t>
 
-	</list>
-	</t>
-
 	</section>
 
 	<section title="Security Considerations" anchor="section-6"><t>
@@ -1371,7 +1293,6 @@ I3 = AMT Tunnel Connecting EU/G to AR in AGAR2
    to be followed by each AD to facilitate multicast delivery to
    registered and authenticated end users. Additionally:</t>
 
-	<t><list style="empty" hangIndent="3">
 	<t><list style="symbols"><t>Encryption - Peering point links may be encrypted per agreement
         for multicast delivery.</t>
 
@@ -1381,9 +1302,6 @@ I3 = AMT Tunnel Connecting EU/G to AR in AGAR2
         over alternative peering points. It is also expected that
         appropriate information will be shared for the purpose of
         securing the identified breach.</t>
-
-	</list>
-	</t>
 
 	</list>
 	</t>
