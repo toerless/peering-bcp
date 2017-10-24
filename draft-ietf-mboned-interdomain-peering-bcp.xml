@@ -10,7 +10,7 @@
 <!ENTITY RFC7761 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7761.xml">
 <!ENTITY I-D.ietf-mboned-mtrace-v2 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-mboned-mtrace-v2.xml">
 ]>
-<rfc submissionType="IETF" docName="draft-ietf-mboned-interdomain-peering-bcp-12" category="bcp" ipr="pre5378Trust200902"><?rfc compact="yes"?>
+<rfc submissionType="IETF" docName="draft-ietf-mboned-interdomain-peering-bcp-13" category="bcp" ipr="pre5378Trust200902"><?rfc compact="yes"?>
 	<?rfc text-list-symbols="ooo*+-"?>
 	<?rfc sortrefs="no"?>
 	<?rfc symrefs="yes"?>
@@ -48,7 +48,7 @@
 	</address>
 	</author>
 
-	<date day="23" month="October" year="2017"/>
+	<date day="24" month="October" year="2017"/>
 	<workgroup>MBONED Working Group</workgroup>
 	<abstract><t>
    This document examines the use of Source Specific Multicast (SSM)
@@ -1125,19 +1125,17 @@ the issue, it will interact with AD-2 using the aforementioned guidelines.</t>
 </section>
 <section title="Log Management Guidelines" anchor="section-4.3.3">
 
-	<t>
-   Successful delivery of applications via multicast between pairs of
+<t> Successful delivery of applications via multicast between pairs of
    interconnecting AD's can be improved through the ability to
    exchange appropriate logs for various workflows - troubleshooting,
    accounting/billing, traffic/content optimization, market research
    and so on. Except when the log includes information about the
    IP multicast behavior in AD-2, this is not specific to IP multicast
-   solutions but equally desirable in Unicast-content (eg: CDN) collaboration
-   across AD-1/AD-2. Associated guidelines are as follows.</t>
+   solutions but equally desirable in Unicast-content delivery collaboration
+   collaboration across AD-1/AD-2 (e.g.: for CDN services).</t>
 
-	<t>
-   AD-2 needs to supply logs to AD-1 per existing contract(s). Examples
-   of log types include the following:</t>
+<t> The following type of logs are well understood examples known to help support operations
+   in AD-1 when provided by AD-2. This could be done as part of AD-1/AD-2 contracts:</t>
 
 	<t><list style="symbols">
 	<t>Usage information logs at aggregate level.</t>

@@ -718,7 +718,7 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
 3.5.  AD-2 Not Multicast Enabled - Multiple AMT Tunnels Through AD-2
 
-   This is a variation of Use Case 3.4 as follows
+   This is a variation of Use Case 3.4 as follows:
 
 
 
@@ -1214,9 +1214,9 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    The reason to specifically mention the need for AD-1 to initiate
    interactions with AD-2 (and use some account for that), as opposed to
    the opposite direction is based on the recommended workflow initiated
-   by customers (see Section 4.4): Customer contacts content source
-   (part of AD-1), when AD sees the need to propagate the issue, it will
-   interact with AD-2.
+   by customers (see Section 4.4): The customer contacts content source
+   (part of AD-1), when AD-1 sees the need to propagate the issue, it
+   will interact with AD-2 using the aforementioned guidelines.
 
 4.3.3.  Log Management Guidelines
 
@@ -1234,11 +1234,12 @@ Tarapore, et al.         Expires April 26, 2018                [Page 22]
 Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
 
-   equally desirable in Unicast-content (eg: CDN) collaboration across
-   AD-1/AD-2.  Associated guidelines are as follows.
+   equally desirable in Unicast-content delivery collaboration
+   collaboration across AD-1/AD-2 (e.g.: for CDN services).
 
-   AD-2 needs to supply logs to AD-1 per existing contract(s).  Examples
-   of log types include the following:
+   The following type of logs are well understood examples known to help
+   support operations in AD-1 when provided by AD-2.  This could be done
+   as part of AD-1/AD-2 contracts:
 
    o  Usage information logs at aggregate level.
 
@@ -1280,7 +1281,6 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    AD-1 on behalf of all multicast application sources (metrics may be
    specified for SLA use or otherwise).  Associated guidelines are as
    follows:
-
 
 
 
