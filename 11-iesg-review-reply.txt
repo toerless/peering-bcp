@@ -1,0 +1,670 @@
+
+Dear Ben Campbell, Alissa Cooper, Mirja Kuehlewind, Kathleen Moriarty,
+     Alissa Cooper, Eric Rescorla, Adam Roach:
+
+This is in response of your thorough reviews of
+    https://www.ietf.org/id/draft-ietf-mboned-interdomain-peering-bcp-11.txt
+
+This email coalesces replies to your discuss and comments in the drafts ballot:
+    https://datatracker.ietf.org/doc/draft-ietf-mboned-interdomain-peering-bcp/ballot/
+
+This email is also:
+    https://raw.githubusercontent.com/toerless/peering-bcp/master/11-iesg-review-reply.txt
+
+Thank you so much for your thorough review.
+
+Version -12 of the draft was just a conversion from docx generated txt to XML,
+this introduced formatting changes (line wraps etc.) that rfcdiff can not ignore
+and that would obfuscate the actual text changes. 
+
+Version -13 of the draft contains the text changes done in response to your
+comments and discusses. RFCdiff here:
+
+   http://tools.ietf.org/tools/rfcdiff/rfcdiff.pyht?url1=https://raw.githubusercontent.com/toerless/peering-bcp/master/draft-ietf-mboned-interdomain-peering-bcp-12.txt&url2=https://raw.githubusercontent.com/toerless/peering-bcp/master/draft-ietf-mboned-interdomain-peering-bcp-13.txt
+    
+   Beside the various spread fixups from comments, the mayor rewritten/new blocks are:
+
+   4.1.1 - bandwidth management (aka: congestion control section). 
+           I didn't just want to put the magic CC sentence in but wanted to let
+           readers understand what it means in the context of specifically
+   6. Security considerations
+      6.1.  DoS attacks (against state and bandwidth)	
+      6.2.  Content security	
+      6.3.  Peering encryption
+      6.4.  Operational Aspects
+            This is where the securing of log exchange is discussed.
+   7. Privacy Considerations
+      Got somewhat longer to explain because the specifics of multicast content and privacy
+      are likely not that obious to non-multicast  experienced readers, and given how this
+      is a BCP and i don't even think we did describe this anywhere else, it had to be
+      explanatory.
+   
+   4.2.4.  Public Peering Routing Aspects
+      text did mention non-private peerings, but i was afraid that readers would not
+      understand the problematic implications, so i detailled them given how those
+      peering L2 domains are still common for unicast.
+
+
+For individual replies to the points raised by you, please search for your
+name after a "=====" line, this is where i am replying to each individual point.
+
+Cheers
+    Toerless for the Authors
+
+P.S.: Just seing how there are still typos in -13, will fix those in next and hopefully
+final rev.
+
+==========================================================================================
+Ben Campbell:
+
+Thanks a lot for the thorough review!
+
+> (This is related to Alissa's DISCUSS about logging of privacy-sensitive data. But since it's a little different, I'm entering my own DISCUSS.)
+> 
+>  In section 4.4 (operations) the bullet on problem notification states that AD2 will inform AD1 of, among other things, the locations of users. Is that intended to be geolocation, or network location? If the former, that's extremely sensitive information, and needs privacy guidelines.
+
+Modified to say "Network location" (of affected EUs).
+
+> Substantive Comments:
+> 
+> - I support Alissa's and Kathleen's DISCUSS positions.
+
+TBD.
+> 
+> - There seem to be quite a few implied assumptions about business models. I will call out some specifically, but I'm sure I didn't catch them all. These assumptions should either be removed or made explicit.
+
+I did not find other assumptions beyond the ones you list below. Pls let us know explicitly what others you think exist.
+
+> - The lists of guidelines seem to mix guidelines with observations of fact. This makes it difficult to tell which parts are "best practices" (that is, recommendations) vs which parts simply state fact.
+> 
+> -2: Is the assumption that the source is a service provider and the consumer is an end-user relevant? This seems to perpetuate the (often false) assumption that end users only consume content, but never produce it. It would be better to state this in the form of whatever assumptions are implied by the idea of SPs and EUs.  For example, do you assume there is a one to many relationship between SPs and EUs?
+
+Pls. check the revised first bullet (and sub-bullet) points of the introduction. It now says that there is one AD-1 but one or more AD-2. It also limits scope to EU just receiving content, but not sourcing it. It gives a suggestion how to let end-users source content but declares the detail out of scope.
+
+To answer your points beyond what i changed in the text:
+
+Yes, the assumption that this is a complete end-to-end story from someone (AD-1) taking responsibility  for sourcing the content to many end-users consuming the service is relevant because it allows us to constrain the scope/size of this document. If you think we should also have text for any of the current "out of scope" areas, i would be a lot happier if we could do this in BCPbis.
+
+> -3.2: Why does this section not rate a figure? I think it would be helpful to show the GRE tunnel as distinct from the native multicast.
+
+Done. Please check picture and modified text referring to it.
+
+> -3.5, paragraph after Figure 4: The large number of tunnels implies some assumptions about the cardinality between SPs and EUs that should be stated explicitly. (It would help to show this in the figures.)
+
+Done. Put into picture: N# EU/G -> N x AMT Tunnel.
+
+Also updated both AMT pictures to show the fact that the AMT nodes are not necessarily the same as the physcial exchange point nodes.
+
+> - 4.3.2: The idea that that AD1 has a need to identify users in AD2 seems to be based on some implied business model assumptions. Please state those explicitly. (Or if I missed where they are stated, please point out the text.)
+
+Not really..  I added to 4.3.2:
+
+    <t>The reason to specifically mention the need for AD-1 to initiate
+    interactions with AD-2 (and use some account for that), as opposed
+    to the opposite direction is based on the recommended workflow
+    initiated by customers (see <xref target="section-4.4"/>): Customer
+    contacts content source (part of AD-1), when AD sees the need to propagate 
+    the issue, it will interact with AD-2.</t>
+
+I am somewhat hesitating to bring long & gory explanations why we choose
+this approach, because there are so many different reasons one could cite
+and it cold become quite long:
+
+-> Its the logical workflow with unicast content service.
+-> Its the workflow also in CDN, even specifically in CDNI
+-> Its logical that you start diagnostics from the application side
+   and only once you figure out that the issue is NOT application, but
+   network, you go down to network diagnostic. And you can start that
+   usually only from the application sender side.
+-> You want to make operations for all the AD-2 lightweight. The idea is NOT
+   for all AD-2 to become broadcasters with a virtual headend. Instead
+   they just need to be involved in the transport layer and beyond that
+   only into the pieces they want to.
+
+Let me know if you feel strongly that this reasoning needs to be written down.
+
+> -4.3.3: This states that logging is necessary for delivery. Why is that? Again, this seems to make some implicit business model assumptions. This section also needs explicit privacy considerations.
+
+I have rewritten the beginning of 4.3.3 into 4 paragraphs to hopefully make this clearer.
+
+- I have also added a whole privacy consideration section (8.) that discusses
+  privacy hopefully exhaustively enough.
+
+Please re-check.
+
+> -4.4: The choice of monitoring, etc, seems to be up to the network operators to decide. Why does this document need to "expect" that? It might be helpful to describe how monitoring specific information could be useful (perhaps for troubleshooting), but the document does not go into that. 
+
+I have changed the first two paragraphs to hopefully set the context better:
+
+    <t> Successful delivery of applications via multicast between pairs of
+       interconnecting AD's can be improved through the ability to
+       exchange appropriate logs for various workflows - troubleshooting,
+       accounting/billing, traffic/content optimization, market research
+       and so on. Except when the log includes information about the
+       IP multicast behavior in AD-2, this is not specific to IP multicast
+       solutions but equally desirable in Unicast-content delivery collaboration
+       collaboration across AD-1/AD-2 (e.g.: for CDN services).</t>
+    
+    <t> The following type of logs are well understood examples known to help support operations
+       in AD-1 when provided by AD-2. This could be done as part of AD-1/AD-2 contracts:</t>
+
+Let us know please if you insist on examples. detailing operational workflows
+can add quite a bit of text to the document.
+ 
+> The statements about compensation should be out of scope for an IETF document.
+
+Done. See my comment to the same point raised by Alissa if you like.
+
+> -5: Can you define, or reference a definition for, "Looking-Glass style".
+
+TBD-PERCY: its not clear to me what you mean with looking glass style
+and what functionality you refer to with "router proxy" either. Can you elaborate,
+or propose text to explain that ?  I could guess or come up with some text
+i think make sense but not sure what you intended. Also what do you mean with
+extending mtrace/traceroute... ?
+
+> -6: Please include a discussion of threat models. When might one choose to encrypt or not encrypt? What risks exist if you don't encrypt?
+
+Please re-read the security section. I did do a mayor overhaul to
+hopefully better identify the security issues different from unicast
+and to describe the attack vectors. Both for the encryption at the
+peering point and other points.
+
+> -- : "DRM and Application Accounting, Authorization and Authentication should be the responsibility of the multicast application source"
+> Why? This seems to imply some business model assumptions.
+
+No. It is only implication of the fact that this
+document only considers network layer peering, but end-to-end
+transport/app layer (to make it as close as possible to existing
+unicast models where the same is done). See rewritten text of security section, should
+make it much clearer now, i hope.
+> 
+> Editorial Comments:
+> 
+> - General: I find the heavy use of nested bullet lists hard to read. Much of the information in the lists would be better suited to paragraph form, especially when list entries span several sentences.  Likewise, the inconsistent use of full sentences vs fragments makes it hard to read. (Maybe this is just me)
+
+I XML'ified the document which removed a lot of surpls indentation,
+but introduced more vertial white space hopefully this helps. Looks nicer to me now ;-))
+
+In or defense, the WG did ask for structured bullet
+listed format of the document to create more consistency and easier
+vetting of individual statements made. 
+
+I hope you can live through this because i am fearful of
+doing more verbal changes (mayority of readers/commenters didn't complain about formatting).
+
+> -2: Please explain (s,g) before using, or even better spell it out. You do, in fact, explain it in 4.2.3, but it's used quite a bit before you get to there.
+
+That is about the most fundamental IP multicast term and is typically
+used intentionally as a first line of defense against reader not
+familiar enoigh with IP multicast to understand the text. 
+
+But since you asked so nicely, the first instance now reads:
+
+(S,G)s (multicast traffic flows, 
+        see <xref target="section-4.2.1"/> if you are unfamiliar with IP multicast).
+
+> -3.2, third bullet: "Ability to support only partial IP multicast deployments..."
+> Does this mean "only able to support partial..." or "able to support partial..."?
+
+   <t>Ability to support partial and/or incremental IP multicast deployments in AD-
+    1 and/or AD-2: Only the path(s) between AS/BR (AD-1) and BR/EU (AD-2) need to  
+    be multicast enabled. The uBRs (and paths between BR and uBR) may not support IP multicast 
+    or enabling it could be seen as operationally risky on that important nodes whereas dedicated
+    BR nodes for IP multicast are more acceptable. BR can be located such that 
+    only parts of the domain may need to support native IP multicast (e.g.: only the
+    core in AD-1 but not access).</t>
+
+> - 3.3, figure:
+> The figures that involve tunnels would be easier to understand if you visually distinguished tunnels from non-tunneled links.
+
+Done.
+
+> - 3.3, e: "AMT tunnels will then configure dynamically"
+> s/configure/"be configured"
+
+Ack.
+
+> -3.4, d: " It is recommended that proper procedures are implemented such
+>      that the AMT Gateway at the End User device is able to find the
+>      correct AMT Relay..."
+> Is that a recommendation or a requirement necessary to work at all? (Same construction appears in at least 3.5).
+
+*sigh*. No, it's necessary, and we haven't really worked out all the good mechanisms to simpify this.
+
+Check fixed text, explains it now better.
+
+> -4.1: Please expand SLA on first use.
+
+Ack
+
+> -4.2.3: AMT Gateway: "The Gateway will reside on an End-Point - this
+>         may be a Personal Computer (PC) or a Set Top Box (STB)."
+> Is that meant to be exhaustive? Surely there are endpoints that do not resemble PCs or STBs.
+
+Fixed to:
+
+<t hangText="AMT Gateway (GW):"> The Gateway will reside on an End-Point - this
+        could be any type of IP host such as a Personal Computer (PC), mobile phone, 
+        Set Top Box (STB) or refrigerator. 
+
+> -4.2.3, example procedures for gateway selection:
+> The heavy use of passive voice in this section obscures the actors. (This is true to some degree throughout the document, but it seems more confusing here.)
+
+TBD-PERCY: Sorry, i am not a native english speaker, so i will refrain from
+trying to improve the english language quality of the document and refer
+that back to the native co-authors.
+
+Pls. let us know if this is blocking your approval.
+
+> -4.3.2, 2nd bullet: Please don't use "/" as shorthand for conjunctions.  (Pattern repeats throughout the rest of the draft.)
+
+Ok, went through the whole document and tried to come up with creative alternatives to "/".
+
+> -4.3.3, first paragraph: The first sentence is hard to parse.
+
+Check rewritten paragraph, pls.
+
+> -6: Please expand DRM and CDN on first mention.
+
+Done.
+
+========================================================================================
+Alissa Cooper:
+
+> Section 4.3.3 recommends that ADs generate and exchange extensive logging information, but the document says nothing about securing these logs or limiting the exchange of private or confidential information between the peers. This seems like it needs to be addressed in the BCP.
+
+Sure. Pls. re-read the first four paragraphs of the Log Management section, i tried to make
+it clearer. Also the new section on privacy.
+
+> (1) Why does this document contain the copyright disclaimer for pre-RFC5378 work?
+
+It has been there since -00, and i can not think of any reason why it should be there,
+so i removed it.
+
+TBD-WG: send email to working group mailing list to re-check.
+
+> (2) Section 4.4 says:
+> 
+> "In the event of performance degradation (SLA violation), AD-1
+>         may have to compensate the multicast application source per SLA
+>         agreement. As appropriate, AD-1 may seek compensation from AD-2
+>         if the cause of the degradation is in AD-2's network."
+> 
+> and
+> 
+> "Faults in service could lead to SLA violation for which the
+>         multicast application source provider may have to be
+>         compensated by AD-1. Subsequently, AD-1 may have to be
+>         compensated by AD-2 based on the contract."
+>     
+> These bullets seem out of scope for this BCP. I would recommend deleting them.
+
+Removed. 
+
+I welcome a chat in Singapore why everybody seems to think the word "money"
+must not be mentioned, not even in an operational document. 
+
+> (3) Section 6 says:
+> 
+> "DRM and Application Accounting, Authorization and Authentication
+>    should be the responsibility of the multicast application source
+>    provider and/or AD-1. AD-1 needs to work out the appropriate
+>    agreements with the source provider.
+> 
+>    Network has no DRM responsibilities, but might have authentication
+>    and authorization obligations. These though are consistent with
+>    normal operations of a CDN to insure end user reliability, security
+>    and network security."
+> 
+> I find these two paragraphs somewhat contradictory and vague. The first paragraph makes it sound like DRM could be the responsibility of AD-1. The second paragraph makes it sound like AD-1 (assuming it counts as "network") would never be responsible for DRM. Then later on the text says:
+> 
+> "Authentication and authorization of EU to receive multicast content
+>    is done at the application layer between the client application and
+>    the source. This may involve some kind of token authentication and
+>    is done at the application layer independently of the two AD's."
+> 
+> Is this differentiating authentication and authorization of the application source from that of the end user? It's not clear. I would suggest revising this whole section to be clear about which security functions are the responsibility of which parties.
+
+Pls. re-read the security section, i have tried to rewrite it with
+a clearer description of these aspect. As someone like me who is
+deep int the subject matter it is always easy to overlook explaining
+what we may think are well understood fundamentals, so please keep
+complaining until its understandable!
+
+=====================================================================================
+Mirja Kuehlewind:
+
+
+> Sorry for this last minute discuss but I would like to emphasize the points made in the tsv-art review on congestion/rate control (Thanks Yoshi!):
+
+> Please provide stronger guidance (MUST) on the use of rate/congestion control in these two cases:
+> 
+>  In Section 3.1:
+>     " If the peering point between AD-1 and AD-2 is a controlled
+>    network environment, then bandwidth can be allocated
+>    accordingly by the two domains to permit the transit of non-
+>    rate adaptive multicast traffic. If this is not the case, then
+>    it is recommended that the multicast traffic should support
+>    rate-adaption."
+> 
+> In Section 4.1,
+>      "When determining the appropriate bandwidth allocation, parties should consider use
+>        of a multicast protocol suitable for live video streaming that
+>        is consistent with Congestion Control Principles [BCP41]."
+
+I tried to fix this text a bit more comprehensively:
+- removed text from 3.1. The CC requirements apply to every subsection of 3 (3.x)
+  and it duplicates partial text in 4.1, so a random mentioning in 3.1 was not
+  helpfull.
+- Moved CC text from 4.1 to dedicated section 4.1.1 and made it a lot more explanatory
+  because in my past experience most readers do not really understand our cryptic
+  rules alone ("CC principles across non-controlled network paths"). Also added
+  reference to the fresh BCP145.
+
+Please re-read new section and let me know what you think.
+
+> Minor questions/comments:
+> 
+> 1) Section 3.4 also says:
+> "Highly efficient use of bandwidth in AD-1."
+> But aren't packets eventually duplicated in this case in AD-1? I guess it's more efficient than replicating them at the network border but might be still less efficient than native multicast in the whole network, no?
+
+Changed to:
+  <t>Efficient use of bandwidth in AD-1 (The closer AR is to uBR, the more efficient).</t>
+
+> 2) section 4.3.3 says:
+> "The two AD's may supply additional security logs..."
+> This seems to be a general action not specific to multicast or the scenarios described in this doc.
+
+Yes, i thought about this and came up with the following explanation:
+   
+   <t>Note that except for implied multicast specific elements,
+   the options listed here are not unique or novel for IP multicast, but
+   they are more important for services novel to the operators than for
+   operationally well established services (such as unicast).  Therefore
+   we detail them as follows:</t>
+
+> 3) I don't think the conclusion section (8) is helpful or needed. If you want to keep it at all, this text could be moved into the introduction.
+
+Removed - for the time being. I was told that having a wrap up in documents is
+always a good way to reflect on the document, but i agree the existing text
+is more distracting than helpful.
+
+====================================================================================
+Kathleen Moriarty:
+> 
+> Thanks for your work on this draft.  I'd like to see some text clarifications on security recommendations that should not be difficult to resolve.
+> 
+> Section 4.4 - the exchange of supporting information could be sensitive, are there security requirements on the exchange?  I don’t see them in this section.
+
+I thought about this a lot, and i hope the fixed up text in various sections is now better.
+
+In the end i tried to focus the description on the model that makes this closest to
+unicast, eg.: where the end-to-end application is in control and just gets network
+transport information from the other parties involved, eg.: AD-2 -> AD-1. So all the
+information collected via logs etc. to the extend that it is per-user is really only about the transport service
+and not the payload. Something which in unicast the content source would already have.
+
+The only privacy sensitive information directly related to multicast is really "who is watching
+what content" and i created a privacy consideration section for that aspect, pls. review.
+
+[ Side note:
+
+  Personally i think there is a real bad amount of personal info collected by
+  end-to-end applications, especially what i've seen in the past in content delivery for
+  monetization strategies such as targeted advertisements and the like, but seemingly there is no
+  place in the IETF where this is discussed (would have to be somehwere in ART).
+  IETF only seems to obsess about protecting the sensitive information against third parties
+  which is good but totally not sufficient.
+
+  I did add the last paragraph in the privacy section to hint at this and that
+  multicast could help to solve this, but alas i fear that there is no interest
+  in the paycheck generating part of the IETF community to explore those options
+  because that invasion on privacy is at the core of the business model of most application
+  service providers.  *sigh*
+  ]
+
+> Section 6 - For the following text, it would be helpful to see some recommendations:
+>    “DRM and Application Accounting, Authorization and Authentication
+>    should be the responsibility of the multicast application source
+>    provider and/or AD-1. AD-1 needs to work out the appropriate
+>    agreements with the source provider.”
+> 
+> I agree with and support Alissa's Discuss and comments.  Since she already holds a discuss on this point, here are my comments:
+> Section 4.3.3 clearly refers to different types of logs, some have well known methods of delivery (syslog) and authentication, but setting a minimum requirement for secure exchange including encryption and authentication should be included in this section. The protocols and options may vary between the log types.
+
+Right.
+
+Alas, I am not aware of any established security standards to protect equivalent operational data
+exchanged for unicast between SPs. I fear i would not like the answers if i asked what
+is actually done. That makes it somewhat hard to be very specific. besides, with the
+advent of SDN and the slow sunset of lots of insecure NNI protocols (IPfix anybody),
+the option are endless.
+
+I've tried to describe what i hope are sufficient recommendations into te first
+paragraphs of section 7.4, "operational aspects" of security considerations. Please check it out.
+
+====================================================================================
+Spencer Dawkins
+
+> Thanks for doing this work.
+> 
+> I have comments, but they're all editorial.
+> 
+> In this text,
+> 
+>      o AD-1 and AD-2 are assumed to adopt compatible protocols. The
+>          use of different protocols is beyond the scope of this
+>          document.
+> 
+> "compatible protocols" isn't helpful without some context. Is this talking about "compatible multicast protocols", or complete protocol stacks from IP on up, or something else?
+
+Changed to:
+
+        <t>The rest of the document assumes that PIM-SSM and BGP are used across
+         the peering point plus AMT and/or GRE according to scenario. The use
+         of other protocols is beyond the scope of this document.</t>
+> 
+> I'm also noticing that the terms "should" and "recommended" appear a few times in this document. This is a BCP and doesn't reference BCP 14, which is all fine, but the wording is likely to lead readers in one direction. I wonder if it's helpful to say these things differently, so that (for instance)
+> 
+>          Hence, in the case of inter-domain peering, it is
+>          recommended to use only SSM protocols; the setup of inter-
+>          domain peering for ASM (Any-Source Multicast) is not in scope
+>          for this document.
+> 
+> might become
+> 
+>          Hence, this document assumes that in the case of inter-domain 
+>          peering, only SSM protocols are used; the setup of inter-
+>          domain peering for ASM (Any-Source Multicast) is not in scope
+>          for this document.
+> 
+> Nit: "out of cope"
+
+Fixed this type, but will definitely do another spell checker after getting
+approval to go through IESG, so lets not worry too much about typos.
+
+Lower cased all MUST/SHOULD/MAY (where only few).
+
+I think the use of the word "recommend" is in general ok. In the case
+above, this was immediately preceeding the now fixed text where
+i am using "assume". So i hope this solves the point you raised. 
+
+> This text,
+> 
+>         packet streams will be part of a suitable
+>         multicast transport protocol.
+> 
+> didn't parse for me - was it saying
+> 
+>        packet streams will be carried by a suitable
+>        multicast transport protocol.
+
+Yes, Fixed.
+
+> In this text,
+> 
+>   Note that domain 2 may be an independent network domain (e.g., Tier
+>    1 network operator domain). Alternately, domain 2 could also be an
+>    Enterprise network domain operated by a single customer. The peering
+>    point architecture and requirements may have some unique aspects
+>    associated with the Enterprise case.
+> 
+>   The Use Cases describing various architectural configurations for
+>    the multicast distribution along with associated requirements is
+>    described in section 3. Unique aspects related to the Enterprise
+>    network possibility will be described in this section. Section 4
+>    contains a comprehensive list of pertinent information that needs to
+>    be exchanged between the two domains in order to support functions
+>    to enable the application transport.
+> 
+> it wasn't easy for me to tie "some unique aspects" in the first paragraph to "will be described in this section" in the second - if the last sentence in the first paragraph was moved to be the second paragraph, so the text was 
+> 
+>   Note that domain 2 may be an independent network domain (e.g., Tier
+>    1 network operator domain). Alternately, domain 2 could also be an
+>    Enterprise network domain operated by a single customer. 
+> 
+>   The Use Cases describing various architectural configurations for
+>    the multicast distribution along with associated requirements is
+>    described in section 3. The peering
+>    point architecture and requirements may have some unique aspects
+>    associated with the Enterprise case. These unique aspects will be
+>    described in this section. Section 4
+>    contains a comprehensive list of pertinent information that needs to
+>    be exchanged between the two domains in order to support functions
+>    to enable the application transport.
+> 
+> that would have been easier for me to follow. It's also worth mentioning that I'm guessing that "section 3" is "this section" in that text, and I'm pretty sure "this section" isn't "section 2", which is actually where the sentence appears, but it might be easier for the reader to say "will also be described in section 3".
+
+Muchas Gracias, change applied as suggested.
+
+Hey, how can i get more ADs that give me suggested solutions instead of raising just problems for me to solve ? 
+(kidding, all input welcome)
+
+> 
+>      e. The interconnection of AD-1 and AD-2 should, at a minimum,
+>         follow guidelines for traffic filtering between autonomous
+>         systems [BCP38]. Filtering guidelines specific to the multicast
+>         control-plane and data-plane are described in section 6.
+> 
+> just seems odd ("this BCP says you should do that BCP"). ISTM that if there are multicast-specific reasons to do BCP38 in addition to the usual reasons, that would be a fine thing to say here, of course.
+
+I removed that paragraph because this applies to all scenarios anyhow,
+and because BCP38 is really only a necessary ad-on consideration for
+unicast. Instead section 7.1 second paragraph now explains how RPF
+forwarding is part of PIM-SM/SSM and therefore provides equivalent
+protection to BCP38.
+
+> If your audience doesn't already know 
+> 
+>      o The GRE tunnel is often left pinned up.
+> 
+> (and if they don't, thank you for telling them), you might want to add a few words explaining why that's a disadvantage.
+
+;-) I actually didn't write that point and i do not agree that it is
+much of a problem in the deployment scenario, but it was a consensus
+between authors to have it. IMHO the likelyhood that in this setup the
+GRE tunnel is at times not used at all is fairly low. You wouldn't bother
+about setting up this tunnel in the first place if it wasn't expected
+to be used regularily. And its not per-user, so little state wasted even
+if it is unused.
+
+> In this text,
+> 
+>   The advantage for such a chained set of AMT tunnels is that the
+>    total number of unicast streams across AD-2 is significantly
+>    reduced, thus freeing up bandwidth. Additionally, there will be a
+>    single unicast stream across the peering point instead of possibly,
+>    an unacceptably large number of such streams per Use Case 3.4.
+>    However, this implies that several AMT tunnels will need to be
+>    dynamically configured by the various AMT Gateways based solely on
+>    the (S,G) information received from the application client at the EU
+>    device. A suitable mechanism for such dynamic configurations is
+>    therefore critical.
+> 
+> is there a good reference for "suitable mechanism(s)"?
+
+No, not really. We discussed DNS but didn't make progress with that
+draft yet. I think that short term deployments can quickly solve
+those problems with simple SDN style automation though and then
+standardize.
+
+=====================================================================================
+Eric Rescorla:
+
+> I support Kathleen's and Alissa's discusses
+> 
+> I'm concerned about whether the practices described adequately capture the notion of user consent to receive the data. Specifically, we're talking about sending large streams of data to people. Do the protocols in question adequately ensure that the addresses in question wish to receive the data. Specifically, the issue I am concerned with is whether I can cause you to get a large video stream. I'm filing this as a Comment rather than a Discuss because it doesn't seem like an issue for this BCP but rather for the protocols it documents.
+
+In SSM multicast, a receiver will not receive any unwanted traffic
+from any source, but only traffic from those sources that it wants to receive
+traffic from. Receiver issues a so-called (S,G) membership indicating it wants
+from source S the traffic for group G (think of G as the equivalent of a TCP port).
+
+Of course, all the goodness of SSM multicast is easily invalidated by the
+application on the receiver device. You know, browsers that start receiving
+streaming videos into some windows on the bottom of your desktop you've long
+ forgotten because some content owner tries to pushes more Ads to you...
+
+(sorry, couldn't resist ;-)
+
+> Please define S,G at first use.
+
+  <t>A service provider controls one or more application sources in
+        AD-1 which will send multicast IP packets for one or more
+        (S,G)s (multicast traffic flows,
+        see <xref target="section-4.2.1"/> if you are unfamiliar with IP multicast).
+
+=====================================================================================
+Adam Roach:
+
+> I support Alissa's and Kathleen's DISCUSSes; and (as a separate concern), I support Ben's DISCUSS.
+> 
+> Most of the comments I noted in my review of this document have been made by other reviewers, and I will not reiterate most of them. I would, however, like to draw particular attention to Ben's comments regarding charging, billing, and settlement -- I believe these issues should either be fleshed out in significantly more detail, or removed (with a simple statement in the introduction that such issues are generally out of scope for the entire document).
+> 
+
+Those sentences where removed due to comments by other reviewers.
+
+Your is is actually better guidance than the simple "should be out of scope" i saw
+in other reviewers comments: i like the: not enough actionable information to pass bar for BCP.
+
+We did have i think 10 years ago an attempt to standardize
+multicast billing/accounting information exchange between SPs, alas those drafts never finished
+because they where somewhat ill-build (on the wrong protocols). I think thats
+why we as authors wanted to remind the community, but a reminder alone is not
+sufficient for a BCP.
+
+> Section 4.2.3 contains the following text:
+> 
+>     (Note
+>      that in IPv6 there is a specific Anycast format and Anycast is
+>      inherent in IPv6 routing, whereas in IPv4 Anycast is handled via
+>      provisioning in the network. Details are out of scope for this
+>      document.)
+> 
+> It would be helpful to the reader if the "out of scope" statement were accompanied by a pointer to BCP 126/RFC 4786.
+
+Thanks. Added.
+
+> Section 5 contains the following text:
+> 
+>    It is expected that multicast diagnostics will be collected
+>    according to currently established practices [MDH-04].
+> 
+> I believe this statement makes [MDH-04] normative, as it is required to understand its contents to implement the recommendations in this BCP.
+
+Haha, interesting. This is my first BCP co-authoring, so its not clear to me
+how references have to inherit state based on the way they are referred to in
+a BCP (as opposed to being use in conjunction with a MUST/SHOULD in a standards
+track RFC where i do understand this). Any pointer ?
+
+I don't think that Dave Thaler is interested to make MHD finally an RFC after 17 years
+of hiatus, although now that he's not IAB maybe he has more time ;-) And the
+draft would definitely desere it.
+
+In any case, MHD-04 is informatative reference and i weakened the sentence
+referring to it to avoid IETF process mess followup:
+
+<t>It is recommended that multicast diagnostics will be performed
+   leveraging established operational practices such as documented in <xref target="MDH-04"/>. </t>
