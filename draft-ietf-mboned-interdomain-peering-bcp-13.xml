@@ -1702,7 +1702,7 @@ authorization mechanisms in network devices to establish filters for
 
 </section>
 
-<section  title="Peering encryption encryption" anchor="section-6.3">
+<section  title="Peering encryption" anchor="section-6.3">
 
 <t>Encryption at peering points for multicast delivery may be used per agreement
 between AD-1/AD-2.</t>
