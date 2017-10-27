@@ -1,28 +1,38 @@
 
-Dear Ben Campbell, Alissa Cooper, Mirja Kuehlewind, Kathleen Moriarty,
-     Alissa Cooper, Eric Rescorla, Adam Roach:
 
-This is in response of your thorough reviews of
+[The following text up to the individual reply comments is identical for 
+ the replies to all ballot comments. I originally wanted to coalesce the reply to
+ all positions into one email but the auto-generated header from datatracker
+ makes it sound as if per-submitter replied are required. So, here we go with some
+ repeated text followed by more individualized text:]
+
+Dear Reviewer,
+
+This is in response of your reviews of
     https://www.ietf.org/id/draft-ietf-mboned-interdomain-peering-bcp-11.txt
-
-This email coalesces replies to your discuss and comments in the drafts ballot:
+as entered in the ballot:
     https://datatracker.ietf.org/doc/draft-ietf-mboned-interdomain-peering-bcp/ballot/
 
-This email is also:
+A version of this email containing replies to all IESG feedback for -11 is also in: 
     https://raw.githubusercontent.com/toerless/peering-bcp/master/11-iesg-review-reply.txt
 
-Thank you so much for your thorough review.
+Thank you so much for your thorough review. In response to the IESG
+feedback, version -12 and -13 of the draft where posted which we hope 
+will resolve the open issues.
+make 2
 
-Version -12 of the draft was just a conversion from docx generated txt to XML,
-this introduced formatting changes (line wraps etc.) that rfcdiff can not ignore
-and that would obfuscate the actual text changes. 
+Version -12 of the draft was just a conversion from docx generated txt to XML (previous generations
+where not built from XML), this introduced formatting changes (line wraps etc.) that rfcdiff can not ignore
+and that would have obfuscated actual content changes. 
 
 Version -13 of the draft contains the text changes done in response to your
-comments and discusses. RFCdiff here:
+comments and discusses. The following RFC diff shows the content diffs
+vs. -11 without any formatting introduced changes:
 
-   http://tools.ietf.org/tools/rfcdiff/rfcdiff.pyht?url1=https://raw.githubusercontent.com/toerless/peering-bcp/master/draft-ietf-mboned-interdomain-peering-bcp-12.txt&url2=https://raw.githubusercontent.com/toerless/peering-bcp/master/draft-ietf-mboned-interdomain-peering-bcp-13.txt
-    
-   Beside the various spread fixups from comments, the mayor rewritten/new blocks are:
+   http://tools.ietf.org/tools/rfcdiff/rfcdiff.pyht?url1=https://tools.ietf.org/id/draft-ietf-mboned-interdomain-peering-bcp-12.txt&url2=https://tools.ietf.org/id/draft-ietf-mboned-interdomain-peering-bcp-13.txt
+
+In summary:
+   Beside the various smaller fixups from comments, the mayor rewritten/new blocks are:
 
    4.1.1 - bandwidth management (aka: congestion control section). 
            I didn't just want to put the magic CC sentence in but wanted to let
@@ -51,9 +61,6 @@ name after a "=====" line, this is where i am replying to each individual point.
 Cheers
     Toerless for the Authors
 
-P.S.: Just seing how there are still typos in -13, will fix those in next and hopefully
-final rev.
-
 ==========================================================================================
 Ben Campbell:
 
@@ -69,7 +76,8 @@ Modified to say "Network location" (of affected EUs).
 > 
 > - I support Alissa's and Kathleen's DISCUSS positions.
 
-TBD.
+Yes, see feedback to their positions.
+
 > 
 > - There seem to be quite a few implied assumptions about business models. I will call out some specifically, but I'm sure I didn't catch them all. These assumptions should either be removed or made explicit.
 
@@ -157,11 +165,13 @@ Done. See my comment to the same point raised by Alissa if you like.
 
 > -5: Can you define, or reference a definition for, "Looking-Glass style".
 
-TBD-PERCY: its not clear to me what you mean with looking glass style
-and what functionality you refer to with "router proxy" either. Can you elaborate,
-or propose text to explain that ?  I could guess or come up with some text
-i think make sense but not sure what you intended. Also what do you mean with
-extending mtrace/traceroute... ?
+Ok, that paragraph didn't quite make sense to me either. I think my
+co-authors where thinking about one specific implementation option, but
+it really does not matter how its done. I for once did this in the past
+just via radius controlled limited authentication profiles for TACACS accounts
+into routers... yada yada -> removed looking-glass style mentioning, but
+refined text to hightlt mtrace/traceroute more and discuss alternative
+of providing this diag via EU.
 
 > -6: Please include a discussion of threat models. When might one choose to encrypt or not encrypt? What risks exist if you don't encrypt?
 
@@ -251,11 +261,11 @@ Fixed to:
 > -4.2.3, example procedures for gateway selection:
 > The heavy use of passive voice in this section obscures the actors. (This is true to some degree throughout the document, but it seems more confusing here.)
 
-TBD-PERCY: Sorry, i am not a native english speaker, so i will refrain from
-trying to improve the english language quality of the document and refer
-that back to the native co-authors.
-
-Pls. let us know if this is blocking your approval.
+Ok. We couldn't find a co-author willing to do a fundamental overhaul
+of the text to better "activate"? the draft. Not being a native english
+speaker myself, i always welcome help to improve on my english, but
+i would prefer very explicit suggestions/proposed text, otherwise i may
+just be replacing one bad english sentence with another one.
 
 > -4.3.2, 2nd bullet: Please don't use "/" as shorthand for conjunctions.  (Pattern repeats throughout the rest of the draft.)
 
@@ -282,7 +292,7 @@ it clearer. Also the new section on privacy.
 It has been there since -00, and i can not think of any reason why it should be there,
 so i removed it.
 
-TBD-WG: send email to working group mailing list to re-check.
+Will also send email to working group mailing list to re-check.
 
 > (2) Section 4.4 says:
 > 
@@ -654,16 +664,16 @@ Thanks. Added.
 > 
 > I believe this statement makes [MDH-04] normative, as it is required to understand its contents to implement the recommendations in this BCP.
 
-Haha, interesting. This is my first BCP co-authoring, so its not clear to me
+Interesting. This is my first BCP co-authoring, so its not clear to me
 how references have to inherit state based on the way they are referred to in
 a BCP (as opposed to being use in conjunction with a MUST/SHOULD in a standards
 track RFC where i do understand this). Any pointer ?
 
-I don't think that Dave Thaler is interested to make MHD finally an RFC after 17 years
+I don't think that Dave Thaler is interested to make MDH finally an RFC after 17 years
 of hiatus, although now that he's not IAB maybe he has more time ;-) And the
-draft would definitely desere it.
+draft would definitely deserve it.
 
-In any case, MHD-04 is informatative reference and i weakened the sentence
+In any case, MDH-04 is informative reference and i weakened the sentence
 referring to it to avoid IETF process mess followup:
 
 <t>It is recommended that multicast diagnostics will be performed

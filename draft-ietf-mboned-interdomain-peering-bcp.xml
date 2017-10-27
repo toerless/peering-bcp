@@ -1,18 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
-<!ENTITY RFC2784 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2784.xml">
-<!ENTITY RFC3376 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.3376.xml">
-<!ENTITY RFC3810 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.3810.xml">
-<!ENTITY RFC4604 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.4604.xml">
-<!ENTITY RFC4609 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.4609.xml">
-<!ENTITY RFC4736 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.4736.xml">
-<!ENTITY RFC4760 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.4760.xml">
-<!ENTITY RFC4786 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.4786.xml">
-<!ENTITY RFC6347 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6347.xml">
-<!ENTITY RFC7450 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7450.xml">
-<!ENTITY RFC7761 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7761.xml">
-<!ENTITY I-D.ietf-mboned-mtrace-v2 SYSTEM "https://xml2rfc.ietf.org/public/rfc/bibxml3/reference.I-D.ietf-mboned-mtrace-v2.xml">
-]>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
 <rfc submissionType="IETF" docName="draft-ietf-mboned-interdomain-peering-bcp-13" category="bcp" ipr="trust200902"><?rfc compact="yes"?>
 	<?rfc text-list-symbols="ooo*+-"?>
 	<?rfc sortrefs="no"?>
@@ -21,7 +8,7 @@
 	<?rfc toc="yes"?>
 	<front>
 	<title abbrev="Multicast Across Inter-Domain Peering Points">Use of Multicast Across Inter-Domain Peering Points</title>
-	<author fullname="Percy S. Tarapore" initials="P.S." surname="Tarapore">
+	<author role="editor" fullname="Percy S. Tarapore" initials="P.S." surname="Tarapore">
 	<organization>AT&amp;T</organization>
 	<address><phone>1-732-420-4172</phone><email>tarapore@att.com</email>
 	</address>
@@ -39,9 +26,9 @@
 	</address>
 	</author>
 
-	<author fullname="Toerless Eckert" initials="T." surname="Eckert">
-	<organization abbrev="Futurewei Technologies">Futurewei Technologies Inc.</organization>
-	<address><email>tte@cs.fau.de</email>
+	<author role="editor" fullname="Toerless Eckert" initials="T." surname="Eckert">
+	<organization abbrev="Huawei">Futurewei Technologies Inc.</organization>
+	<address><email>tte+ietf@cs.fau.de</email>
 	</address>
 	</author>
 
@@ -94,11 +81,11 @@
 <t>The scope and assumptions for this document are as follows:
 <list style="symbols">
 
-<t>Administrative Domain 1 (AD-1) sources content to one or more End Users (EUs) in one or more AD-2. AD-1 and AD-2 want to use IP multicast to allow handling of large and growing EUs population by scaling up of the network and minimizing the amount of traffic that needs to be send.
+<t>Administrative Domain 1 (AD-1) sources content to one or more End Users (EUs) in one or more Administrative Domain 2 (AD-2). AD-1 and AD-2 want to use IP multicast to allow supporting large and growing EU populations with minimum amount of duplicated traffic to send across network links.
 
 <list style="symbols">
 
-    <t>This document does not detail the case where EUs are originating content. It is recommended to use some method (outside the scope of this document) by which the content from EU is transmitted to the application in AD-1 that this document refers to as the multicast source. From that point on, the descriptions in this document apply, except that they are not complete because they do not cover the transport or operational aspects of the leg from EU to AD-1.</t>
+    <t>This document does not detail the case where EUs are originating content. To support that additional service, it is recommended to use some method (outside the scope of this document) by which the content from EUs is transmitted to the application in AD-1 that this document refers to as the multicast source and let it send out the traffic as IP multicast. From that point on, the descriptions in this document apply, except that they are not complete because they do not cover the transport or operational aspects of the leg from EU to AD-1.</t>
 
    <t>This document does not detail the case where AD-1 and AD-2 are
    not directly connected to each other but only via one or more AD-3
@@ -196,7 +183,7 @@
 	</t>
 
 	<t>A service provider controls one or more application sources in
-        AD-1 which will send multicast IP packets for one or more
+        AD-1 which will send multicast IP packets via one or more
         (S,G)s (multicast traffic flows,
         see <xref target="section-4.2.1"/> if you are unfamiliar with IP multicast). 
 
@@ -226,9 +213,9 @@
    described in this document are based on this assumption.</t>
 
 	<t>
-   Note that domain 2 may be an independent network domain (e.g., Tier
+   Note that domain 2 may be an independent network domain (e.g.: Tier
    1 network operator domain). Alternately, domain 2 could also be an
-   Enterprise network domain operated by a single customer. The peering
+   Enterprise network domain operated by a single customer of AD-1. The peering
    point architecture and requirements may have some unique aspects
    associated with the Enterprise case.</t>
 
@@ -390,10 +377,8 @@ I2 = AD-2 and EU Multicast Connection
 
 <t>Normally, this approach is choosen if the uBR physcially connected to the
    peering link can or should not be enabled for IP multicast. This approach
-   can also be choosen if BR and uBR are the same devices, but the
-   peering link is a broadcast domain (IXP) The BR in generaThis approach is uAs shown in <xref target="gre-pic"/>, BR does not have to be the same
-router as the unicast Border Router (uBR) connecting to the actual
-peering point.</t>
+   may also be beneficial if BR and uBR are the same device, but the
+   peering link is a broadcast domain (IXP), see <xref target="broadcast-peering"/>.</t>
 
 <t> The routing configuration is
    basically unchanged: Instead of BGP (SAFI2) across the native IP
@@ -412,11 +397,11 @@ peering point.</t>
     
     <t>Ability to support partial and/or incremental IP multicast deployments in AD-
     1 and/or AD-2: Only the path(s) between AS/BR (AD-1) and BR/EU (AD-2) need to
-    be multicast enabled. The uBRs (and paths between BR and uBR) may not support IP multicast
-    or enabling it could be seen as operationally risky on that important nodes whereas dedicated
-    BR nodes for IP multicast are more acceptable. BR can be located such that 
+    be multicast enabled. The uBRs may not support IP multicast
+    or enabling it could be seen as operationally risky on that important edge node whereas dedicated
+    BR nodes for IP multicast may be more acceptable at least initially. BR can also be located such that 
     only parts of the domain may need to support native IP multicast (e.g.: only the
-    core in AD-1 but not access).</t>
+    core in AD-1 but not edge networks towards uBR).</t>
     
     <t>GRE is an existing technology and is relatively simple to implement.</t>
 
@@ -491,8 +476,8 @@ AD = Administrative Domain (Independent Autonomous System)
 AS = Application (e.g., Content) Multicast Source
 AR = AMT Relay
 AG = AMT Gateway
-uBR = unicast Border Router - not necessarily multicast enabled
-      may be the same router as BR
+uBR = unicast Border Router - not multicast enabled
+      otherwise AR=uBR (AD-1), uBR=AG (AD-2)
 I1 = AMT Interconnection between AD-1 and AD-2
 I2 = AD-2 and EU Multicast Connection
 ]]></artwork>
@@ -572,7 +557,8 @@ I2 = AD-2 and EU Multicast Connection
     -------------------              -------------------
 
 AS = Application Multicast Source
-uBR = unicast Border Router - not multicast enabled
+uBR = unicast Border Router - not multicast enabled,
+      otherwise AR = uBR (in AD-1).
 AR = AMT Relay
 EU/G = Gateway client embedded in EU device
 I2 = AMT Tunnel Connecting EU/G to AR in AD-1 through Non-Multicast
@@ -659,6 +645,7 @@ application through AD-2. The total number of AMT tunnels would be
     -------------------              -------------------
 
 uBR = unicast Border Router - not multicast enabled
+      otherwise AR=uBR (AD-1) or ubr=AGAR1 (AD-2)
 AS = Application Source
 AR = AMT Relay in AD-1
 AGAR1 = AMT Gateway/Relay node in AD-2 across Peering Point
@@ -800,11 +787,11 @@ I3 = AMT Tunnel Connecting EU/G to AR in AGAR2
 	</list>
 	</t>
 
-  <section title="Bandwidth management" anchor="section-4.1.1">
+  <section title="Bandwidth Management" anchor="section-4.1.1">
 
-      <t>(Like Unicast traffic,) IP multicast traffic carried across non-controlled
+      <t>Like IP unicast traffic, IP multicast traffic carried across non-controlled
       networks must comply to Congestion Control Principles as described in
-      <xref target="BCP41"/> and explained in detail for multicast in <xref target="BCP145"/>.</t>
+      <xref target="BCP41"/> and explained in detail for UDP IP multicast in <xref target="BCP145"/>.</t>
       
       <t>Non-controlled networks (such as the Internet) are those where there is no policy for
       managing bandwidth other than best effort with fair share of bandwidth under congestion.
@@ -813,37 +800,47 @@ I3 = AMT Tunnel Connecting EU/G to AR in AGAR2
       ("rate adaptive").</t>
       
       <t>In many instances, multicast content delivery evolves from intra-domain
-      deployments where it is handled as a controlled network service,
-      such as giving it a reserved amount of bandwidth and admitting only so
-      much multicast traffic that congestion never occurs, therefore the
-      congestion control issue should be given specific attention.</t>
+      deployments where it is handled as a controlled network service and of
+      not complyng to congestion control principles. It was
+      given a reserved amount of bandwidth and admitted to the network so
+      that congestion never occurs. Therefore the congestion control issue
+      should be given specific attention when evolving to an interdomain peering
+      deployment.</t>
 
-      <t>In the case where end-to-end IP multicast traffic only passes across the
+      <t>In the case where end-to-end IP multicast traffic passes across the
       network of two ADs (and their subsidiaries/customers), both ADs must agree
       on a consistent traffic management policy. If for example AD-1 sources
-      inelastic (non rate adaptive) IP multicast traffic and AD-2 carries it
+      non congestion aware IP multicast traffic and AD-2 carries it
       as best effort traffic across links shared with other Internet traffic and
       subject to congestion, this will not work: Under congestion, some amount
-      of IP multicast will be dropped, rendering the remaining IP multicast packets
-      often as undecodeable garbage clogging up the network in AD-2 (because the sender
-      does not rate adapt), competing TCP flows will not get their fair share under
+      of that traffic will be dropped, rendering the remaining packets
+      often as undecodeable garbage clogging up the network in AD-2 and because this
+      is not congestion aware, the loss does not reduce this rate. 
+      Competing traffic will not get their fair share under
       congestion, and EUs will be frusted by extremely bad quality of both their
-      IP multicast and TCP traffic. Note that this is not IP multicast specific,
-      it would equally happen if AD-1 would send non-rate adaptive unicast, e.g.:
-      video-on-demand traffic. Because rate adaption in unicast video is commonplace,
-      it is very unlikely for this to happen though in reality.</t>
+      IP multicast and other (e.g.: TCP) traffic. Note that this is not an IP multicast
+      technology issue, but solely a transport/application layer issue:
+      The problem would equally happen if AD-1 would send non-rate adaptive unicast traffic,,
+      for example legacy IPTV video-on-demand traffic which typically is also non
+      congestion aware. Because rate adaption in IP unicast video is commonplace today
+      because of ABR (Adaptive Bitrate Video), it is very unlikely for this to happen though
+      in reality with IP unicast.</t>
 
       <t>While the rules for traffic management apply whether or not IP multicast
-      is (AMT or GRE) tunneled or not, the one property of tunnels that can make them
+      is tunneled or not, the one feature that can make AMT tunnels
       more difficult is the unpredictability of bandwidth requirements across
-      underlying links: When using native IP multicast or GRE tunnels, the amount
+      underlying links because of the way they can be used:
+
+      With native IP multicast or GRE tunnels, the amount
       of bandwidth depends on the amount of content, not the number of EUs -
-      and is therefore easier to plan for. AMT tunnels to EUs introduce in the vicinity
-      of the AMT relay the problem that the maximum number of active EUs times maximum
-      likely amount of content per EU AMT-tunnel need to be asumed if the IP multicast
-      traffic is not rate adaptive. Therefore, it is not only necessary to make
-      multicast rate adaptive across uncontrolled network but also when using
-      AMT to replicate to EUs even inside controlled networks.</t>
+      and is therefore easier to plan for. AMT tunnels terminating in EU/G on the other
+      hand scale with the number of EUs. In the vicinity of the AMT relay they can
+      introduce very large amount of replicated traffic and it is not always feasible
+      to provision enough bandwidth for all possible EU to get the highest quality for
+      all their content during peak utilization in such setups - unless the AMT
+      relays are very close to the EU edge. Therefore it is also recommended
+      to use IP multicast rate adaptation even inside controlled networks when using
+      AMT tunnels directly to EU/G.</t>
 
       <t>Note that rate-adaptive IP multicast traffic in general does not mean that the
       sender is reducing the bitrate, but rather that the EUs that experience congestion
@@ -857,11 +854,11 @@ I3 = AMT Tunnel Connecting EU/G to AR in AGAR2
       in rate-adaptive also the congestion situation causes state change.</t>
 
       <t>Even though not fully specified in this document, peerings that rely on
-      GRE/AMT tunnels may be across one or more "transit" ADs instead of an exclusive
+      GRE/AMT tunnels may be across one or more transit ADs instead of an exclusive
       (non-shared, L1/L2) path. Unless those transit
       ADs are explicitly contracted to provide other than "best effort" transit
       for the tunneled traffic, the IP multicast traffic tunneled must be rate adaptive
-      to not violate BCP41 across those "transit" ADs.</t>
+      to not violate BCP41 across those transit ADs.</t>
 
   </section>
 
@@ -995,7 +992,7 @@ I3 = AMT Tunnel Connecting EU/G to AR in AGAR2
 
 <t hangText="AMT Gateway (GW):"> The Gateway will reside on an End-Point - this
         could be any type of IP host such as a Personal Computer (PC), mobile phone,
-        Set Top Box (STB) or refrigerator. The AMT
+        Set Top Box (STB) or appliances.  The AMT
         Gateway receives join and leave requests from the Application
         via an Application Programming Interface (API). In this manner,
         the Gateway allows the End-Point to conduct itself as a true
@@ -1129,7 +1126,7 @@ in EUs behind AD-2b caused by AD-1a will cause a lot of responsiblity
 and troubleshooting issues.</t>
 
 <t>In face of this technical issues, we describe the following options how IP multicast
-can be carried across a broadcast peering point LANs:</t>
+can be carried across broadcast peering point LANs:</t>
 
 <t><list style="numbers">
 
@@ -1146,16 +1143,15 @@ downstream BRs can still disrupt the delivery of IP multicast from the
 upstream BR to other downstream BRs, therefore strict rules must be
 follow to prohibit that case. The downstream BRs must ensure that
 they will always consider only the upstream BR as a source for
-multicast traffic: e.g.: no BGP SAFI-2 peerings amongst each other,
-so that only the upstream BR is the only possible next-hop reachable
-across this LAN.</t>
+multicast traffic: e.g.: no BGP SAFI-2 peerings between the downstream ADs
+across the peering point LAN, so that only the upstream BR is the only possible next-hop reachable
+across this LAN. And routing policies configured to avoid fall back to the use of SAFI-1 (unicast) routes for IP multicast if unicast BGP peering is not limited in the same way.</t>
 
 <t>The LAN has multiple upstreams, but they are federated and
 agree on a consistent policy for IP multicast traffic across the LAN.
 One policy is that each possible source is only announced by one upstream
-BR. Another policy is that sources are redundantly announced, and
-therefore redundancy is provided for them, but the upstream domains
-also provide mutual operational insight to help troubleshooting
+BR. Another policy is that sources are redundantly announced (problematic case mentioned in above example), 
+but the upstream domains also provide mutual operational insight to help troubleshooting
 (outside the scope of this document).</t>
 
 </list></t>
@@ -1268,17 +1264,9 @@ also provide mutual operational insight to help troubleshooting
 	</t>
 
 </section>
-<section title="Application Accounting Guidelines" anchor="section-4.3.2">
 
-<t>
-For network transport diagnostics, AD-1 and AD-2 should have mechanisms in place
- to ensure proper accounting for the volume of bytes delivered through the peering
-point and separately the number of bytes delivered to EUs.</t>
+<section title="Interdomain Authentication Guidelines" anchor="section-4.3.2">
 
-<t>Application accounting needs to be handled differently in the application
-because the source side does not directly deliver packets to individual
-receivers. Instead, this needs to be signalled back by the receiver to
-the source.</t>
 
 	<t>
    All interactions between pairs of AD's can be discovered and/or be
@@ -1502,6 +1490,21 @@ the issue, it will interact with AD-2 using the aforementioned guidelines.</t>
    provisioning alternate delivery mechanisms via unicast means.</t>
 
 	</section>
+
+<section title="Application Accounting Guidelines" anchor="section-4.6">
+
+<t>Application level accounting needs to be handled differently in the application
+than in IP unicast because the source side does not directly deliver packets to individual
+receivers. Instead, this needs to be signalled back by the receiver to
+the source.</t>
+
+<t>
+For network transport diagnostics, AD-1 and AD-2 should have mechanisms in place
+ to ensure proper accounting for the volume of bytes delivered through the peering
+point and separately the number of bytes delivered to EUs.</t>
+
+	</section>
+
 	</section>
 
 	<section title="Troubleshooting and Diagnostics" anchor="section-5"><t>
@@ -1523,12 +1526,17 @@ the issue, it will interact with AD-2 using the aforementioned guidelines.</t>
 
 	<t>
    Service providers may also wish to allow limited read-only
-   administrative access to their routers via a looking-glass style
-   router proxy to facilitate the debugging of multicast control state
-   and peering status. Software implementations for this purpose are
-   readily available <xref target="Traceroute"/>, <xref target="I-D.ietf-mboned-mtrace-v2"/> and can be
-   easily extended to provide access to commonly-used multicast
-   troubleshooting commands in a secure manner.</t>
+   administrative access to their routers to their AD peers for troubleshooting.
+   Of specific interest are access to active troubleshooting tools especially
+   <xref target="Traceroute"/> and <xref target="I-D.ietf-mboned-mtrace-v2"/>.</t>
+
+
+   <t>Another option is to include this functionality into the IP multicast receiver application   
+   on the EU device and allow for these diagnostics to be remotely used by support operations.
+   Note though that AMT does not allow to pass traceroute or mtrace requests, therefore troubleshooting
+   in the presence of AMT does not work as well end-to-end as it can with native
+   (or even GRE encapsulated) IP multicast, especially wrt. to traceroute and mtrace.
+   Instead, troubleshooting directly on the actual network devices is then more likely necessary.</t>
 
 	<t>
    The specifics of the notification and alerts are beyond the scope of
@@ -1561,47 +1569,49 @@ DoS (Denial of Service) attacks.</t>
 
 <t>SSM IP multicast is self protecting against attacks from illicit sources.
 Their traffic will not be forwarded beyond the first hop router because
-that would require (S,G) memership reports from receiver. <xref target="BCP38"/>
-style protection against spoofed source traffic is built into PIM-SM/PIM-SSM. 
+that would require (S,G) memership reports from receiver.
 Traffic from sources will only be forwarded from the valid
-source because RPF ("Reverse Path Forwarding") is part of the protocols.</t>
+source because RPF ("Reverse Path Forwarding") is part of the protocols.
+ One can say that <xref target="BCP38"/>
+style protection against spoofed source traffic is therefore built into PIM-SM/PIM-SSM. 
+</t>
 
-<t>Receivers can attack SSM IP multicast by originating such invalid (S,G)
-membership reports. This can result in a DoS attack against state (creation
-of many (S,G) states that create control plane load or even inhibit later
+<t>Receivers can attack SSM IP multicast by originating such (S,G)
+membership reports. This can result in a DoS attack against state through the creation
+of a large number of (S,G) states that create high control plane load or even inhibit later
 creation of valid (S,G). In conjunction with collaborating illicit sources
 it can also result in illicit sources traffic being forwarded.</t>
 
-<t>Today, these type of attacks are usually can typically be mitigated only
+<t>Today, these type of attacks are usually mitigated 
 by explicitly defining the set of permissible (S,G) on e.g.: the last
-hop routers in AD-2  replicating to EU (for example via (S,G) Access Control
-Lists applied to IGMP/MLD membership state creation). Each AD is expected
-to prohibit (S,G) state creation for invalid source inside their own
+hop routers in replicating IP multicast to EUs; For example via (S,G) Access Control
+Lists applied to IGMP/MLD membership state creation. Each AD is expected
+to prohibit (S,G) state creation for invalid sources inside their own
 AD.</t>
 
-<t>In the peering case, AD-2 is not natively aware of the set of valid
+<t>In the peering case, AD-2 is without further information not aware of the set of valid
 (S,G) from AD-1, so this set needs to be communicated via operational
-procedures from AD-1 to AD-2. Future work could signal this information
+procedures from AD-1 to AD-2 to provide protection against this type of DoS attacks.
+Future work could signal this information
 in an automated way: BGP extensions, DNS Resource Records or backend automation
-between AD-1 and AD-2 (this last one is the short term most viable solution
-because it does not require router software extensions like the other two). 
+between AD-1 and AD-2. Backend automation is the short term most viable solution
+because it does not require router software extensions like the other two. 
 Observation of traffic flowing via (S,G) state could also be used
 to automate recognition of invalid (S,G) state created by receivers in the
 absence of explicit information from AD-1. </t>
 
-<t>The second DoS attack case is the one where receivers create too
+<t>The second DoS attack through (S,G) membership reports is when receivers create too
 much valid (S,G) state to attack bandwidth available to other EU.
 Consider the uplink into a last-hop-router connecting to 100 EU. If
-one EU joins to more multicast content ) than what fits into this
-uplink, then this would impact also the quality of the same content
-for the other 99 EU. If traffic is inelasitc, the effects are even
+one EU joins to more multicast content than what fits into this
+link, then this would impact also the quality of the same content
+for the other 99 EU. If traffic is not rate adaptive, the effects are even
 worse.</t>
 
 <t>The mitigation is the same as what is often employed
-for unicast: Per EU policing of the total amount of traffic to
-achieve fair use of bandwidth. Unlike
-unicast though, this can not be done anywhere along the path (e.g.:
-on an arbitrary bottleneck link), but has to happen at the point of
+for unicast: Policing of per-EU total amont of traffic. 
+Unlike unicast though, this can not be done anywhere along the path (e.g.:
+on an arbitrary bottleneck link), but it has to happen at the point of
 last replication to the different EU. Simple solutions such as
 limiting the maximum number of joined (S,G) per EU are readily
 available, solutions that consider bandwidth consumed exist as
@@ -1611,15 +1621,23 @@ the peering-link itself is not big enough to carry all possible
 content from AD-1 or in case 3.4 where the AMT relay in AD-1 is that
 last replication point.</t>
 
+<t>Limiting the amount of (S,G) state per EU is also a good
+first measure to prohibit too much undesired "empty" state to
+be built (state not carrying traffic), but it would not suffice
+in case of DDoS attack - viruses that impact a large number of
+EU devices.</t>
+
 </section>
 
-<section  title="Content security" anchor="section-6.2">
+<section  title="Content Security" anchor="section-6.2">
 
-<t>Content confidentiality, DRM and authentication and
-authorization are fully optional based on the content delivered. 
+<t>Content confidentiality, DRM (Digital Restrictions Management), authentication and
+authorization are optional based on the content delivered. 
 For content that is "FTA" (Free To Air), the following
 considerations can be ignored and content can be sent unencrypted and
-without EU authentication and authorization.</t>
+without EU authentication and authorization. Note though that the
+mechanisms described here may also be desireable by the application source 
+to better track users even if the content itself would not require it.</t>
 
 <t>For interdomain content, there are at least two models for content
 confidentiality, DRM and end-user authentication and authorization:</t>
@@ -1627,12 +1645,12 @@ confidentiality, DRM and end-user authentication and authorization:</t>
 <t>In the classical (IP)TV model, responsibility is per-domain and content
 is and can be passed on unencrypted. AD-1 delivers content to AD-2,
 AD-2 can further process the content including features like 
-ad-insertion and is the sole point of contact regarding the contact
+ad-insertion and AD-2 is the sole point of contact regarding the contact
 for its EUs. In this document, we do not consider this case because
 it typically involves higher than network layer service aspects operated
-by AD-2 and this document focusses on the sole network layer AD-1/AD-2
-peering case. Nevertheless, this model can be derived through additional
-work from what is describe here.</t>
+by AD-2 and this document focusses on the network layer AD-1/AD-2
+peering case, but not the application layer peering case. Nevertheless,
+ this model can be derived through additional work from what is describe here.</t>
 
 <t>The other case is the one in which content confidentiality, DRM,
 end-user authentication and authorization are end-to-end:
@@ -1645,9 +1663,9 @@ in AD-1/AD-2 and across the peering.</t>
 <t>End-to-end encryption enables end-to-end EU authentication and
 authorization: The EU may be able to IGMP/MLD join and receive the content,
 but it can only decrypt it when it receives the decryption key from the content source
-in AD-1. This is the authorization. Keeping that key to itself and
+in AD-1. The key is the authorization. Keeping that key to itself and
 prohibiting playout of the decrypted content to non-copy-protected
-interfaces are typical Digital Restrictions Mangement (DRM) features
+interfaces are typical DRM features
 in that receiver application or EU device operating system.</t>
 
 <t>End-to-end ecnryption is continuously attacked. Keys may be subject
@@ -1660,23 +1678,24 @@ from compromised authenticated EU and sharing with unauthenticated
 EU is not sufficient. It is also necessary for those unauthenticated
 EUs to get a streaming copy of the content itself. In unicast
 streaming, they can not get such a copy from the content source
-(because they can not authenticat) and because of asymmetric
-bandwidths, it is often impossible to get the content from compromised EUs.
-EUs behind classical 16 Mbps down, 1 Mbps up ADSL links are the best example.
-Of course, with increasing broadband access speeds unicast peer-to-peer copying
-of content becomes easier, but it will likely can be easily detectable by
-its traffic pattern by the ADs.</t>
+(because they can not authenticate) and because of asymmetric
+bandwidths, it is often impossible to get the content from compromised EUs to large
+number of unauthenticated EUs. EUs behind classical 16 Mbps down, 1 Mbps up ADSL links are
+the best example.  With increasing broadband access speeds unicast peer-to-peer copying
+of content becomes easier, but it likely will always be easily detectable by the ADs
+because of its traffic patterns and volume.</t>
 
 <t>When IP multicast is being used without additionals security, AD-2
 is not aware which EU is authenticated for which content. Any
 unauthenticated EU in AD-2 could therefore get a copy of the encrypted
-content without suspicion and either live-deode it in the presence of
+content without suspicion by AD-2 or AD-1 and either live-deode it in the presence of
 compromised authenticated EU and key sharing, or later decrypt it in the
-presence of federated key cracking.</t>
+presence of federated brute force key cracking.</t>
 
 <t>To mitigate this issue, the last replication point that is
 creating (S,G) copies to EUs would need to permit those copies only after
-authentication of EUs.</t>
+authentication of EUs. This would establish the same authenticated EU only
+copy deliver thast is used in unicast.</t>
 
 <t>Schemes for per EU IP multicast authentication/authorization (and
 in result non-delivery/copying of per-content IP multicast traffic)
@@ -1684,11 +1703,11 @@ have been built in the past and are deployed in service providers for
 intradomain IPTV services, but no standard exist for this. For example,
 there is no standardized radius attribute for authenticating the IGMP/MLD
 filter set, but implementations of this exist. The authors
-are specifically also ot aware of schemes where the same authentication
+are specifically also not aware of schemes where the same authentication
 credentials used to get the encryption key from the content source
 could also be used to authenticate and authorize the network layer IP
-multicast replication for it. Such schemes would technically not difficult 
-to build though and would avoid creating a separate network forwarding
+multicast replication for the content. Such schemes are technically not difficult to build 
+and would avoid creating and maintaining a separate network forwarding
 authentication/authorization scheme decoupled from the end-to-end
 authentication/authorization system of the application.</t>
 
@@ -1702,7 +1721,7 @@ authorization mechanisms in network devices to establish filters for
 
 </section>
 
-<section  title="Peering encryption" anchor="section-6.3">
+<section  title="Peering Encryption" anchor="section-6.3">
 
 <t>Encryption at peering points for multicast delivery may be used per agreement
 between AD-1/AD-2.</t>
@@ -1712,14 +1731,14 @@ between AD-1/AD-2.</t>
 defined high bars against unauthenticated copying of even the end-to-end encrypted
 content, and in this case AD-1/AD-2 can agree on additional transport encryption across
 that peering link. In the case of a broadcast peering connection (e.g.: IXP),
-transport encryption is the easiest way to prohibit unauthenticated copies by
+transport encryption is also the easiest way to prohibit unauthenticated copies by
 other ADs on the same peering point.</t>
 
 <t>If peering is across a tunnel going across intermittent transit ADs
 (not discused in detail in this document), then encryption of that tunnel
-traffic is recommended. It not only prohibit possible "leakage"
-of content, but also to protect the the information what content is
-being consumed in AD-2.</t>
+traffic is recommended. It not only prohibits possible "leakage"
+of content, but also to protects the the information what content is
+being consumed in AD-2 (aggregated privacy protection).</t>
 
 <t>See the following subsection for reasons why the peering point may
 also need to be encrypted for operational reasons.</t>
@@ -1734,35 +1753,35 @@ discusses exhange of program information. All these operational pieces of data
 should by default be exchanged via authenticated and encrypted peer-to-peer communication
 protocols between AD-1 and AD-2 so that only the intended recipient in the peers
 AD have access to it. Even exposure of the least sensitive information to
-third parties open up attack vectors. Putting for example valid (S,G) information
+third parties opens up attack vectors. Putting for example valid (S,G) information
 into DNS (as opposed to passing it via secured channels from AD-1 to AD-2)
  to allow easier filtering of invalid (S,G) would also allow attackers
 to easier identify valid (S,G) and change their attack vector.</t>
 
-<t>From the perspective of the ADs, security is is most critical for the log
+<t>From the perspective of the ADs, security is most critical for the log
 information as it provides operational insight into the originating AD, but
 it also contains sensitive user data:</t>
 
 <t>Sensitive user data exported from AD-2 to AD-1 as part of logs could be as much as 
 the equivalent of 5-tuple unicast traffic flow accounting (but not more, e.g.: no
-application level information). A mentioned in <xref target="privacy"/>,
+application level information). As mentioned in <xref target="privacy"/>,
 in unicast, AD-1 could capture these traffic statistics itself because this
 is all about AD-1 originated traffic flows to EU receivers in AD-2, and operationally
-passing it from AD-2 to AD-1 is necessary because of the replication happening
+passing it from AD-2 to AD-1 may be necessary when IP multicast is used because of the replication happening
 in AD-2.</t>
 
 <t>Nevertheless, passing such traffic statistics inside AD-1 from a capturing router
 to a backend system is likely less subject to third party attacks then passing it interdomain
-from AD-2 to AD-1, so more diligence need to be applied to secure it.</t>
+from AD-2 to AD-1, so more diligence needs to be applied to secure it.</t>
 
-<t>If any protocols used for information exchange are not easily secured at transport layer or
+<t>If any protocols used for the operational information exchange are not easily secured at transport layer or
 higher (because of the use of legacy products or protocols in the network), then AD-1 and AD-2 can also
 consider to ensure that all operational data exchange goes across the
 same peering point as the traffic and use network layer encryption of the
 peering point as discussed in before to protect it.</t>
 
 <t>
-End-to-end Authentication and authorization of EU may involve some kind of token authentication and
+End-to-end authentication and authorization of EU may involve some kind of token authentication and
 is done at the application layer independently of the two AD's. If
 there are problems related to failure of token authentication when
 end-users are supported by AD-2, then some means of validating
@@ -1791,7 +1810,7 @@ document aims to maintain privacy:</t>
 relationship with the end-user. The privacy considerations between the EU and AD-1
 are therefore in general (exception see below) the same as if no IP multicast was used,
  especially because for any privacy conscious content, end-to-end encryption can
-and should be used (and is well established technology because of DRM - Digital Restrictions Management, see <xref target="section-6"/>).</t>
+and should be used.</t>
 
 <t>Interdomain multicast transport service related information is provided by the
 AD-2 operators to AD-1. AD-2 is not required to gain additional insight into the user
@@ -1836,11 +1855,10 @@ e.g.: dTLS <xref target="RFC6347"/> encryption between AMT relay and EU.</t>
 
 <t>Note that IP multicast by nature would permit the EU privacy against the
 countent source operator because unlike unicast, the content source does not
-natively know which EU is cosuming which content: In all cases where AD-2 provides
+natively know which EU is consuming which content: In all cases where AD-2 provides
 replication, only AD-2 does know this directly. This document does not attempt
 to describe a model that does maintain such level of privacy against the content
 source but only against exposure to intermediate parties, in this case AD-2.</t>
-
 
 </section>
 
@@ -1943,14 +1961,17 @@ source but only against exposure to intermediate parties, in this case AD-2.</t>
 
 	<back>
 	<references title="Normative References">
-	&RFC2784;
-	&RFC3376;
-	&RFC3810;
-	&RFC4760;
-	&RFC4604;
-	&RFC4609;
-	&RFC7450;
-	&RFC7761;
+
+
+      <?rfc include='reference.RFC.2784'?>
+      <?rfc include='reference.RFC.3376'?>
+      <?rfc include='reference.RFC.3810'?>
+      <?rfc include='reference.RFC.4760'?>
+      <?rfc include='reference.RFC.4604'?>
+      <?rfc include='reference.RFC.4609'?>
+      <?rfc include='reference.RFC.7450'?>
+      <?rfc include='reference.RFC.7761'?>
+
 
 <reference  anchor='BCP38' target='https://www.rfc-editor.org/info/rfc2827'>
 <front>
@@ -1995,8 +2016,8 @@ source but only against exposure to intermediate parties, in this case AD-2.</t>
 	</references>
 
 	<references title="Informative References">
-	&RFC4786;
-	&RFC6347;
+      <?rfc include='reference.RFC.4786'?>
+      <?rfc include='reference.RFC.6347'?>
 
 
 	<reference anchor="INF_ATIS_10"><front>
@@ -2028,7 +2049,7 @@ source but only against exposure to intermediate parties, in this case AD-2.</t>
 	</front>
 
 	</reference>
-	&I-D.ietf-mboned-mtrace-v2;
+  <?rfc include="reference.I-D.ietf-mboned-mtrace-v2"?>
 	</references>
 
 	</back>

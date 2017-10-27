@@ -2,13 +2,13 @@
 
 
 
-MBONED Working Group                                         P. Tarapore
+MBONED Working Group                                    P. Tarapore, Ed.
 Internet-Draft                                                  R. Sayko
 Intended status: Best Current Practice                              AT&T
 Expires: April 30, 2018                                      G. Shepherd
                                                                    Cisco
-                                                               T. Eckert
-                                                  Futurewei Technologies
+                                                          T. Eckert, Ed.
+                                                                  Huawei
                                                              R. Krishnan
                                                           SupportVectors
                                                         October 27, 2017
@@ -71,41 +71,41 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
    2.  Overview of Inter-domain Multicast Application Transport  . .   5
    3.  Inter-domain Peering Point Requirements for Multicast . . . .   6
-     3.1.  Native Multicast  . . . . . . . . . . . . . . . . . . . .   6
+     3.1.  Native Multicast  . . . . . . . . . . . . . . . . . . . .   7
      3.2.  Peering Point Enabled with GRE Tunnel . . . . . . . . . .   8
      3.3.  Peering Point Enabled with an AMT - Both Domains
            Multicast Enabled . . . . . . . . . . . . . . . . . . . .  10
      3.4.  Peering Point Enabled with an AMT - AD-2 Not Multicast
-           Enabled . . . . . . . . . . . . . . . . . . . . . . . . .  11
+           Enabled . . . . . . . . . . . . . . . . . . . . . . . . .  12
      3.5.  AD-2 Not Multicast Enabled - Multiple AMT Tunnels Through
-           AD-2  . . . . . . . . . . . . . . . . . . . . . . . . . .  13
-   4.  Functional Guidelines . . . . . . . . . . . . . . . . . . . .  15
+           AD-2  . . . . . . . . . . . . . . . . . . . . . . . . . .  14
+   4.  Functional Guidelines . . . . . . . . . . . . . . . . . . . .  16
      4.1.  Network Interconnection Transport Guidelines  . . . . . .  16
-       4.1.1.  Bandwidth management  . . . . . . . . . . . . . . . .  16
+       4.1.1.  Bandwidth Management  . . . . . . . . . . . . . . . .  16
      4.2.  Routing Aspects and Related Guidelines  . . . . . . . . .  18
-       4.2.1.  Native Multicast Routing Aspects  . . . . . . . . . .  18
+       4.2.1.  Native Multicast Routing Aspects  . . . . . . . . . .  19
        4.2.2.  GRE Tunnel over Interconnecting Peering Point . . . .  19
-       4.2.3.  Routing Aspects with AMT Tunnels  . . . . . . . . . .  19
+       4.2.3.  Routing Aspects with AMT Tunnels  . . . . . . . . . .  20
        4.2.4.  Public Peering Routing Aspects  . . . . . . . . . . .  22
      4.3.  Back Office Functions - Provisioning and Logging
            Guidelines  . . . . . . . . . . . . . . . . . . . . . . .  23
-       4.3.1.  Provisioning Guidelines . . . . . . . . . . . . . . .  23
-       4.3.2.  Application Accounting Guidelines . . . . . . . . . .  25
-       4.3.3.  Log Management Guidelines . . . . . . . . . . . . . .  25
+       4.3.1.  Provisioning Guidelines . . . . . . . . . . . . . . .  24
+       4.3.2.  Interdomain Authentication Guidelines . . . . . . . .  25
+       4.3.3.  Log Management Guidelines . . . . . . . . . . . . . .  26
      4.4.  Operations - Service Performance and Monitoring
            Guidelines  . . . . . . . . . . . . . . . . . . . . . . .  27
      4.5.  Client Reliability Models/Service Assurance Guidelines  .  29
+     4.6.  Application Accounting Guidelines . . . . . . . . . . . .  29
    5.  Troubleshooting and Diagnostics . . . . . . . . . . . . . . .  29
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .  30
      6.1.  DoS attacks (against state and bandwidth) . . . . . . . .  30
-     6.2.  Content security  . . . . . . . . . . . . . . . . . . . .  31
-     6.3.  Peering encryption  . . . . . . . . . . . . . . . . . . .  33
+     6.2.  Content Security  . . . . . . . . . . . . . . . . . . . .  32
+     6.3.  Peering Encryption  . . . . . . . . . . . . . . . . . . .  34
      6.4.  Operational Aspects . . . . . . . . . . . . . . . . . . .  34
    7.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  35
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  36
-   9.  Acknowledgments . . . . . . . . . . . . . . . . . . . . . . .  36
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  37
+   9.  Acknowledgments . . . . . . . . . . . . . . . . . . . . . . .  37
    10. Change log [RFC Editor: Please remove]  . . . . . . . . . . .  37
-   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  38
 
 
 
@@ -114,9 +114,10 @@ Tarapore, et al.         Expires April 30, 2018                 [Page 2]
 Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
 
-     11.1.  Normative References . . . . . . . . . . . . . . . . . .  38
+   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  39
+     11.1.  Normative References . . . . . . . . . . . . . . . . . .  39
      11.2.  Informative References . . . . . . . . . . . . . . . . .  40
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  40
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  41
 
 1.  Introduction
 
@@ -144,24 +145,23 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    The scope and assumptions for this document are as follows:
 
    o  Administrative Domain 1 (AD-1) sources content to one or more End
-      Users (EUs) in one or more AD-2.  AD-1 and AD-2 want to use IP
-      multicast to allow handling of large and growing EUs population by
-      scaling up of the network and minimizing the amount of traffic
-      that needs to be send.
+      Users (EUs) in one or more Administrative Domain 2 (AD-2).  AD-1
+      and AD-2 want to use IP multicast to allow supporting large and
+      growing EU populations with minimum amount of duplicated traffic
+      to send across network links.
 
       o  This document does not detail the case where EUs are
-         originating content.  It is recommended to use some method
-         (outside the scope of this document) by which the content from
-         EU is transmitted to the application in AD-1 that this document
-         refers to as the multicast source.  From that point on, the
-         descriptions in this document apply, except that they are not
-         complete because they do not cover the transport or operational
-         aspects of the leg from EU to AD-1.
+         originating content.  To support that additional service, it is
+         recommended to use some method (outside the scope of this
+         document) by which the content from EUs is transmitted to the
+         application in AD-1 that this document refers to as the
+         multicast source and let it send out the traffic as IP
+         multicast.  From that point on, the descriptions in this
+         document apply, except that they are not complete because they
+         do not cover the transport or operational aspects of the leg
+         from EU to AD-1.
 
-      o  This document does not detail the case where AD-1 and AD-2 are
-         not directly connected to each other but only via one or more
-         AD-3 (transit providers).  The cases described in this document
-         where tunnels are used between AD-1 and AD-2 can be applied to
+
 
 
 
@@ -170,6 +170,10 @@ Tarapore, et al.         Expires April 30, 2018                 [Page 3]
 Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
 
+      o  This document does not detail the case where AD-1 and AD-2 are
+         not directly connected to each other but only via one or more
+         AD-3 (transit providers).  The cases described in this document
+         where tunnels are used between AD-1 and AD-2 can be applied to
          such scenarios, but SLA ("Service Level Agreement") control for
          example would be different.  Other additional issues will
          likely exist as well in such scenarios.  This is for further
@@ -214,10 +218,6 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    o  An Automatic Multicast Tunnel (AMT) [RFC7450] is setup at the
       peering point if either the peering point or AD-2 is not multicast
       enabled.  It is assumed that an AMT Relay will be available to a
-      client for multicast delivery.  The selection of an optimal AMT
-      relay by a client is out of scope for this document.  Note that
-      AMT use is necessary only when native multicast is unavailable in
-
 
 
 
@@ -226,6 +226,9 @@ Tarapore, et al.         Expires April 30, 2018                 [Page 4]
 Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
 
+      client for multicast delivery.  The selection of an optimal AMT
+      relay by a client is out of scope for this document.  Note that
+      AMT use is necessary only when native multicast is unavailable in
       the peering point (Use Case 3.3) or in the downstream
       administrative domain (Use Cases 3.4, and 3.5).
 
@@ -259,7 +262,7 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
       o  An Automatic Multicast Tunnel (AMT) [RFC7450].
 
    o  A service provider controls one or more application sources in
-      AD-1 which will send multicast IP packets for one or more (S,G)s
+      AD-1 which will send multicast IP packets via one or more (S,G)s
       (multicast traffic flows, see Section 4.2.1 if you are unfamiliar
       with IP multicast).  It is assumed that the service being provided
       is suitable for delivery via multicast (e.g. live video streaming
@@ -271,9 +274,6 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
       an application client compatible with the service provider's
       application source.
 
-   o  The application client joins appropriate (S,G)s in order to
-      receive the data necessary to provide the service to the EU.  The
-      mechanisms by which the application client learns the appropriate
 
 
 
@@ -282,6 +282,9 @@ Tarapore, et al.         Expires April 30, 2018                 [Page 5]
 Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
 
+   o  The application client joins appropriate (S,G)s in order to
+      receive the data necessary to provide the service to the EU.  The
+      mechanisms by which the application client learns the appropriate
       (S,G)s are an implementation detail of the application, and are
       out of scope for this document.
 
@@ -290,11 +293,11 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    source(s).  All relevant interactions between the two domains
    described in this document are based on this assumption.
 
-   Note that domain 2 may be an independent network domain (e.g., Tier 1
+   Note that domain 2 may be an independent network domain (e.g.: Tier 1
    network operator domain).  Alternately, domain 2 could also be an
-   Enterprise network domain operated by a single customer.  The peering
-   point architecture and requirements may have some unique aspects
-   associated with the Enterprise case.
+   Enterprise network domain operated by a single customer of AD-1.  The
+   peering point architecture and requirements may have some unique
+   aspects associated with the Enterprise case.
 
    The Use Cases describing various architectural configurations for the
    multicast distribution along with associated requirements is
@@ -323,11 +326,8 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    inter-domain peering point is enabled to support such a process.
    There are five Use Cases for consideration in this document.
 
-3.1.  Native Multicast
 
-   This Use Case involves end-to-end Native Multicast between the two
-   administrative domains and the peering point is also native multicast
-   enabled - see Figure 1.
+
 
 
 
@@ -337,6 +337,12 @@ Tarapore, et al.         Expires April 30, 2018                 [Page 6]
 
 Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
+
+3.1.  Native Multicast
+
+   This Use Case involves end-to-end Native Multicast between the two
+   administrative domains and the peering point is also native multicast
+   enabled - see Figure 1.
 
       -------------------               -------------------
      /       AD-1        \             /        AD-2       \
@@ -380,12 +386,6 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
    Architectural guidelines for this configuration are as follows:
 
-   a.  Dual homing for peering points between domains is recommended as
-       a way to ensure reliability with full BGP table visibility.
-
-   b.  If the peering point between AD-1 and AD-2 is a controlled
-       network environment, then bandwidth can be allocated accordingly
-       by the two domains to permit the transit of non- rate adaptive
 
 
 
@@ -394,6 +394,12 @@ Tarapore, et al.         Expires April 30, 2018                 [Page 7]
 Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
 
+   a.  Dual homing for peering points between domains is recommended as
+       a way to ensure reliability with full BGP table visibility.
+
+   b.  If the peering point between AD-1 and AD-2 is a controlled
+       network environment, then bandwidth can be allocated accordingly
+       by the two domains to permit the transit of non- rate adaptive
        multicast traffic.  If this is not the case, then it is
        recommended that the multicast traffic should support rate-
        adaption.
@@ -419,6 +425,31 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    There is a Generic Routing Encapsulation Tunnel provisioned over the
    peering point.  See Figure 2.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Tarapore, et al.         Expires April 30, 2018                 [Page 8]
+
+Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
+
+
        -------------------              -------------------
       /       AD-1        \            /        AD-2       \
      / (Multicast Enabled) \          / (Multicast Enabled) \
@@ -442,14 +473,6 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
                Figure 2: Content Distribution via GRE Tunnel
 
-
-
-
-Tarapore, et al.         Expires April 30, 2018                 [Page 8]
-
-Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
-
-
    In this case, the interconnection I1 between AD-1 and AD-2 in
    Figure 2 is multicast enabled via a Generic Routing Encapsulation
    Tunnel (GRE) [RFC2784] between the two BR and encapsulating the
@@ -457,11 +480,8 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
    Normally, this approach is choosen if the uBR physcially connected to
    the peering link can or should not be enabled for IP multicast.  This
-   approach can also be choosen if BR and uBR are the same devices, but
-   the peering link is a broadcast domain (IXP) The BR in generaThis
-   approach is uAs shown in Figure 2, BR does not have to be the same
-   router as the unicast Border Router (uBR) connecting to the actual
-   peering point.
+   approach may also be beneficial if BR and uBR are the same device,
+   but the peering link is a broadcast domain (IXP), see Figure 6.
 
    The routing configuration is basically unchanged: Instead of BGP
    (SAFI2) across the native IP multicast link between AD-1 and AD-2,
@@ -478,12 +498,20 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    o  Ability to support partial and/or incremental IP multicast
       deployments in AD- 1 and/or AD-2: Only the path(s) between AS/BR
       (AD-1) and BR/EU (AD-2) need to be multicast enabled.  The uBRs
-      (and paths between BR and uBR) may not support IP multicast or
-      enabling it could be seen as operationally risky on that important
-      nodes whereas dedicated BR nodes for IP multicast are more
-      acceptable.  BR can be located such that only parts of the domain
-      may need to support native IP multicast (e.g.: only the core in
-      AD-1 but not access).
+
+
+
+Tarapore, et al.         Expires April 30, 2018                 [Page 9]
+
+Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
+
+
+      may not support IP multicast or enabling it could be seen as
+      operationally risky on that important edge node whereas dedicated
+      BR nodes for IP multicast may be more acceptable at least
+      initially.  BR can also be located such that only parts of the
+      domain may need to support native IP multicast (e.g.: only the
+      core in AD-1 but not edge networks towards uBR).
 
    o  GRE is an existing technology and is relatively simple to
       implement.
@@ -498,13 +526,6 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    o  The GRE must be established prior to stream starting.
 
    o  The GRE tunnel is often left pinned up.
-
-
-
-Tarapore, et al.         Expires April 30, 2018                 [Page 9]
-
-Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
-
 
    Architectural guidelines for this configuration include the
    following:
@@ -530,6 +551,17 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    The peering point is enabled with an Automatic Multicast Tunnel.  The
    basic configuration is depicted in Figure 2.
 
+
+
+
+
+
+
+Tarapore, et al.         Expires April 30, 2018                [Page 10]
+
+Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
+
+
        -------------------              -------------------
       /       AD-1        \            /        AD-2       \
      / (Multicast Enabled) \          / (Multicast Enabled) \
@@ -547,20 +579,12 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    AS = Application (e.g., Content) Multicast Source
    AR = AMT Relay
    AG = AMT Gateway
-   uBR = unicast Border Router - not necessarily multicast enabled
-         may be the same router as BR
+   uBR = unicast Border Router - not multicast enabled
+         otherwise AR=uBR (AD-1), uBR=AG (AD-2)
    I1 = AMT Interconnection between AD-1 and AD-2
    I2 = AD-2 and EU Multicast Connection
 
            Figure 3: - AMT Interconnection between AD-1 and AD-2
-
-
-
-
-Tarapore, et al.         Expires April 30, 2018                [Page 10]
-
-Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
-
 
    Advantages of this configuration:
 
@@ -587,6 +611,13 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    o  Currently undefined mechanisms for the AG to automatically select
       the optimal AR.
 
+
+
+Tarapore, et al.         Expires April 30, 2018                [Page 11]
+
+Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
+
+
    Architectural guidelines for this configuration are as follows:
 
    Guidelines (a) through (d) are the same as those described in Use
@@ -605,19 +636,6 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    End User is also not multicast enabled.  This Use Case is depicted in
    Figure 3.
 
-
-
-
-
-
-
-
-
-Tarapore, et al.         Expires April 30, 2018                [Page 11]
-
-Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
-
-
       -------------------               -------------------
       /       AD-1        \            /        AD-2       \
      / (Multicast Enabled) \          / (Non Multicast      \
@@ -632,7 +650,8 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
        -------------------              -------------------
 
    AS = Application Multicast Source
-   uBR = unicast Border Router - not multicast enabled
+   uBR = unicast Border Router - not multicast enabled,
+         otherwise AR = uBR (in AD-1).
    AR = AMT Relay
    EU/G = Gateway client embedded in EU device
    I2 = AMT Tunnel Connecting EU/G to AR in AD-1 through Non-Multicast
@@ -646,6 +665,14 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    The peering point thus needs to accommodate the total number of AMT
    tunnels between the two domains.  Each AMT tunnel can provide the
    data usage associated with each End User.
+
+
+
+
+Tarapore, et al.         Expires April 30, 2018                [Page 12]
+
+Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
+
 
    Advantages of this configuration:
 
@@ -665,14 +692,6 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
       o  Dynamic interconnection between Gateway-Relay pair across the
          peering point.
-
-
-
-
-Tarapore, et al.         Expires April 30, 2018                [Page 12]
-
-Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
-
 
       o  Ability to serve clients and servers with differing policies.
 
@@ -701,25 +720,6 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
       the application in the EU/G provide the relay address to the
       embedded AMT gateway function.
 
-   e. The AMT tunnel capabilities are expected to be sufficient for the
-      purpose of collecting relevant information on the multicast
-      streams delivered to End Users in AD-2.
-
-3.5.  AD-2 Not Multicast Enabled - Multiple AMT Tunnels Through AD-2
-
-   This is a variation of Use Case 3.4 as follows:
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -729,6 +729,14 @@ Tarapore, et al.         Expires April 30, 2018                [Page 13]
 
 Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
+
+   e. The AMT tunnel capabilities are expected to be sufficient for the
+      purpose of collecting relevant information on the multicast
+      streams delivered to End Users in AD-2.
+
+3.5.  AD-2 Not Multicast Enabled - Multiple AMT Tunnels Through AD-2
+
+   This is a variation of Use Case 3.4 as follows:
 
       -------------------               -------------------
       /       AD-1        \            /        AD-2       \
@@ -744,6 +752,7 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
        -------------------              -------------------
 
    uBR = unicast Border Router - not multicast enabled
+         otherwise AR=uBR (AD-1) or ubr=AGAR1 (AD-2)
    AS = Application Source
    AR = AMT Relay in AD-1
    AGAR1 = AMT Gateway/Relay node in AD-2 across Peering Point
@@ -770,6 +779,13 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    o  One such node is at the AD-2 side of the peering point (node AGAR1
       in above Figure).
 
+
+
+Tarapore, et al.         Expires April 30, 2018                [Page 14]
+
+Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
+
+
    o  Single AMT tunnel established across peering point linking AMT
       Relay in AD-1 to the AMT Gateway in the AMT node AGAR1 in AD-2.
 
@@ -777,14 +793,6 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
       other AMT nodes located at the edges of AD-2: e.g., AMT tunnel I2
       linking AMT Relay in AGAR1 to AMT Gateway in AMT node AGAR2 in
       Figure 4.
-
-
-
-
-Tarapore, et al.         Expires April 30, 2018                [Page 14]
-
-Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
-
 
    o  AMT tunnels linking EU device (via Gateway client embedded in
       device) and AMT Relay in appropriate AMT node at edge of AD-2:
@@ -826,6 +834,14 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
       purpose of collecting relevant information on the multicast
       streams delivered to End Users in AD-2.
 
+
+
+
+Tarapore, et al.         Expires April 30, 2018                [Page 15]
+
+Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
+
+
 4.  Functional Guidelines
 
    Supporting functions and related interfaces over the peering point
@@ -834,13 +850,6 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    exchanged in support of these functions are enumerated, along with
    guidelines as appropriate.  Specific interface functions for
    consideration are as follows.
-
-
-
-Tarapore, et al.         Expires April 30, 2018                [Page 15]
-
-Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
-
 
 4.1.  Network Interconnection Transport Guidelines
 
@@ -876,19 +885,10 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
       provisioning and maintaining the set of peering points to support
       multicast delivery.
 
-4.1.1.  Bandwidth management
+4.1.1.  Bandwidth Management
 
-   (Like Unicast traffic,) IP multicast traffic carried across non-
+   Like IP unicast traffic, IP multicast traffic carried across non-
    controlled networks must comply to Congestion Control Principles as
-   described in [BCP41] and explained in detail for multicast in
-   [BCP145].
-
-   Non-controlled networks (such as the Internet) are those where there
-   is no policy for managing bandwidth other than best effort with fair
-   share of bandwidth under congestion.  As a simplified rule of thumb,
-   complying to congestion control principles means to reduce bandwidth
-   under congestion in a way that is fair to competing competing
-   (typically TCP) flow ("rate adaptive").
 
 
 
@@ -898,43 +898,67 @@ Tarapore, et al.         Expires April 30, 2018                [Page 16]
 Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
 
+   described in [BCP41] and explained in detail for UDP IP multicast in
+   [BCP145].
+
+   Non-controlled networks (such as the Internet) are those where there
+   is no policy for managing bandwidth other than best effort with fair
+   share of bandwidth under congestion.  As a simplified rule of thumb,
+   complying to congestion control principles means to reduce bandwidth
+   under congestion in a way that is fair to competing competing
+   (typically TCP) flow ("rate adaptive").
+
    In many instances, multicast content delivery evolves from intra-
    domain deployments where it is handled as a controlled network
-   service, such as giving it a reserved amount of bandwidth and
-   admitting only so much multicast traffic that congestion never
-   occurs, therefore the congestion control issue should be given
-   specific attention.
+   service and of not complyng to congestion control principles.  It was
+   given a reserved amount of bandwidth and admitted to the network so
+   that congestion never occurs.  Therefore the congestion control issue
+   should be given specific attention when evolving to an interdomain
+   peering deployment.
 
-   In the case where end-to-end IP multicast traffic only passes across
-   the network of two ADs (and their subsidiaries/customers), both ADs
-   must agree on a consistent traffic management policy.  If for example
-   AD-1 sources inelastic (non rate adaptive) IP multicast traffic and
-   AD-2 carries it as best effort traffic across links shared with other
-   Internet traffic and subject to congestion, this will not work: Under
-   congestion, some amount of IP multicast will be dropped, rendering
-   the remaining IP multicast packets often as undecodeable garbage
-   clogging up the network in AD-2 (because the sender does not rate
-   adapt), competing TCP flows will not get their fair share under
-   congestion, and EUs will be frusted by extremely bad quality of both
-   their IP multicast and TCP traffic.  Note that this is not IP
-   multicast specific, it would equally happen if AD-1 would send non-
-   rate adaptive unicast, e.g.: video-on-demand traffic.  Because rate
-   adaption in unicast video is commonplace, it is very unlikely for
-   this to happen though in reality.
+   In the case where end-to-end IP multicast traffic passes across the
+   network of two ADs (and their subsidiaries/customers), both ADs must
+   agree on a consistent traffic management policy.  If for example AD-1
+   sources non congestion aware IP multicast traffic and AD-2 carries it
+   as best effort traffic across links shared with other Internet
+   traffic and subject to congestion, this will not work: Under
+   congestion, some amount of that traffic will be dropped, rendering
+   the remaining packets often as undecodeable garbage clogging up the
+   network in AD-2 and because this is not congestion aware, the loss
+   does not reduce this rate.  Competing traffic will not get their fair
+   share under congestion, and EUs will be frusted by extremely bad
+   quality of both their IP multicast and other (e.g.: TCP) traffic.
+   Note that this is not an IP multicast technology issue, but solely a
+   transport/application layer issue: The problem would equally happen
+   if AD-1 would send non-rate adaptive unicast traffic,, for example
+   legacy IPTV video-on-demand traffic which typically is also non
+   congestion aware.  Because rate adaption in IP unicast video is
+   commonplace today because of ABR (Adaptive Bitrate Video), it is very
+   unlikely for this to happen though in reality with IP unicast.
 
    While the rules for traffic management apply whether or not IP
-   multicast is (AMT or GRE) tunneled or not, the one property of
-   tunnels that can make them more difficult is the unpredictability of
-   bandwidth requirements across underlying links: When using native IP
-   multicast or GRE tunnels, the amount of bandwidth depends on the
-   amount of content, not the number of EUs - and is therefore easier to
-   plan for.  AMT tunnels to EUs introduce in the vicinity of the AMT
-   relay the problem that the maximum number of active EUs times maximum
-   likely amount of content per EU AMT-tunnel need to be asumed if the
-   IP multicast traffic is not rate adaptive.  Therefore, it is not only
-   necessary to make multicast rate adaptive across uncontrolled network
-   but also when using AMT to replicate to EUs even inside controlled
-   networks.
+   multicast is tunneled or not, the one feature that can make AMT
+   tunnels more difficult is the unpredictability of bandwidth
+   requirements across underlying links because of the way they can be
+   used: With native IP multicast or GRE tunnels, the amount of
+   bandwidth depends on the amount of content, not the number of EUs -
+   and is therefore easier to plan for.  AMT tunnels terminating in EU/G
+   on the other hand scale with the number of EUs.  In the vicinity of
+   the AMT relay they can introduce very large amount of replicated
+   traffic and it is not always feasible to provision enough bandwidth
+
+
+
+Tarapore, et al.         Expires April 30, 2018                [Page 17]
+
+Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
+
+
+   for all possible EU to get the highest quality for all their content
+   during peak utilization in such setups - unless the AMT relays are
+   very close to the EU edge.  Therefore it is also recommended to use
+   IP multicast rate adaptation even inside controlled networks when
+   using AMT tunnels directly to EU/G.
 
    Note that rate-adaptive IP multicast traffic in general does not mean
    that the sender is reducing the bitrate, but rather that the EUs that
@@ -946,23 +970,15 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    requirement for IP multicast protocols (IGMP/PIM), especially on the
    last hops where dynamic changes occur (including AMT gateway/relays):
    In non rate-adaptive IP multicast, only "channel change" causes state
-
-
-
-Tarapore, et al.         Expires April 30, 2018                [Page 17]
-
-Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
-
-
    change, in rate-adaptive also the congestion situation causes state
    change.
 
    Even though not fully specified in this document, peerings that rely
-   on GRE/AMT tunnels may be across one or more "transit" ADs instead of
+   on GRE/AMT tunnels may be across one or more transit ADs instead of
    an exclusive (non-shared, L1/L2) path.  Unless those transit ADs are
    explicitly contracted to provide other than "best effort" transit for
    the tunneled traffic, the IP multicast traffic tunneled must be rate
-   adaptive to not violate BCP41 across those "transit" ADs.
+   adaptive to not violate BCP41 across those transit ADs.
 
 4.2.  Routing Aspects and Related Guidelines
 
@@ -987,6 +1003,13 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    o  To be robust enough to achieve high reliability and automatically
       adjust to changes and problems in the multicast infrastructure.
 
+
+
+Tarapore, et al.         Expires April 30, 2018                [Page 18]
+
+Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
+
+
    For both Native and AMT environments, having a source as close as
    possible to the EU network is most desirable; therefore, in some
    cases, an AD may prefer to have multiple sources near different
@@ -1000,15 +1023,6 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    example of multicast delivery via a Native Multicast process across
    two Administrative Domains is as follows assuming that the
    interconnecting peering points are also multicast enabled:
-
-
-
-
-
-Tarapore, et al.         Expires April 30, 2018                [Page 18]
-
-Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
-
 
    o  Appropriate information is obtained by the EU client who is a
       subscriber to AD-2 (see Use Case 3.1).  This information is in the
@@ -1045,6 +1059,13 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    native multicast or AMT multicast to traverse the interface.
    Coordination and advertisement of the source IP is still required.
 
+
+
+Tarapore, et al.         Expires April 30, 2018                [Page 19]
+
+Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
+
+
    The two AD's need to follow the same process as described in 4.2.1 to
    facilitate multicast delivery across the Peering Points.
 
@@ -1058,13 +1079,6 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
       connectivity to the content source, and
 
    o  Minimize the AMT unicast tunnel distance.
-
-
-
-Tarapore, et al.         Expires April 30, 2018                [Page 19]
-
-Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
-
 
    There are essentially two components to the AMT specification
 
@@ -1083,7 +1097,7 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
    AMT Gateway (GW):  The Gateway will reside on an End-Point - this
       could be any type of IP host such as a Personal Computer (PC),
-      mobile phone, Set Top Box (STB) or refrigerator.  The AMT Gateway
+      mobile phone, Set Top Box (STB) or appliances.  The AMT Gateway
       receives join and leave requests from the Application via an
       Application Programming Interface (API).  In this manner, the
       Gateway allows the End-Point to conduct itself as a true Multicast
@@ -1099,6 +1113,15 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    established on an as needed basis and need not be a provisioned
    element.  The two AD's can coordinate and advertise special AMT Relay
    Anycast addresses with each other.  Alternately, they may decide to
+
+
+
+
+Tarapore, et al.         Expires April 30, 2018                [Page 20]
+
+Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
+
+
    simply provision Relay addresses, though this would not be an optimal
    solution in terms of scalability.
 
@@ -1114,14 +1137,6 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    An illustrative example of a relay selection based on DNS queries and
    Anycast IP addresses process for Use Cases 3.4 and 3.5 is described
    here.  Using an Anycast IP address for AMT Relays allows for all AMT
-
-
-
-Tarapore, et al.         Expires April 30, 2018                [Page 20]
-
-Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
-
-
    Gateways to find the "closest" AMT Relay - the nearest edge of the
    multicast topology of the source.  Note that this is strictly
    illustrative; the choice of the method is up to the network
@@ -1155,6 +1170,14 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
       choice of particular relay - e.g., closest relay to the EU.
       Details are outside the scope for this document.  See [RFC4786].
 
+
+
+
+Tarapore, et al.         Expires April 30, 2018                [Page 21]
+
+Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
+
+
    o  The contacted AMT Relay then returns its specific unicast IP
       address (after which the Anycast address is no longer required).
       Variations may exist as well.
@@ -1168,15 +1191,6 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    o  AMT Relay receives the "S,G" information and uses the S,G to join
       the appropriate multicast stream, if it has not already subscribed
       to that stream.
-
-
-
-
-
-Tarapore, et al.         Expires April 30, 2018                [Page 21]
-
-Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
-
 
    o  AMT Relay encapsulates the multicast stream into the tunnel
       between the Relay and the Gateway, providing the requested content
@@ -1212,6 +1226,14 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    domain, AD-1a or AD-1b will forward this (S,G) into the LAN.  AD-2a
    BR requests the (S,G) from AD-1a BR and AD-2b BR requests the same
    (S,G) from AD-1b BR.  To avoid duplicate packets, an (S,G) can be
+
+
+
+Tarapore, et al.         Expires April 30, 2018                [Page 22]
+
+Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
+
+
    forwarded by only one router onto the LAN, and PIM-SM/PIM-SSM detects
    requests for duplicate transmission and resolve it via the so-called
    "assert" protocol operation which results in only one BR forwarding
@@ -1222,17 +1244,7 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    troubleshooting issues.
 
    In face of this technical issues, we describe the following options
-   how IP multicast can be carried across a broadcast peering point
-   LANs:
-
-
-
-
-
-Tarapore, et al.         Expires April 30, 2018                [Page 22]
-
-Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
-
+   how IP multicast can be carried across broadcast peering point LANs:
 
    1.  IP multicast is tunneled across the LAN.  Any of the GRE/AMT
        tunneling solutions mentioned in this document are applicable.
@@ -1249,14 +1261,18 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
        therefore strict rules must be follow to prohibit that case.  The
        downstream BRs must ensure that they will always consider only
        the upstream BR as a source for multicast traffic: e.g.: no BGP
-       SAFI-2 peerings amongst each other, so that only the upstream BR
-       is the only possible next-hop reachable across this LAN.
+       SAFI-2 peerings between the downstream ADs across the peering
+       point LAN, so that only the upstream BR is the only possible
+       next-hop reachable across this LAN.  And routing policies
+       configured to avoid fall back to the use of SAFI-1 (unicast)
+       routes for IP multicast if unicast BGP peering is not limited in
+       the same way.
 
    3.  The LAN has multiple upstreams, but they are federated and agree
        on a consistent policy for IP multicast traffic across the LAN.
        One policy is that each possible source is only announced by one
        upstream BR.  Another policy is that sources are redundantly
-       announced, and therefore redundancy is provided for them, but the
+       announced (problematic case mentioned in above example), but the
        upstream domains also provide mutual operational insight to help
        troubleshooting (outside the scope of this document).
 
@@ -1266,6 +1282,13 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
    o  Servers and Content Management systems that support the delivery
       of applications via multicast and interactions between AD's.
+
+
+
+Tarapore, et al.         Expires April 30, 2018                [Page 23]
+
+Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
+
 
    o  Functionality associated with logging, reporting, ordering,
       provisioning, maintenance, service assurance, settlement, etc.
@@ -1282,13 +1305,6 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
       all supporting back-offices of the AD's as appropriate.  This
       includes activating proper security treatment for these back-
       office connections (gateways, firewalls, etc) as appropriate.
-
-
-
-Tarapore, et al.         Expires April 30, 2018                [Page 23]
-
-Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
-
 
    o  Routing protocols as needed, e.g. configuring routers to support
       these.
@@ -1321,6 +1337,15 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
       AMT Relays need to be provisioned with all source & group
       addresses for streams it is allowed to join.
 
+
+
+
+
+Tarapore, et al.         Expires April 30, 2018                [Page 24]
+
+Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
+
+
    o  DNS across each AD must be provisioned to enable a client GW to
       locate the optimal AMT Relay (i.e. longest multicast path and
       shortest unicast tunnel) with connectivity to the content's
@@ -1337,15 +1362,6 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    2, sufficient to verify their mutual goals and operations, e.g.  to
    know how the EU's are being served.  This can be done in two ways:
 
-
-
-
-
-Tarapore, et al.         Expires April 30, 2018                [Page 24]
-
-Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
-
-
    o  Automated interfaces are built between AD-1 and AD-2 such that
       operations and customer care continue using their own systems.
       This requires coordination between the two AD's with appropriate
@@ -1357,17 +1373,7 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
       access.  Additional provisioning must be agreed to by the two AD's
       to support this option.
 
-4.3.2.  Application Accounting Guidelines
-
-   For network transport diagnostics, AD-1 and AD-2 should have
-   mechanisms in place to ensure proper accounting for the volume of
-   bytes delivered through the peering point and separately the number
-   of bytes delivered to EUs.
-
-   Application accounting needs to be handled differently in the
-   application because the source side does not directly deliver packets
-   to individual receivers.  Instead, this needs to be signalled back by
-   the receiver to the source.
+4.3.2.  Interdomain Authentication Guidelines
 
    All interactions between pairs of AD's can be discovered and/or be
    associated with the account(s) utilized for delivered applications.
@@ -1388,12 +1394,6 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    (part of AD-1), when AD-1 sees the need to propagate the issue, it
    will interact with AD-2 using the aforementioned guidelines.
 
-4.3.3.  Log Management Guidelines
-
-   Successful delivery (in terms of user experience) of applications or
-   content via multicast between pairs of interconnecting AD's can be
-   improved through the ability to exchange appropriate logs for various
-   workflows - troubleshooting, accounting and billing, traffic and
 
 
 
@@ -1402,6 +1402,12 @@ Tarapore, et al.         Expires April 30, 2018                [Page 25]
 Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
 
+4.3.3.  Log Management Guidelines
+
+   Successful delivery (in terms of user experience) of applications or
+   content via multicast between pairs of interconnecting AD's can be
+   improved through the ability to exchange appropriate logs for various
+   workflows - troubleshooting, accounting and billing, traffic and
    content transmission optimization, content and application
    development optimization and so on.
 
@@ -1444,12 +1450,6 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
       Provider-driven strategies.  Examples of aggregate levels include
       grouped video clips, web pages, and sets of software download.
 
-   o  Security logs, aggregated or summarized according to agreement
-      (with additional detail potentially provided during security
-      events, by agreement).
-
-   o  Access logs (EU), when needed for troubleshooting.
-
 
 
 
@@ -1457,6 +1457,12 @@ Tarapore, et al.         Expires April 30, 2018                [Page 26]
 
 Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
+
+   o  Security logs, aggregated or summarized according to agreement
+      (with additional detail potentially provided during security
+      events, by agreement).
+
+   o  Access logs (EU), when needed for troubleshooting.
 
    o  Application logs (what is the application doing), when needed for
       shared troubleshooting.
@@ -1500,12 +1506,6 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    provided on behalf of a particular multicast application source
    provider.  It thus involves complaints from End Users when service
    problems occur.  EUs direct their complaints to the source provider;
-   in turn the source provider submits these complaints to AD-1.  The
-   responsibility for service delivery lies with AD-1; as such AD-1 will
-   need to determine where the service problem is occurring - its own
-   network or in AD-2.  It is expected that each AD will have tools to
-   monitor multicast service status in its own network.
-
 
 
 
@@ -1513,6 +1513,12 @@ Tarapore, et al.         Expires April 30, 2018                [Page 27]
 
 Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
+
+   in turn the source provider submits these complaints to AD-1.  The
+   responsibility for service delivery lies with AD-1; as such AD-1 will
+   need to determine where the service problem is occurring - its own
+   network or in AD-2.  It is expected that each AD will have tools to
+   monitor multicast service status in its own network.
 
    o  Both AD's will determine how best to deploy multicast service
       monitoring tools.  Typically, each AD will deploy its own set of
@@ -1556,12 +1562,6 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
       o  Correlation and consolidation of the various customer problems
          and resource troubles into a single root service problem.
 
-      o  Prioritization of currently open service problems, giving
-         consideration to problem impact, service level agreement, etc.
-
-      o  Conduction of service tests, including one time tests or a
-         series of tests over a period of time.
-
 
 
 
@@ -1569,6 +1569,12 @@ Tarapore, et al.         Expires April 30, 2018                [Page 28]
 
 Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
+
+      o  Prioritization of currently open service problems, giving
+         consideration to problem impact, service level agreement, etc.
+
+      o  Conduction of service tests, including one time tests or a
+         series of tests over a period of time.
 
       o  Analysis of test results.
 
@@ -1591,6 +1597,18 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    Network reliability can also be enhanced by the two AD's by
    provisioning alternate delivery mechanisms via unicast means.
 
+4.6.  Application Accounting Guidelines
+
+   Application level accounting needs to be handled differently in the
+   application than in IP unicast because the source side does not
+   directly deliver packets to individual receivers.  Instead, this
+   needs to be signalled back by the receiver to the source.
+
+   For network transport diagnostics, AD-1 and AD-2 should have
+   mechanisms in place to ensure proper accounting for the volume of
+   bytes delivered through the peering point and separately the number
+   of bytes delivered to EUs.
+
 5.  Troubleshooting and Diagnostics
 
    Any service provider supporting multicast delivery of content should
@@ -1599,6 +1617,14 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    Issues may become apparent or identified either through network
    monitoring functions or by customer reported problems as described in
    section 4.4.
+
+
+
+
+Tarapore, et al.         Expires April 30, 2018                [Page 29]
+
+Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
+
 
    It is recommended that multicast diagnostics will be performed
    leveraging established operational practices such as those documented
@@ -1609,23 +1635,22 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    by either one.
 
    Service providers may also wish to allow limited read-only
-   administrative access to their routers via a looking-glass style
-   router proxy to facilitate the debugging of multicast control state
-   and peering status.  Software implementations for this purpose are
-   readily available [Traceroute], [I-D.ietf-mboned-mtrace-v2] and can
-   be easily extended to provide access to commonly-used multicast
-   troubleshooting commands in a secure manner.
+   administrative access to their routers to their AD peers for
+   troubleshooting.  Of specific interest are access to active
+   troubleshooting tools especially [Traceroute] and
+   [I-D.ietf-mboned-mtrace-v2].
+
+   Another option is to include this functionality into the IP multicast
+   receiver application on the EU device and allow for these diagnostics
+   to be remotely used by support operations.  Note though that AMT does
+   not allow to pass traceroute or mtrace requests, therefore
+   troubleshooting in the presence of AMT does not work as well end-to-
+   end as it can with native (or even GRE encapsulated) IP multicast,
+   especially wrt. to traceroute and mtrace.  Instead, troubleshooting
+   directly on the actual network devices is then more likely necessary.
 
    The specifics of the notification and alerts are beyond the scope of
    this document, but general guidelines are similar to those described
-
-
-
-Tarapore, et al.         Expires April 30, 2018                [Page 29]
-
-Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
-
-
    in section 4.4 (Service Performance and Monitoring).  Some general
    communications issues are stated as follows.
 
@@ -1649,31 +1674,6 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    SSM IP multicast is self protecting against attacks from illicit
    sources.  Their traffic will not be forwarded beyond the first hop
    router because that would require (S,G) memership reports from
-   receiver.  [BCP38] style protection against spoofed source traffic is
-   built into PIM-SM/PIM-SSM.  Traffic from sources will only be
-   forwarded from the valid source because RPF ("Reverse Path
-   Forwarding") is part of the protocols.
-
-   Receivers can attack SSM IP multicast by originating such invalid
-   (S,G) membership reports.  This can result in a DoS attack against
-   state (creation of many (S,G) states that create control plane load
-   or even inhibit later creation of valid (S,G).  In conjunction with
-   collaborating illicit sources it can also result in illicit sources
-   traffic being forwarded.
-
-   Today, these type of attacks are usually can typically be mitigated
-   only by explicitly defining the set of permissible (S,G) on e.g.: the
-   last hop routers in AD-2 replicating to EU (for example via (S,G)
-   Access Control Lists applied to IGMP/MLD membership state creation).
-   Each AD is expected to prohibit (S,G) state creation for invalid
-   source inside their own AD.
-
-   In the peering case, AD-2 is not natively aware of the set of valid
-   (S,G) from AD-1, so this set needs to be communicated via operational
-   procedures from AD-1 to AD-2.  Future work could signal this
-   information in an automated way: BGP extensions, DNS Resource Records
-   or backend automation between AD-1 and AD-2 (this last one is the
-   short term most viable solution because it does not require router
 
 
 
@@ -1682,54 +1682,54 @@ Tarapore, et al.         Expires April 30, 2018                [Page 30]
 Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
 
-   software extensions like the other two).  Observation of traffic
-   flowing via (S,G) state could also be used to automate recognition of
-   invalid (S,G) state created by receivers in the absence of explicit
-   information from AD-1.
+   receiver.  Traffic from sources will only be forwarded from the valid
+   source because RPF ("Reverse Path Forwarding") is part of the
+   protocols.  One can say that [BCP38] style protection against spoofed
+   source traffic is therefore built into PIM-SM/PIM-SSM.
 
-   The second DoS attack case is the one where receivers create too much
-   valid (S,G) state to attack bandwidth available to other EU.
-   Consider the uplink into a last-hop-router connecting to 100 EU.  If
-   one EU joins to more multicast content ) than what fits into this
-   uplink, then this would impact also the quality of the same content
-   for the other 99 EU.  If traffic is inelasitc, the effects are even
-   worse.
+   Receivers can attack SSM IP multicast by originating such (S,G)
+   membership reports.  This can result in a DoS attack against state
+   through the creation of a large number of (S,G) states that create
+   high control plane load or even inhibit later creation of valid
+   (S,G).  In conjunction with collaborating illicit sources it can also
+   result in illicit sources traffic being forwarded.
 
-   The mitigation is the same as what is often employed for unicast: Per
-   EU policing of the total amount of traffic to achieve fair use of
-   bandwidth.  Unlike unicast though, this can not be done anywhere
-   along the path (e.g.: on an arbitrary bottleneck link), but has to
-   happen at the point of last replication to the different EU.  Simple
-   solutions such as limiting the maximum number of joined (S,G) per EU
-   are readily available, solutions that consider bandwidth consumed
-   exist as vendor specific feature in routers.  Note that this is
-   primarily a non-peering issue in AD-2, it only becomes a peering
-   issue if the peering-link itself is not big enough to carry all
-   possible content from AD-1 or in case 3.4 where the AMT relay in AD-1
-   is that last replication point.
+   Today, these type of attacks are usually mitigated by explicitly
+   defining the set of permissible (S,G) on e.g.: the last hop routers
+   in replicating IP multicast to EUs; For example via (S,G) Access
+   Control Lists applied to IGMP/MLD membership state creation.  Each AD
+   is expected to prohibit (S,G) state creation for invalid sources
+   inside their own AD.
 
-6.2.  Content security
+   In the peering case, AD-2 is without further information not aware of
+   the set of valid (S,G) from AD-1, so this set needs to be
+   communicated via operational procedures from AD-1 to AD-2 to provide
+   protection against this type of DoS attacks.  Future work could
+   signal this information in an automated way: BGP extensions, DNS
+   Resource Records or backend automation between AD-1 and AD-2.
+   Backend automation is the short term most viable solution because it
+   does not require router software extensions like the other two.
+   Observation of traffic flowing via (S,G) state could also be used to
+   automate recognition of invalid (S,G) state created by receivers in
+   the absence of explicit information from AD-1.
 
-   Content confidentiality, DRM and authentication and authorization are
-   fully optional based on the content delivered.  For content that is
-   "FTA" (Free To Air), the following considerations can be ignored and
-   content can be sent unencrypted and without EU authentication and
-   authorization.
+   The second DoS attack through (S,G) membership reports is when
+   receivers create too much valid (S,G) state to attack bandwidth
+   available to other EU.  Consider the uplink into a last-hop-router
+   connecting to 100 EU.  If one EU joins to more multicast content than
+   what fits into this link, then this would impact also the quality of
+   the same content for the other 99 EU.  If traffic is not rate
+   adaptive, the effects are even worse.
 
-   For interdomain content, there are at least two models for content
-   confidentiality, DRM and end-user authentication and authorization:
-
-   In the classical (IP)TV model, responsibility is per-domain and
-   content is and can be passed on unencrypted.  AD-1 delivers content
-   to AD-2, AD-2 can further process the content including features like
-   ad-insertion and is the sole point of contact regarding the contact
-   for its EUs.  In this document, we do not consider this case because
-   it typically involves higher than network layer service aspects
-   operated by AD-2 and this document focusses on the sole network layer
-   AD-1/AD-2 peering case.  Nevertheless, this model can be derived
-   through additional work from what is describe here.
-
-
+   The mitigation is the same as what is often employed for unicast:
+   Policing of per-EU total amont of traffic.  Unlike unicast though,
+   this can not be done anywhere along the path (e.g.: on an arbitrary
+   bottleneck link), but it has to happen at the point of last
+   replication to the different EU.  Simple solutions such as limiting
+   the maximum number of joined (S,G) per EU are readily available,
+   solutions that consider bandwidth consumed exist as vendor specific
+   feature in routers.  Note that this is primarily a non-peering issue
+   in AD-2, it only becomes a peering issue if the peering-link itself
 
 
 
@@ -1737,6 +1737,39 @@ Tarapore, et al.         Expires April 30, 2018                [Page 31]
 
 Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
+
+   is not big enough to carry all possible content from AD-1 or in case
+   3.4 where the AMT relay in AD-1 is that last replication point.
+
+   Limiting the amount of (S,G) state per EU is also a good first
+   measure to prohibit too much undesired "empty" state to be built
+   (state not carrying traffic), but it would not suffice in case of
+   DDoS attack - viruses that impact a large number of EU devices.
+
+6.2.  Content Security
+
+   Content confidentiality, DRM (Digital Restrictions Management),
+   authentication and authorization are optional based on the content
+   delivered.  For content that is "FTA" (Free To Air), the following
+   considerations can be ignored and content can be sent unencrypted and
+   without EU authentication and authorization.  Note though that the
+   mechanisms described here may also be desireable by the application
+   source to better track users even if the content itself would not
+   require it.
+
+   For interdomain content, there are at least two models for content
+   confidentiality, DRM and end-user authentication and authorization:
+
+   In the classical (IP)TV model, responsibility is per-domain and
+   content is and can be passed on unencrypted.  AD-1 delivers content
+   to AD-2, AD-2 can further process the content including features like
+   ad-insertion and AD-2 is the sole point of contact regarding the
+   contact for its EUs.  In this document, we do not consider this case
+   because it typically involves higher than network layer service
+   aspects operated by AD-2 and this document focusses on the network
+   layer AD-1/AD-2 peering case, but not the application layer peering
+   case.  Nevertheless, this model can be derived through additional
+   work from what is describe here.
 
    The other case is the one in which content confidentiality, DRM, end-
    user authentication and authorization are end-to-end:
@@ -1749,11 +1782,17 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    End-to-end encryption enables end-to-end EU authentication and
    authorization: The EU may be able to IGMP/MLD join and receive the
    content, but it can only decrypt it when it receives the decryption
-   key from the content source in AD-1.  This is the authorization.
+   key from the content source in AD-1.  The key is the authorization.
    Keeping that key to itself and prohibiting playout of the decrypted
-   content to non-copy-protected interfaces are typical Digital
-   Restrictions Mangement (DRM) features in that receiver application or
-   EU device operating system.
+   content to non-copy-protected interfaces are typical DRM features in
+   that receiver application or EU device operating system.
+
+
+
+Tarapore, et al.         Expires April 30, 2018                [Page 32]
+
+Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
+
 
    End-to-end ecnryption is continuously attacked.  Keys may be subject
    to brute force attack so that content can be decrypted potentially
@@ -1765,56 +1804,59 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    not sufficient.  It is also necessary for those unauthenticated EUs
    to get a streaming copy of the content itself.  In unicast streaming,
    they can not get such a copy from the content source (because they
-   can not authenticat) and because of asymmetric bandwidths, it is
-   often impossible to get the content from compromised EUs.  EUs behind
-   classical 16 Mbps down, 1 Mbps up ADSL links are the best example.
-   Of course, with increasing broadband access speeds unicast peer-to-
-   peer copying of content becomes easier, but it will likely can be
-   easily detectable by its traffic pattern by the ADs.
+   can not authenticate) and because of asymmetric bandwidths, it is
+   often impossible to get the content from compromised EUs to large
+   number of unauthenticated EUs.  EUs behind classical 16 Mbps down, 1
+   Mbps up ADSL links are the best example.  With increasing broadband
+   access speeds unicast peer-to-peer copying of content becomes easier,
+   but it likely will always be easily detectable by the ADs because of
+   its traffic patterns and volume.
 
    When IP multicast is being used without additionals security, AD-2 is
    not aware which EU is authenticated for which content.  Any
    unauthenticated EU in AD-2 could therefore get a copy of the
-   encrypted content without suspicion and either live-deode it in the
-   presence of compromised authenticated EU and key sharing, or later
-   decrypt it in the presence of federated key cracking.
+   encrypted content without suspicion by AD-2 or AD-1 and either live-
+   deode it in the presence of compromised authenticated EU and key
+   sharing, or later decrypt it in the presence of federated brute force
+   key cracking.
 
    To mitigate this issue, the last replication point that is creating
    (S,G) copies to EUs would need to permit those copies only after
-   authentication of EUs.
+   authentication of EUs.  This would establish the same authenticated
+   EU only copy deliver thast is used in unicast.
 
    Schemes for per EU IP multicast authentication/authorization (and in
    result non-delivery/copying of per-content IP multicast traffic) have
    been built in the past and are deployed in service providers for
+   intradomain IPTV services, but no standard exist for this.  For
+   example, there is no standardized radius attribute for authenticating
+   the IGMP/MLD filter set, but implementations of this exist.  The
+   authors are specifically also not aware of schemes where the same
+   authentication credentials used to get the encryption key from the
+   content source could also be used to authenticate and authorize the
+   network layer IP multicast replication for the content.  Such schemes
+   are technically not difficult to build and would avoid creating and
+   maintaining a separate network forwarding authentication/
+   authorization scheme decoupled from the end-to-end authentication/
+   authorization system of the application.
+
+   If delivery of such high value content in conjunction with the
+   peering described here is desired, the short term recommendations are
 
 
 
-Tarapore, et al.         Expires April 30, 2018                [Page 32]
+Tarapore, et al.         Expires April 30, 2018                [Page 33]
 
 Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
 
-   intradomain IPTV services, but no standard exist for this.  For
-   example, there is no standardized radius attribute for authenticating
-   the IGMP/MLD filter set, but implementations of this exist.  The
-   authors are specifically also ot aware of schemes where the same
-   authentication credentials used to get the encryption key from the
-   content source could also be used to authenticate and authorize the
-   network layer IP multicast replication for it.  Such schemes would
-   technically not difficult to build though and would avoid creating a
-   separate network forwarding authentication/authorization scheme
-   decoupled from the end-to-end authentication/authorization system of
-   the application.
-
-   If delivery of such high value content in conjunction with the
-   peering described here is desired, the short term recommendations are
    for sources to clearly isolate the source and group addresses used
    for different content bundles, communicate those (S,G) patterns from
    AD-1 to the AD-2 and let AD-2 leverage existing per-EU
    authentication/ authorization mechanisms in network devices to
    establish filters for (S,G) sets to each EU.
 
-6.3.  Peering encryption
+6.3.  Peering Encryption
 
    Encryption at peering points for multicast delivery may be used per
    agreement between AD-1/AD-2.
@@ -1825,30 +1867,18 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    unauthenticated copying of even the end-to-end encrypted content, and
    in this case AD-1/AD-2 can agree on additional transport encryption
    across that peering link.  In the case of a broadcast peering
-   connection (e.g.: IXP), transport encryption is the easiest way to
-   prohibit unauthenticated copies by other ADs on the same peering
+   connection (e.g.: IXP), transport encryption is also the easiest way
+   to prohibit unauthenticated copies by other ADs on the same peering
    point.
 
    If peering is across a tunnel going across intermittent transit ADs
    (not discused in detail in this document), then encryption of that
-   tunnel traffic is recommended.  It not only prohibit possible
-   "leakage" of content, but also to protect the the information what
-   content is being consumed in AD-2.
+   tunnel traffic is recommended.  It not only prohibits possible
+   "leakage" of content, but also to protects the the information what
+   content is being consumed in AD-2 (aggregated privacy protection).
 
    See the following subsection for reasons why the peering point may
    also need to be encrypted for operational reasons.
-
-
-
-
-
-
-
-
-Tarapore, et al.         Expires April 30, 2018                [Page 33]
-
-Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
-
 
 6.4.  Operational Aspects
 
@@ -1858,45 +1888,15 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    should by default be exchanged via authenticated and encrypted peer-
    to-peer communication protocols between AD-1 and AD-2 so that only
    the intended recipient in the peers AD have access to it.  Even
-   exposure of the least sensitive information to third parties open up
+   exposure of the least sensitive information to third parties opens up
    attack vectors.  Putting for example valid (S,G) information into DNS
    (as opposed to passing it via secured channels from AD-1 to AD-2) to
    allow easier filtering of invalid (S,G) would also allow attackers to
    easier identify valid (S,G) and change their attack vector.
 
-   From the perspective of the ADs, security is is most critical for the
+   From the perspective of the ADs, security is most critical for the
    log information as it provides operational insight into the
    originating AD, but it also contains sensitive user data:
-
-   Sensitive user data exported from AD-2 to AD-1 as part of logs could
-   be as much as the equivalent of 5-tuple unicast traffic flow
-   accounting (but not more, e.g.: no application level information).  A
-   mentioned in Section 7, in unicast, AD-1 could capture these traffic
-   statistics itself because this is all about AD-1 originated traffic
-   flows to EU receivers in AD-2, and operationally passing it from AD-2
-   to AD-1 is necessary because of the replication happening in AD-2.
-
-   Nevertheless, passing such traffic statistics inside AD-1 from a
-   capturing router to a backend system is likely less subject to third
-   party attacks then passing it interdomain from AD-2 to AD-1, so more
-   diligence need to be applied to secure it.
-
-   If any protocols used for information exchange are not easily secured
-   at transport layer or higher (because of the use of legacy products
-   or protocols in the network), then AD-1 and AD-2 can also consider to
-   ensure that all operational data exchange goes across the same
-   peering point as the traffic and use network layer encryption of the
-   peering point as discussed in before to protect it.
-
-   End-to-end Authentication and authorization of EU may involve some
-   kind of token authentication and is done at the application layer
-   independently of the two AD's.  If there are problems related to
-   failure of token authentication when end-users are supported by AD-2,
-   then some means of validating proper working of the token
-   authentication process (e.g., back-end servers querying the multicast
-   application source provider's token authentication server are
-   communicating properly) should be considered.  Implementation details
-   are beyond the scope of this document.
 
 
 
@@ -1905,6 +1905,37 @@ Tarapore, et al.         Expires April 30, 2018                [Page 34]
 
 Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
+
+   Sensitive user data exported from AD-2 to AD-1 as part of logs could
+   be as much as the equivalent of 5-tuple unicast traffic flow
+   accounting (but not more, e.g.: no application level information).
+   As mentioned in Section 7, in unicast, AD-1 could capture these
+   traffic statistics itself because this is all about AD-1 originated
+   traffic flows to EU receivers in AD-2, and operationally passing it
+   from AD-2 to AD-1 may be necessary when IP multicast is used because
+   of the replication happening in AD-2.
+
+   Nevertheless, passing such traffic statistics inside AD-1 from a
+   capturing router to a backend system is likely less subject to third
+   party attacks then passing it interdomain from AD-2 to AD-1, so more
+   diligence needs to be applied to secure it.
+
+   If any protocols used for the operational information exchange are
+   not easily secured at transport layer or higher (because of the use
+   of legacy products or protocols in the network), then AD-1 and AD-2
+   can also consider to ensure that all operational data exchange goes
+   across the same peering point as the traffic and use network layer
+   encryption of the peering point as discussed in before to protect it.
+
+   End-to-end authentication and authorization of EU may involve some
+   kind of token authentication and is done at the application layer
+   independently of the two AD's.  If there are problems related to
+   failure of token authentication when end-users are supported by AD-2,
+   then some means of validating proper working of the token
+   authentication process (e.g., back-end servers querying the multicast
+   application source provider's token authentication server are
+   communicating properly) should be considered.  Implementation details
+   are beyond the scope of this document.
 
    Security Breach Mitigation Plan - In the event of a security breach,
    the two AD's are expected to have a mitigation plan for shutting down
@@ -1922,9 +1953,14 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    user.  The privacy considerations between the EU and AD-1 are
    therefore in general (exception see below) the same as if no IP
    multicast was used, especially because for any privacy conscious
-   content, end-to-end encryption can and should be used (and is well
-   established technology because of DRM - Digital Restrictions
-   Management, see Section 6).
+   content, end-to-end encryption can and should be used.
+
+
+
+Tarapore, et al.         Expires April 30, 2018                [Page 35]
+
+Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
+
 
    Interdomain multicast transport service related information is
    provided by the AD-2 operators to AD-1.  AD-2 is not required to gain
@@ -1954,14 +1990,6 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    to maximize privacy.  Nevertheless, the privacy of the EU against
    AD-2 observing traffic would still be lower than in the equivalent
    setup using unicast, because in unicast, AD-2 could not correlate
-
-
-
-Tarapore, et al.         Expires April 30, 2018                [Page 35]
-
-Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
-
-
    which EUs are watching the same content and use that to deduce the
    content.  Note that even the setup in Section 3.4 where AD-2 is not
    involved in IP multicast at all does not provide privacy against this
@@ -1982,7 +2010,15 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
    Note that IP multicast by nature would permit the EU privacy against
    the countent source operator because unlike unicast, the content
-   source does not natively know which EU is cosuming which content: In
+
+
+
+Tarapore, et al.         Expires April 30, 2018                [Page 36]
+
+Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
+
+
+   source does not natively know which EU is consuming which content: In
    all cases where AD-2 provides replication, only AD-2 does know this
    directly.  This document does not attempt to describe a model that
    does maintain such level of privacy against the content source but
@@ -2011,13 +2047,6 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
    Joel Jaeggli
 
-
-
-Tarapore, et al.         Expires April 30, 2018                [Page 36]
-
-Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
-
-
    Albert Manfredi
 
    Stig Venaas
@@ -2035,6 +2064,15 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    peering-bcp
 
    -13:
+
+
+
+
+
+Tarapore, et al.         Expires April 30, 2018                [Page 37]
+
+Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
+
 
    o  IESG feedback.  Complete details in:
       https://raw.githubusercontent.com/toerless/peering-bcp/master/11-
@@ -2066,14 +2104,6 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
    o  Mirja Kuehlewind: created section 4.1.1 to discuss congestion
       control more detailled, adding reference to BCP145, removed stub
-
-
-
-Tarapore, et al.         Expires April 30, 2018                [Page 37]
-
-Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
-
-
       CC paragraphs from section 3.1 (principle applies to every section
       3.x, and did not want to duplicate text between 3.x and 4.x).
 
@@ -2091,6 +2121,14 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    o  Rewrote security considerations and structured it into key
       aspects: DoS attacks, content protection, peering point encryption
       and operational aspects.
+
+
+
+
+Tarapore, et al.         Expires April 30, 2018                [Page 38]
+
+Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
+
 
    o  Kathleen Moriarty: Added operational aspects to security section
       (also for Alissia), e.g.: covering securing the exchange of
@@ -2119,17 +2157,6 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
               3", RFC 3376, DOI 10.17487/RFC3376, October 2002,
               <https://www.rfc-editor.org/info/rfc3376>.
 
-
-
-
-
-
-
-Tarapore, et al.         Expires April 30, 2018                [Page 38]
-
-Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
-
-
    [RFC3810]  Vida, R., Ed. and L. Costa, Ed., "Multicast Listener
               Discovery Version 2 (MLDv2) for IPv6", RFC 3810,
               DOI 10.17487/RFC3810, June 2004,
@@ -2151,6 +2178,13 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
               Routing Security Issues and Enhancements", RFC 4609,
               DOI 10.17487/RFC4609, October 2006,
               <https://www.rfc-editor.org/info/rfc4609>.
+
+
+
+Tarapore, et al.         Expires April 30, 2018                [Page 39]
+
+Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
+
 
    [RFC7450]  Bumgardner, G., "Automatic Multicast Tunneling", RFC 7450,
               DOI 10.17487/RFC7450, February 2015,
@@ -2174,17 +2208,6 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    [BCP145]   Eggert, L., Fairhurst, G., and G. Shepherd, "UDP Usage
               Guidelines", BCP 145, RFC 8085, DOI 10.17487/RFC8085,
               March 2017, <https://www.rfc-editor.org/info/rfc8085>.
-
-
-
-
-
-
-
-Tarapore, et al.         Expires April 30, 2018                [Page 39]
-
-Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
-
 
 11.2.  Informative References
 
@@ -2212,9 +2235,16 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
               Traceroute Facility for IP Multicast", draft-ietf-mboned-
               mtrace-v2-20 (work in progress), October 2017.
 
+
+
+Tarapore, et al.         Expires April 30, 2018                [Page 40]
+
+Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
+
+
 Authors' Addresses
 
-   Percy S. Tarapore
+   Percy S. Tarapore (editor)
    AT&T
 
    Phone: 1-732-420-4172
@@ -2234,46 +2264,16 @@ Authors' Addresses
    Email: shep@cisco.com
 
 
-
-
-
-Tarapore, et al.         Expires April 30, 2018                [Page 40]
-
-Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
-
-
-   Toerless Eckert
+   Toerless Eckert (editor)
    Futurewei Technologies Inc.
 
-   Email: tte@cs.fau.de
+   Email: tte+ietf@cs.fau.de
 
 
    Ram Krishnan
    SupportVectors
 
    Email: ramkri123@gmail.com
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
