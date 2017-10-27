@@ -1780,6 +1780,7 @@ appropriate information will be shared for the purpose of
 securing the identified breach.</t>
 
 </section>
+</section>
 
 <section title="Privacy Considerations" anchor="privacy">
 
@@ -1839,9 +1840,6 @@ natively know which EU is cosuming which content: In all cases where AD-2 provid
 replication, only AD-2 does know this directly. This document does not attempt
 to describe a model that does maintain such level of privacy against the content
 source but only against exposure to intermediate parties, in this case AD-2.</t>
-
-</section>
-     
 
 
 </section>

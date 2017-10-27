@@ -101,11 +101,11 @@ Table of Contents
      6.2.  Content security  . . . . . . . . . . . . . . . . . . . .  31
      6.3.  Peering encryption  . . . . . . . . . . . . . . . . . . .  33
      6.4.  Operational Aspects . . . . . . . . . . . . . . . . . . .  34
-     6.5.  Privacy Considerations  . . . . . . . . . . . . . . . . .  35
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  36
-   8.  Acknowledgments . . . . . . . . . . . . . . . . . . . . . . .  36
-   9.  Change log [RFC Editor: Please remove]  . . . . . . . . . . .  37
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  38
+   7.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  35
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  36
+   9.  Acknowledgments . . . . . . . . . . . . . . . . . . . . . . .  36
+   10. Change log [RFC Editor: Please remove]  . . . . . . . . . . .  37
+   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  38
 
 
 
@@ -114,8 +114,8 @@ Tarapore, et al.         Expires April 30, 2018                 [Page 2]
 Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
 
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .  38
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  40
+     11.1.  Normative References . . . . . . . . . . . . . . . . . .  38
+     11.2.  Informative References . . . . . . . . . . . . . . . . .  40
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  40
 
 1.  Introduction
@@ -1424,7 +1424,7 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    AD-1 and AD-2 (aka: the (S,G) state and any other feature operational
    state such as DiffServ QoS).
 
-   See Section 6.5 for more discussions about the privacy considerations
+   See Section 7 for more discussions about the privacy considerations
    of the model described here.
 
    Different type of logs are known to help support operations in AD-1
@@ -1853,7 +1853,7 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 6.4.  Operational Aspects
 
    Section 4.3.3 discusses exchange of log information, this section
-   discussed exchange of (S,G) information and Section 6.5 discusses
+   discussed exchange of (S,G) information and Section 7 discusses
    exhange of program information.  All these operational pieces of data
    should by default be exchanged via authenticated and encrypted peer-
    to-peer communication protocols between AD-1 and AD-2 so that only
@@ -1871,11 +1871,10 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    Sensitive user data exported from AD-2 to AD-1 as part of logs could
    be as much as the equivalent of 5-tuple unicast traffic flow
    accounting (but not more, e.g.: no application level information).  A
-   mentioned in Section 6.5, in unicast, AD-1 could capture these
-   traffic statistics itself because this is all about AD-1 originated
-   traffic flows to EU receivers in AD-2, and operationally passing it
-   from AD-2 to AD-1 is necessary because of the replication happening
-   in AD-2.
+   mentioned in Section 7, in unicast, AD-1 could capture these traffic
+   statistics itself because this is all about AD-1 originated traffic
+   flows to EU receivers in AD-2, and operationally passing it from AD-2
+   to AD-1 is necessary because of the replication happening in AD-2.
 
    Nevertheless, passing such traffic statistics inside AD-1 from a
    capturing router to a backend system is likely less subject to third
@@ -1901,6 +1900,7 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
 
 
+
 Tarapore, et al.         Expires April 30, 2018                [Page 34]
 
 Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
@@ -1912,7 +1912,7 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    peering points.  It is also expected that appropriate information
    will be shared for the purpose of securing the identified breach.
 
-6.5.  Privacy Considerations
+7.  Privacy Considerations
 
    The described flow of information about content and the end-user
    described in this document aims to maintain privacy:
@@ -1988,11 +1988,11 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    does maintain such level of privacy against the content source but
    only against exposure to intermediate parties, in this case AD-2.
 
-7.  IANA Considerations
+8.  IANA Considerations
 
    No considerations identified in this document.
 
-8.  Acknowledgments
+9.  Acknowledgments
 
    The authors would like to thank the following individuals for their
    suggestions, comments, and corrections:
@@ -2024,7 +2024,7 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
    Henrik Levkowetz
 
-9.  Change log [RFC Editor: Please remove]
+10.  Change log [RFC Editor: Please remove]
 
    Please see discussion on mailing list for changes before -111.
 
@@ -2105,9 +2105,9 @@ Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
    o  Adam Roach: Fixed up text about MDH-04, added reference to
       RFC4786.
 
-10.  References
+11.  References
 
-10.1.  Normative References
+11.1.  Normative References
 
    [RFC2784]  Farinacci, D., Li, T., Hanks, S., Meyer, D., and P.
               Traina, "Generic Routing Encapsulation (GRE)", RFC 2784,
@@ -2186,7 +2186,7 @@ Tarapore, et al.         Expires April 30, 2018                [Page 39]
 Internet-DraftMulticast Across Inter-Domain Peering Points  October 2017
 
 
-10.2.  Informative References
+11.2.  Informative References
 
    [RFC4786]  Abley, J. and K. Lindqvist, "Operation of Anycast
               Services", BCP 126, RFC 4786, DOI 10.17487/RFC4786,
