@@ -18,7 +18,7 @@
 	<?rfc toc="yes"?>
 	<front>
 	<title abbrev="Multicast Across Inter-Domain Peering Points">Use of Multicast Across Inter-Domain Peering Points</title>
-	<author fullname="Percy S. Tarapore" initials="P.S." surname="Tarapore">
+	<author role="editor" fullname="Percy S. Tarapore" initials="P.S." surname="Tarapore">
 	<organization>AT&amp;T</organization>
 	<address><phone>1-732-420-4172</phone><email>tarapore@att.com</email>
 	</address>
@@ -36,7 +36,7 @@
 	</address>
 	</author>
 
-	<author fullname="Toerless Eckert" initials="T." surname="Eckert">
+	<author role="editor" fullname="Toerless Eckert" initials="T." surname="Eckert">
 	<organization abbrev="Futurewei Technologies">Futurewei Technologies Inc.</organization>
 	<address><email>tte@cs.fau.de</email>
 	</address>
@@ -48,7 +48,7 @@
 	</address>
 	</author>
 
-	<date day="23" month="October" year="2017"/>
+	<date day="27" month="October" year="2017"/>
 	<workgroup>MBONED Working Group</workgroup>
 	<abstract><t>
    This document examines the use of Source Specific Multicast (SSM)
