@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
-<rfc submissionType="IETF" docName="draft-ietf-mboned-interdomain-peering-bcp-13" category="bcp" ipr="trust200902"><?rfc compact="yes"?>
+<rfc submissionType="IETF" docName="draft-ietf-mboned-interdomain-peering-bcp-14" category="bcp" ipr="trust200902"><?rfc compact="yes"?>
 	<?rfc text-list-symbols="ooo*+-"?>
 	<?rfc sortrefs="no"?>
 	<?rfc symrefs="yes"?>
@@ -38,7 +38,7 @@
 	</address>
 	</author>
 
-	<date day="27" month="October" year="2017"/>
+	<date day="30" month="October" year="2017"/>
 	<workgroup>MBONED Working Group</workgroup>
 	<abstract><t>
    This document examines the use of Source Specific Multicast (SSM)
@@ -314,8 +314,7 @@ I2 = AD-2 and EU Multicast Connection
         network environment, then bandwidth can be allocated
         accordingly by the two domains to permit the transit of non-
         rate adaptive multicast traffic. If this is not the case, then
-        it is recommended that the multicast traffic should support
-        rate-adaption.</t>
+        the multicast traffic must support rate-adaption (see <xref target="BCP145"/>).</t>
 
 	<t>The sending and receiving of multicast traffic between two
         domains is typically determined by local policies associated
@@ -1928,7 +1927,7 @@ source but only against exposure to intermediate parties, in this case AD-2.</t>
 
 <section title="Change log [RFC Editor: Please remove]" anchor="changelog">
 
-<t>Please see discussion on mailing list for changes before -111.</t>
+<t>Please see discussion on mailing list for changes before -11.</t>
 <t>-11: version in IESG review.</t>
 <t>-12: XML'ified version of -11, committed solely to make rfcdiff easier. XML versions hosted on https://www.github.com/toerless/peering-bcp</t>
 <t>-13:
@@ -1952,6 +1951,7 @@ source but only against exposure to intermediate parties, in this case AD-2.</t>
     <t>Eric Roscorla: (fixed from other reviews already).</t>
     <t>Adam Roach: Fixed up text about MDH-04, added reference to RFC4786.</t>
 </list></t>
+<t>-13: Fix for Mirja's review on must for congestion control.</t>
 
 	</section>
 
