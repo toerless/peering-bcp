@@ -1,0 +1,492 @@
+> Hi Toerless & Greg,
+> 
+> 
+> 
+> Please see draft responses to all questions inline. Please let me know if I have correctly addressed all questions. In particular, please look at the following to ensure that my response is correct:
+
+> Question 3: Section 1:  We could not find text in Section 2 that relates to this sentence.  Please confirm that "Section 2" is correct here.
+
+I think this was purely textual. On one side we said "multicast stream", on the other "(S,G).
+I modified the response by including (S,G) into the place where we only said "multicast stream" so
+the two text places match up.
+
+> Question 4: Section 3.1:  BCP 145 (RFC 8085) does not mention "rate adaption," and it appears that the RFCs cited in RFC 8085 don't mention it either.  Please confirm that this citation is correct and will be clear to readers who refer to it. Toerless, Greg. Can you please confirm this citation???
+
+I have updated the response below accordingly.
+
+> Question 16: Section 4.2.4:  To what does "above example" refer in this sentence?  Please clarify.
+
+Your answer was correct, Figure 6.
+
+> Question 27: Section 6.2:  Does "a separate network forwarding authentication/authorization scheme" mean "a separate traffic-forwarding authentication/authorization scheme," 
+> "a separate authentication/authorization scheme for forwarding network traffic," or something else?  Please clarify.
+
+Your answer was correct. traffic-forwarding authorization in network as opposed to authorization to get decryption key at application layer.
+
+> Thank you
+> Percy S. Tarapore
+
+So, thanks a lot for all your work.
+
+I did go through the reply, formatted it and did a few formal changes:
+
+3) Suggested text improvement (as discussed above).
+
+4) fixed reply
+
+9) (->MP-BGP)
+
+format/various) changed reply to be consistent with the XML format (eg: "Use Case 3.2" to "Use Case Section 3.2")
+
+15) Ads -> ADs
+
+If you're fine with the below suggested modified reply mail, pls. reply with it to the original mail thread.
+
+
+-----Original Message-----
+To: rfc-editor@rfc-editor.org
+Cc: pt5947@att.com, rs1983@att.com, shep@cisco.com, tte+ietf@cs.fau.de, ramkri123@gmail.com
+Cc: gjshep@gmail.com, lenny@juniper.net, bclaise@cisco.com, warren@kumari.net, tim.chown@jisc.ac.uk
+Subject: Re: [LB] Questions about draft-ietf-mboned-interdomain-peering-bcp-14.txt
+
+> Dear authors,
+> While editing draft-ietf-mboned-interdomain-peering-bcp-14, we have the following questions.
+> Please reply so that your document will move forward in the publication process.
+> Thank you.
+> 
+> RFC Editor/lb
+
+Thank you so much for your work
+
+Please find below reply to your suggestions, in most cases we accept your proposed changes verbatim.
+
+We have also folded your proposed changes and our below suggested fixes into an update of the version of the draft we have on github. Just in case this is of any help to you:
+
+Latest XML:
+
+https://raw.githubusercontent.com/toerless/peering-bcp/master/draft-ietf-mboned-interdomain-peering-bcp-14-2.xml
+
+Diff between -14 you used and the text version of fixed version (-14-2):
+
+http://tools.ietf.org/tools/rfcdiff/rfcdiff.pyht?url1=https://raw.githubusercontent.com/toerless/peering-bcp/master/draft-ietf-mboned-interdomain-peering-bcp-14.txt&url2=https://raw.githubusercontent.com/toerless/peering-bcp/master/draft-ietf-mboned-interdomain-peering-bcp-14-2.txt
+
+Percy & Toerless (for the authors).
+
+
+> 1) Section 1:  We had trouble following this sentence, because we do not see AD-1 referred to as the multicast source in any other text in this document.  Please clarify "AD-1 that this document refers to as the multicast source."
+>
+> Original:
+> 
+> To support that additional service, it is  recommended to use some method (outside the scope of this
+> 
+> document) by which the content from EUs is transmitted to the  application in AD-1 that this document refers to as the  multicast source and let it send out the traffic as IP  multicast.
+
+Analysis:
+   This concern is very narrowly looking at the term "multicast source" and the doc uses looser statements about AD-1 in various places, eg: "Administrative Domain 1 (AD-1) sources content to one or more End Users (EUs)" (content, not multicast), or "one or more application sources in AD-1 which will send multicast IP packets "... (content source sends the multicast, not "AD-1" sends it,...)
+
+   In any case, this side sentence is redundant and best be removed.
+
+Authors Change:
+    Delete the phrase “that this document refers to as the multicast source” from the sentence as follows:
+
+Result
+    “This document does not detail the case where EUs are originating content.  To support that additional service, it is recommended to use some method (outside the scope of this document) by which the content from EUs is transmitted to the application in AD-1 and let it send out the traffic as IP multicast.”
+
+
+> 2) Section 1:  Because Section 4.2.2 does not mention IXPs, we changed the citation to point to Section 4.2.4.  Please let us know if this is incorrect.
+> 
+> Original (the previous sentence is included for context):
+> 
+> The other case is that of a broadcast peering  point which is a common option in public Internet Exchange Points  (IXP).  See Section 4.2.2 for more details about that option.
+>
+>Currently:
+>
+>The other case is that of a broadcast peering  point, which is a common option in public Internet Exchange Points  (IXPs).  See Section 4.2.4 for more details.
+
+Author’s Response:
+   This change is correct. Please change the sentence as recommended
+
+> 3) Section 1:  We could not find text in Section 2 that relates to this sentence.  Please confirm that "Section 2" is correct here.
+> 
+> Original:
+> 
+> o  As described in Section 2, the source IP address of the multicast stream in the originating AD (AD-1) is known.
+
+
+Author’s Response:
+   Section 2 is correct. The following statement in Section 2 confirms the source IP address:
+
+  “The application client joins appropriate (S,G)s in order to receive the data necessary to provide the service to the EU.”. The phrase (S,G) refers to the Source ID and Group ID.
+
+Change:
+     Added reference to (S,G) to original sentence to easier match it to the sentence in question:
+
+     As described in Section 2, the source IP address of the (so called (S,G)) multicast stream in the originating AD (AD-1) is known.
+
+
+> 4) Section 3.1:  BCP 145 (RFC 8085) does not mention "rate adaption," and it appears that the RFCs cited in RFC 8085 don't mention it either.  Please confirm that this citation is correct and will be clear to readers who refer to it.
+> 
+> Original:
+> 
+> If this is not the case, then the multicast  traffic must support rate-adaption (see [BCP145]).
+
+Comment:
+
+If you read BCP145 you will see terms such as "adapt the sending rate", but the whole doc always tries
+to use the term "congestion control" because thats the goal. "rate adaptation" is the preferred mechanism.
+The other one is to stop the traffic ;-)
+
+Change to:
+
+If this is not the case, then the multicast  traffic must support congestion control via any of the
+mechanisms described in <xref target="BCP145"/>, section 4.1.
+
+> 5) Section 3.2:  Should "can or should not be enabled" be "cannot be or should not be enabled," "can be enabled or should not be enabled," or something else?  Please clarify.
+> 
+> 
+> Original ("choosen" and "physcially" have been corrected):
+>  Normally, this approach is choosen if the uBR physcially connected to  the peering link can or should not be enabled for IP multicast.
+
+Author’s Response: 
+  The correct sentence should be as follows:
+
+Normally, this approach is chosen if the uBR physically connected to  the peering link cannot or should not be enabled for IP multicast.
+
+> 6) Section 3.2:  For ease of the reader, we expanded "SAFI"
+> 
+> as "Subsequent Address Family Identifier."  Please let us know if this is incorrect.
+>
+> Original:
+> The routing configuration is basically unchanged: Instead of BGP (SAFI2) across the native IP multicast link between AD-1 and AD-2,  BGP (SAFI2) is now run across the GRE tunnel.
+>
+> Currently:
+> 
+> The routing configuration is basically unchanged: instead of running  BGP (SAFI-2) ("SAFI" stands for "Subsequent Address Family Identifier") across the native IP multicast link between AD-1 and  AD-2, BGP (SAFI-2) is now run across the GRE tunnel.
+
+Author’s Response: This addition is correct.
+
+
+> 7) Section 3.2:  Does "the fully native multicast Use Case" refer to a specific use case/section in this document, or is it used generally?
+>
+>Original:
+>
+>o  Highly efficient use of bandwidth in both domains, although not as efficient as the fully native multicast Use Case.
+
+Author’s Response:
+    This refers to Use Case 3.1. Please add the following to the sentence:
+
+"the fully native multicast Use Case (Section 3.1)"
+                                     ^^^^^^^^^^^^^
+
+> 8) Figure 5:  "AMT Relay and Relays" looks odd.  Should it be "AMT Relays," or perhaps "AMT Gateways and Relays"?
+> 
+> Original:
+> 
+> Figure 5: AMT Tunnel Connecting AMT Relay and Relays
+
+Author’s Response:
+   Please change text to:
+
+AMT Tunnel Connecting AMT Gateways and Relays
+
+> 9) Section 4.1:  "MBGP" is not used anywhere in RFC 4760.
+>
+> "MBGP" can stand for "Multicast BGP" (per RFC 5760) or "Multiprotocol BGP" (per RFC 6831).  Please let us know how we should cite "MBGP" here (and expand it in the legend for Figure 1) for ease of the reader.
+>
+>Original:
+>
+>o  Peering Point Protocol Support - Multicast protocols that will be used for multicast delivery will need to be supported at these points.  Examples of protocols include eBGP [RFC4760] and MBGP [RFC4760].
+
+Author’s Response (toerless):
+ Yes, MBGP is a really bad term because it's confused between the two meanings that you see those example RFCs
+ (multicast or multiprotocol).  Best to avoid the term.
+
+Change:
+ Examples of protocols include eBGP (exterior BGP peering) via MP-BGP (MultiProtocol BGP) SAFI-2 (RFC4760).
+ Also: Change any other occurance of MBGP to MP-BGP. (in pictures)
+
+
+> 10) Section 4.1.1:  We had trouble parsing this sentence.
+> 
+> Please clarify "and of not ..."
+> 
+> Original:
+> 
+> In many instances, multicast content delivery evolves from intra-  domain deployments where it is handled as a controlled network  service and of not complyng to congestion control principles.
+> 
+> Possibly:
+> 
+> In many instances, multicast content delivery evolves from  intra-domain deployments where it is handled as a controlled network  service and does not comply with congestion control principles.
+
+Author’s Response:
+    Please replace with your suggested change.
+
+> 11) Section 4.1.1:  This sentence did not parse.  We updated it as follows.  Please let us know if this is incorrect.
+> 
+> Original:
+> 
+> Because rate adaption in IP unicast video is  commonplace today because of ABR (Adaptive Bitrate Video), it is very  unlikely for this to happen though in reality with IP unicast.
+> 
+> Currently:
+> 
+> Note that because rate adaption in IP unicast video is commonplace today due to the  availability of ABR (Adaptive Bitrate Video), it is very unlikely  that this will happen in reality with IP unicast.
+
+Author’s Response:
+   Please replace with your suggested change
+
+
+> 12) Section 4.2.2:  As there is no "Use Case 3.2.2," we changed "3.2.2" to "3.2"; please let us know if this is incorrect.
+> 
+> Original:
+> 
+> If the interconnecting peering point is not multicast enabled and  both AD's are multicast enabled, then a simple solution is to  provision a GRE tunnel between the two AD's - see Use Case 3.2.2.
+> 
+> Currently:
+> 
+> If the interconnecting peering point is not multicast enabled and  both ADs are multicast enabled, then a simple solution is to  provision a GRE tunnel between the two ADs; see Use Case 3.2.
+
+Author’s Response: Please change to "see Use Case Section 3.2."
+
+
+> 13) Section 4.2.3:  This sentence does not parse.  Please clarify "and Anycast IP addresses process for Use Cases ..."
+>
+> Original:
+>
+> An illustrative example of a relay selection based on DNS queries and  Anycast IP addresses process for Use Cases 3.4 and 3.5 is described  here.
+
+Author’s Response: Please change the sentence to:
+
+  An illustrative example of a relay selection based on DNS queries as part of an Anycast IP address process is described here for the Use Cases in Section 3.4 and Section 3.5.
+
+
+> 14) Section 4.2.4:  We changed "do contract this content" to "contact this content" per "The customer contacts content source" in Section 4.3.2.  Please let us know if this is incorrect.
+>
+> Original:
+> 
+> Assume one or more IP multicast (S,G) traffic streams can be served  by both AD-1a and AD-1b, for example because both AD-1a and AD-1b do  contract this content from the same content source.
+> 
+> Currently:
+> 
+> Assume that one or more IP multicast (S,G) traffic streams can be  served by both AD-1a and AD-1b - for example, because both AD-1a and  AD-1b contact this content from the same content source.
+
+
+Author’s Response: This change is correct
+
+
+> 15) Section 4.2.4:  Does "upstreams" refer to upstream BRs, upstream domains, upstream ADs, or something else?  Please clarify.
+> 
+> Original:
+>
+> 3.  The LAN has multiple upstreams, but they are federated and agree on a consistent policy for IP multicast traffic across the LAN.
+
+Author’s Response: Change to:
+    The LAN has multiple upstream ADs
+
+
+> 16) Section 4.2.4:  To what does "above example" refer in this sentence?  Please clarify.
+> 
+> Original:
+>
+>Another policy is that sources are redundantly  announced (problematic case mentioned in above example), but the  upstream domains also provide mutual operational insight to help  troubleshooting (outside the scope of this document).
+
+Author’s Response: Please change text to:
+
+“problematic case described for the Figure-6 example above”
+
+> 17) Section 4.3.1:  To what does "these" refer in this sentence?
+> 
+> Original:
+> 
+> o  Routing protocols as needed, e.g. configuring routers to support these.
+
+Author’s Response: Please delete the entire bullet.
+
+> 18) Section 4.3.1:  Should "ISP backbones, peering and access networks" be "ISP backbones, peering points, and access networks," "ISP backbones, peering links, and access networks," or something else?
+> 
+> Original:
+> 
+> Native multicast functionality is assumed to be available across many  ISP backbones, peering and access networks.
+
+Author’s Response: Change to:
+
+Native multicast functionality is assumed to be available across many  ISP backbones, peering points, and access networks.
+
+
+> 19) Section 4.3.2:  To what does "propagate the issue" refer in this sentence?  Does it mean "communicate the problem," "convey the customer's request," or something else?  Please clarify.
+> 
+> Original:
+> 
+> The reason to specifically mention the need for AD-1 to initiate  interactions with AD-2 (and use some account for that), as opposed to  the opposite direction is based on the recommended workflow initiated  by customers (see Section 4.4): The customer contacts content source  (part of AD-1), when AD-1 sees the need to propagate the issue, it  will interact with AD-2 using the aforementioned guidelines.
+
+
+Author’s Response: Please change the sentence to:
+
+The customer contacts the content source which is part of AD-1. Consequently, if AD-1 sees the need to escalate the issue to AD-2, it  will interact with AD-2 using the aforementioned guidelines.
+
+
+> 20) Section 4.3.3:  It appears that some words are missing from this sentence (e.g., possibly a citation for another section instead of "in before" and "the content source and on its behalf AD-1").
+> 
+> Please clarify.
+>
+> Original:
+>
+> The basic model as explained in before is that the content source and  on its behalf AD-1 take over primary responsibility for customer  experience and the AD-2's support this.
+
+Author’s Response: Change the sentence to:
+
+Specifically, AD-1 takes over primary responsibility for customer experience on behalf of the content source with support from AD-2 as needed.
+
+> 21) Section 4.4:  Which use cases are referred to here?
+> 
+> Please clarify.
+>
+>Original (the previous sentence is included for context):
+>
+>o  AD-2 may experience some problems in its network.  For example, for the AMT Use Cases, one or more AMT Relays may be experiencing difficulties.
+>
+>Possibly:
+>
+>For example, in Use Case 3.3 or Use Case 3.4, one or more AMT relays may be  experiencing difficulties.
+
+Author’s Response: Change the sentence to:
+
+For example, for the AMT Use Cases (Use Cases Section 3.3, Section 3.4, and Section 3.5), one or more AMT Relays may be experiencing difficulties.
+
+> 22) Section 4.4:  What does "CP" stand for in this phrase?
+>
+>Original:
+>
+o  Analysis of the problem information provided by the customer (CP).
+
+Author’s Response: Please delete the term “(CP)”
+
+> 23) Section 6.1:  This sentence does not parse.  If the suggested text is not correct, please clarify "solutions that consider bandwidth consumed exist as vendor specific feature in routers."
+>
+> Original:
+>
+> Simple solutions such as limiting the maximum number of joined (S,G) per EU are readily available,  solutions that consider bandwidth consumed exist as vendor specific  feature in routers.
+>
+> 
+> Suggested:
+> 
+> Simple solutions such as limiting the maximum number of joined (S,G)s per EU are readily available; solutions that take consumed bandwidth into account are available as vendor-specific features in routers.
+
+Author’s Response: We accept the suggested change.
+
+> 24) Section 6.1:  We could not see in Use Case 3.4 how the AMT relay in AD-1 is "that last replication point."  Please confirm that the reference to Use Case 3.4 is correct here.
+> 
+> Original:
+>
+> Note that this is primarily a non-peering issue  in AD-2, it only becomes a peering issue if the peering-link itself  is not big enough to carry all possible content from AD-1 or in case 3.4 where the AMT relay in AD-1 is that last replication point.
+
+
+Author’s Response: The statement is correct. Per Figure 3, the AMT Tunnel extends from the AMT Relay in AD-1 all the way to the EU/G. Ths the AMT Relay in AD-1 is indeed the last replication point. No change is necessary.
+
+> 25) Section 6.2:  For ease of the reader, we expanded "OTT" as "Over the Top."  Please let us know if this is incorrect.
+>
+> Original:
+> It is also the model used in Internet OTT video delivery.
+>
+> Currently: It is also the model used in Internet "Over the Top" (OTT) video delivery.
+
+Author’s Response: We accept the suggested change
+
+> 26) Section 6.2:  This sentence does not parse.  Please clarify "only copy deliver thast is used in unicast."
+>
+>
+> Original (the previous sentence is included for context):
+>
+> To mitigate this issue, the last replication point that is creating (S,G) copies to EUs would need to permit those copies only after  authentication of EUs.  This would establish the same authenticated  EU only copy deliver thast is used in unicast.
+
+Author’s Response: Please change the sentence to:
+
+This would establish the same authenticated EU only copy that is used in unicast.
+
+> 27) Section 6.2:  Does "a separate network forwarding authentication/authorization scheme" mean "a separate traffic-forwarding authentication/authorization scheme," "a separate authentication/authorization scheme for forwarding network traffic," or something else?  Please clarify.
+>
+> Original:
+> Such schemes are technically not difficult to build and would avoid creating and  maintaining a separate network forwarding authentication/  authorization scheme decoupled from the end-to-end authentication/  authorization system of the application.
+
+Author’s Response: Please change “forwarding authentication/authorization scheme” to “traffic-forwarding authentication/authorization scheme”
+
+> 28) Section 6.3:  Does "defined high bars" mean "defined strict constraints," or something else?  Please clarify.
+>
+> Original:
+> 
+> In the case of a private peering link, IP multicast does not have  attack vectors on a peering link different from those of IP unicast,  but the content owner may have defined high bars against  unauthenticated copying of even the end-to-end encrypted content, and  in this case AD-1/AD-2 can agree on additional transport encryption  across that peering link.
+
+Author’s Response: Please change “defined high bars” to “defined strict constraints”
+
+> 29) Section 6.3:  This sentence does not parse.  Please clarify "the information what content is being consumed."
+>
+> Original ("the the" has been corrected):
+> It not only prohibits possible "leakage" of content, but also to protects the the information what  content is being consumed in AD-2 (aggregated privacy protection).
+
+Author’s Response: Please change the sentence to:
+
+It not only prohibits possible "leakage" of content, but also protects the information on what content is being consumed in AD-2 (aggregated privacy protection).
+
+> 30) Section 6.4:  In this section,"(S,G)" is only mentioned in the last sentence of the first paragraph of this section.  Please confirm that "this section" is correct here.
+>
+> 
+> Original ("exhange" has been corrected):
+> 
+> Section 4.3.3 discusses exchange of log information, this section  discussed exchange of (S,G) information and Section 7 discusses  exhange of program information.
+
+Author’s Response: Please change the sentence to:
+
+Section 4.3.3 discusses exchange of log information and Section 7 discusses exchange of program information.
+
+> 31) Section 6.4:  It appears that either (1) a citation for another section might be missing from this sentence or (2) "in before" should be "before" (assuming that readers will know where to look for the information).  Please clarify "as discussed in before to protect it."
+>
+> 
+> Original:
+> 
+> If any protocols used for the operational information exchange are  not easily secured at transport layer or higher (because of the use  of legacy products or protocols in the network), then AD-1 and AD-2  can also consider to ensure that all operational data exchange goes  across the same peering point as the traffic and use network layer  encryption of the peering point as discussed in before to protect it.
+
+Author’s Response: Please change the phrase “"as discussed in before to protect it." to “as previously discussed.”
+
+> 32) Section 7:  We had trouble parsing this sentence.  We updated it as follows.  Please let us know if this is incorrect.
+>
+> Original:
+> 
+> AD-2 is not required to gain additional insight into the user behavior through this process that  it would not already have without the service collaboration with AD-1 - unless AD-1 and AD-2 agree on it and get approval from the EU.
+>
+> Currently:
+> 
+> AD-2 is not required to gain additional insight into the user's behavior through this process  other than what it would already have without service collaboration  with AD-1, unless AD-1 and AD-2 agree on it and get approval from  the EU.
+
+Author’s Response: We accept the suggested change
+
+> 33) Please let us know if any changes are needed for the following:
+> 
+> a) The following terms were used inconsistently in this document. We chose to use the latter forms. Please let us know any objections.
+>
+> 
+> "S,G" / (S,G)
+>
+> AMT Relay / AMT relay (in text) (per RFC 7450)  AMT Gateway / AMT gateway (in text) (per RFC 7450)  GRE Tunnel / GRE tunnel (in text)
+
+> (per RFC 2784 and per more common usage in post-6000 published RFCs)  Native Multicast / native multicast (in text) (per RFC 7450)  Application Source (in text; 4 instances in Section 4.3.1) /  application source group (or stream) id / group (or stream) ID
+
+Author’s Response: No objections to the recommended changes
+Also: Relay/Gateway are also sometimes used standalone without AMT prefix (lazy). Should also be lowercased in those cases (outside of titles/pictures).
+
+> b) We changed the following variations to "AS = multicast (e.g., content) Application Source."  Please let us know any objections.
+>
+>AS = Application (e.g., Content) Multicast Source /
+>
+>   AS = Application Multicast Source /
+>
+>   AS = Application Source
+
+Author’s Response: No objections to the recommended changes
+
+
+> Title                  : Use of Multicast Across Inter-Domain Peering Points
+> Author(s)              : P. Tarapore,  Ed.,
+>                          R. Sayko,  G. Shepherd,
+>                          T. Eckert,  Ed.,
+>                          R. Krishnan
+> Working Group Chair(s) : Greg Shepherd, Leonard Giuliano
+> Area Director(s)       : Benoit Claise, Warren Kumari
