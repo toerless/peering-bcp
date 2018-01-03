@@ -1,0 +1,2212 @@
+<html><head><title>wdiff rfc8313.original rfc8313.txt</title></head><body>
+<pre>
+
+<strike><font color='red'>MBONED Working Group</font></strike>
+<strong><font color='green'>Internet Engineering Task Force (IETF)</font></strong>                  P. Tarapore, Ed.
+<strike><font color='red'>Internet-Draft</font></strike>
+<strong><font color='green'>Request for Comments: 8313</font></strong>                                      R. Sayko
+<strike><font color='red'>Intended status:</font></strike>
+<strong><font color='green'>BCP: 213                                                            AT&amp;T
+Category:</font></strong> Best Current Practice                              <strike><font color='red'>AT&amp;T
+Expires: May 3, 2018</font></strike>                              G. Shepherd
+<strong><font color='green'>ISSN: 2070-1721</font></strong>                                                    Cisco
+                                                          T. Eckert, Ed.
+                                                                  Huawei
+                                                             R. Krishnan
+                                                          SupportVectors
+                                                        <strike><font color='red'>October 30,</font></strike>
+                                                           <strong><font color='green'>December</font></strong> 2017
+
+          Use of Multicast <strike><font color='red'>Across Inter-Domain</font></strike> <strong><font color='green'>across Inter-domain</font></strong> Peering Points
+              <strike><font color='red'>draft-ietf-mboned-interdomain-peering-bcp-14</font></strike>
+
+Abstract
+
+   This document examines the use of <strike><font color='red'>Source Specific</font></strike> <strong><font color='green'>Source-Specific</font></strong> Multicast (SSM)
+   across inter-domain peering points for a specified set of deployment
+   scenarios.  The <strike><font color='red'>objective is</font></strike> <strong><font color='green'>objectives are</font></strong> to <strong><font color='green'>(1)</font></strong> describe the setup process for
+   multicast-based delivery across administrative domains for these
+   scenarios and <strong><font color='green'>(2)</font></strong> document supporting functionality to enable this
+   process.
+
+Status of This Memo
+
+   This <strike><font color='red'>Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working</font></strike> <strong><font color='green'>memo</font></strong> documents <strong><font color='green'>an Internet Best Current Practice.
+
+   This document is a product</font></strong> of the Internet Engineering Task Force
+   (IETF).  <strike><font color='red'>Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list</font></strike>  <strong><font color='green'>It represents the consensus</font></strong> of <strike><font color='red'>current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid</font></strike> <strong><font color='green'>the IETF community.  It has
+   received public review and has been approved</font></strong> for <strike><font color='red'>a maximum</font></strike> <strong><font color='green'>publication by the
+   Internet Engineering Steering Group (IESG).  Further information on
+   BCPs is available in Section 2 of RFC 7841.
+
+   Information about the current status</font></strong> of <strike><font color='red'>six months</font></strike> <strong><font color='green'>this document, any errata,</font></strong>
+   and <strong><font color='green'>how to provide feedback on it</font></strong> may be <strike><font color='red'>updated, replaced, or obsoleted by other documents</font></strike> <strong><font color='green'>obtained</font></strong> at <strike><font color='red'>any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on May 3, 2018.</font></strike>
+   <strong><font color='green'>https://www.rfc-editor.org/info/rfc8313.</font></strong>
+
+Copyright Notice
+
+   Copyright (c) 2017 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (https://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
+   2.  Overview of Inter-domain Multicast Application Transport  . .   5
+   3.  Inter-domain Peering Point Requirements for Multicast . . . .   6
+     3.1.  Native Multicast  . . . . . . . . . . . . . . . . . . . .   <strike><font color='red'>7</font></strike>   <strong><font color='green'>6</font></strong>
+     3.2.  Peering Point Enabled with GRE Tunnel . . . . . . . . . .   8
+     3.3.  Peering Point Enabled with <strike><font color='red'>an</font></strike> AMT - Both Domains Multicast
+           Enabled . . . . . . . . . . . . . . . . . . . . <strong><font color='green'>. . . . .</font></strong>  10
+     3.4.  Peering Point Enabled with <strike><font color='red'>an</font></strike> AMT - AD-2 Not Multicast
+           Enabled . . . . . . . . . . . . . . . . . . . . . . . . .  <strike><font color='red'>12</font></strike>  <strong><font color='green'>11</font></strong>
+     3.5.  AD-2 Not Multicast Enabled - Multiple AMT Tunnels <strike><font color='red'>Through</font></strike> <strong><font color='green'>through</font></strong>
+           AD-2  . . . . . . . . . . . . . . . . . . . . . . . . . .  <strike><font color='red'>14</font></strike>  <strong><font color='green'>13</font></strong>
+   4.  Functional Guidelines . . . . . . . . . . . . . . . . . . . .  <strike><font color='red'>16</font></strike>  <strong><font color='green'>15</font></strong>
+     4.1.  Network Interconnection Transport Guidelines  . . . . . .  16
+       4.1.1.  Bandwidth Management  . . . . . . . . . . . . . . . .  16
+     4.2.  Routing Aspects and Related Guidelines  . . . . . . . . .  18
+       4.2.1.  Native Multicast Routing Aspects  . . . . . . . . . .  19
+       4.2.2.  GRE Tunnel over Interconnecting Peering Point . . . .  19
+       4.2.3.  Routing Aspects with AMT Tunnels  . . . . . . . . . .  20
+       4.2.4.  Public Peering Routing Aspects  . . . . . . . . . . .  22
+     4.3.  <strike><font color='red'>Back Office</font></strike>  <strong><font color='green'>Back-Office</font></strong> Functions - Provisioning and Logging
+           Guidelines  . . . . . . . . . . . . . . . . . . . . . . .  <strike><font color='red'>23</font></strike>  <strong><font color='green'>24</font></strong>
+       4.3.1.  Provisioning Guidelines . . . . . . . . . . . . . . .  24
+       4.3.2.  <strike><font color='red'>Interdomain</font></strike>  <strong><font color='green'>Inter-domain</font></strong> Authentication Guidelines  . . . . . . . <strike><font color='red'>.</font></strike>  25
+       4.3.3.  <strike><font color='red'>Log Management</font></strike>  <strong><font color='green'>Log-Management</font></strong> Guidelines . . . . . . . . . . . . . .  26
+     4.4.  Operations - Service Performance and Monitoring
+           Guidelines  . . . . . . . . . . . . . . . . . . . . . . .  27
+     4.5.  Client Reliability <strike><font color='red'>Models/Service</font></strike> <strong><font color='green'>Models / Service</font></strong> Assurance Guidelines  <strike><font color='red'>.</font></strike>   29
+     4.6.  Application Accounting Guidelines . . . . . . . . . . . .  29
+   5.  Troubleshooting and Diagnostics . . . . . . . . . . . . . . .  <strike><font color='red'>29</font></strike>  <strong><font color='green'>30</font></strong>
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  <strike><font color='red'>30</font></strike>  <strong><font color='green'>31</font></strong>
+     6.1.  DoS <strike><font color='red'>attacks</font></strike> <strong><font color='green'>Attacks</font></strong> (against <strike><font color='red'>state</font></strike> <strong><font color='green'>State</font></strong> and <strike><font color='red'>bandwidth)</font></strike> <strong><font color='green'>Bandwidth)</font></strong> . . . . . . . .  <strike><font color='red'>30</font></strike>  <strong><font color='green'>31</font></strong>
+     6.2.  Content Security  . . . . . . . . . . . . . . . . . . . .  32
+     6.3.  Peering Encryption  . . . . . . . . . . . . . . . . . . .  34
+     6.4.  Operational Aspects . . . . . . . . . . . . . . . . . . .  <strike><font color='red'>34</font></strike>  <strong><font color='green'>35</font></strong>
+   7.  Privacy Considerations  . . . . . . . . . . . . . . . . . . .  <strike><font color='red'>35</font></strike>  <strong><font color='green'>36</font></strong>
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  37
+   9.  <strike><font color='red'>Acknowledgments . . . . . . . . .</font></strike>  <strong><font color='green'>References</font></strong>  . . . . . . . . . . . . . .  <strike><font color='red'>37
+   10. Change log [RFC Editor: Please remove]</font></strike> . . . . . . . . . . .  37
+   <strike><font color='red'>11.</font></strike>
+     <strong><font color='green'>9.1.  Normative</font></strong> References  . . . . . . . . . . . . . . . . . .  <strong><font color='green'>37
+     9.2.  Informative References</font></strong>  . . . . . . .  <strike><font color='red'>39
+     11.1.  Normative References</font></strike> . . . . . . . . . .  <strong><font color='green'>39
+   Acknowledgments</font></strong> . . . . . . . .  <strike><font color='red'>39
+     11.2.  Informative References</font></strike> . . . . . . . . . . . . . . . . .  <strike><font color='red'>40</font></strike>  <strong><font color='green'>39</font></strong>
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  <strike><font color='red'>41</font></strike>  <strong><font color='green'>40</font></strong>
+
+1.  Introduction
+
+   Content and data from several types of applications (e.g., live video
+   streaming, software downloads) are well suited for delivery via
+   multicast means.  The use of multicast for delivering such content or
+   other data offers significant savings <strong><font color='green'>in terms</font></strong> of utilization of
+   resources in any given administrative domain.  End <strike><font color='red'>user</font></strike> <strong><font color='green'>User (EU)</font></strong> demand
+   for such content or other data is growing.  Often, this requires
+   transporting the content or other data across administrative domains
+   via inter-domain peering points.
+
+   The <strike><font color='red'>objective</font></strike> <strong><font color='green'>objectives</font></strong> of this <strike><font color='red'>Best Current Practices</font></strike> document <strike><font color='red'>is</font></strike> <strong><font color='green'>are</font></strong> twofold:
+
+   o  Describe the technical process and establish guidelines for
+      setting up multicast-based delivery of application content or
+      other data across inter-domain peering points via a set of
+      use
+      <strike><font color='red'>cases.</font></strike> <strong><font color='green'>cases (where "Use Case 3.1" corresponds to Section 3.1,
+      "Use Case 3.2" corresponds to Section 3.2, etc.).</font></strong>
+
+   o  Catalog all required <strong><font color='green'>exchanges of</font></strong> information <strike><font color='red'>exchange</font></strike> between the
+      administrative domains to support multicast-based delivery.  This
+      enables operators to initiate necessary processes to support
+      inter-domain peering with multicast.
+
+   The scope and assumptions for this document are as follows:
+
+   o  Administrative Domain 1 (AD-1) sources content to one or more <strike><font color='red'>End
+      Users (EUs)</font></strike> <strong><font color='green'>EUs</font></strong>
+      in one or more Administrative Domain 2 <strike><font color='red'>(AD-2).</font></strike> <strong><font color='green'>(AD-2) entities.</font></strong>  AD-1 and
+      AD-2 want to use IP multicast to allow <strike><font color='red'>supporting</font></strike> <strong><font color='green'>support for</font></strong> large and
+      growing EU <strike><font color='red'>populations</font></strike> <strong><font color='green'>populations,</font></strong> with <strong><font color='green'>a</font></strong> minimum amount of duplicated
+      traffic to send across network links.
+
+      <strike><font color='red'>o</font></strike>
+
+      <strong><font color='green'>*</font></strong>  This document does not detail the case where EUs are
+         originating content.  To support that additional service, it is
+         recommended <strike><font color='red'>to use</font></strike> <strong><font color='green'>that</font></strong> some method (outside the scope of this
+         document) <strong><font color='green'>be used</font></strong> by which the content from EUs is transmitted
+         to the application in AD-1 <strike><font color='red'>that this document refers to as the
+         multicast source</font></strike> and <strike><font color='red'>let it</font></strike> <strong><font color='green'>AD-1 can</font></strong> send out the traffic as
+         IP multicast.  From that point on, the descriptions in this
+         document apply, except that they are not complete because they
+         do not cover the transport or operational aspects of the leg
+         from <strong><font color='green'>the</font></strong> EU to AD-1.
+
+      <strike><font color='red'>o</font></strike>
+
+      <strong><font color='green'>*</font></strong>  This document does not detail the case where AD-1 and AD-2 are
+         not directly connected to each other <strike><font color='red'>but only</font></strike> <strong><font color='green'>and are instead connected</font></strong>
+         via one or more
+         <strike><font color='red'>AD-3 (transit providers).</font></strike> <strong><font color='green'>other ADs (as opposed to a peering point) that
+         serve as transit providers.</font></strong>  The cases described in this
+         document where tunnels are used between AD-1 and AD-2 can be
+         applied to such scenarios, but SLA ("Service Level Agreement") <strike><font color='red'>control</font></strike>
+         <strong><font color='green'>control,</font></strong> for
+         <strike><font color='red'>example</font></strike> <strong><font color='green'>example,</font></strong> would be different.  <strike><font color='red'>Other additional</font></strike>  <strong><font color='green'>Additional</font></strong> issues
+         will likely exist as well in such scenarios.  This <strong><font color='green'>topic</font></strong> is
+         <strong><font color='green'>left</font></strong> for further study.
+
+   o  For the <strike><font color='red'>purpose</font></strike> <strong><font color='green'>purposes</font></strong> of this document, the term "peering point" refers
+      to a network connection ("link") between two administrative
+      network domains over which traffic is exchanged between them.
+      This is also referred to as a Network-to-Network Interface (NNI).
+      Unless otherwise noted, <strike><font color='red'>the peering point</font></strike> <strong><font color='green'>it</font></strong> is assumed <strike><font color='red'>to be</font></strike> <strong><font color='green'>that the peering point is</font></strong> a
+      private peering point, where the network connection is a
+      physically or virtually isolated network connection solely between
+      AD-1 and AD-2.  The other case is that of a broadcast peering
+      <strike><font color='red'>point</font></strike>
+      <strong><font color='green'>point,</font></strong> which is a common option in public Internet Exchange Points
+      <strike><font color='red'>(IXP).</font></strike>
+      <strong><font color='green'>(IXPs).</font></strong>  See Section <strike><font color='red'>4.2.2</font></strike> <strong><font color='green'>4.2.4</font></strong> for more <strike><font color='red'>details about that option.</font></strike> <strong><font color='green'>details.</font></strong>
+
+   o  <strike><font color='red'>Administrative Domain 1 (AD-1)</font></strike>  <strong><font color='green'>AD-1</font></strong> is enabled with native multicast.  A peering point exists
+      between AD-1 and AD-2.
+
+   o  It is understood that several protocols are available for this
+      <strike><font color='red'>purpose</font></strike>
+      <strong><font color='green'>purpose,</font></strong> including <strike><font color='red'>PIM-SM</font></strike> <strong><font color='green'>Protocol-Independent Multicast - Sparse Mode
+      (PIM-SM)</font></strong> and <strike><font color='red'>Protocol Independent</font></strike> <strong><font color='green'>Protocol-Independent</font></strong> Multicast -
+      <strike><font color='red'>Source Specific</font></strike> <strong><font color='green'>Source-Specific</font></strong>
+      Multicast (PIM-SSM) [RFC7761], <strong><font color='green'>the</font></strong> Internet Group Management
+      Protocol (IGMP) [RFC3376], and Multicast Listener Discovery (MLD)
+      [RFC3810].
+
+   o  As described in Section 2, the source IP address of the <strong><font color='green'>(so-called
+      "(S,G)")</font></strong> multicast stream in the originating AD (AD-1) is known.
+      Under this condition, <strong><font color='green'>using</font></strong> PIM-SSM <strike><font color='red'>use</font></strike> is <strike><font color='red'>beneficial</font></strike> <strong><font color='green'>beneficial,</font></strong> as it allows
+      the receiver's upstream router to <strike><font color='red'>directly</font></strike> send a <strike><font color='red'>JOIN</font></strike> <strong><font color='green'>join</font></strong> message <strong><font color='green'>directly</font></strong> to
+      the source without the need <strike><font color='red'>of invoking</font></strike> <strong><font color='green'>to invoke</font></strong> an intermediate Rendezvous
+      Point (RP).  <strike><font color='red'>Use</font></strike>  <strong><font color='green'>The use</font></strong> of SSM also presents an improved threat
+      mitigation profile against attack, as described in [RFC4609].
+      Hence, in the case of inter-domain peering, it is recommended <strike><font color='red'>to use</font></strike> <strong><font color='green'>that</font></strong>
+      only SSM
+      <strike><font color='red'>protocols;</font></strike> <strong><font color='green'>protocols be used;</font></strong> the setup of <strike><font color='red'>inter- domain</font></strike> <strong><font color='green'>inter-domain</font></strong> peering for
+      ASM (Any-Source Multicast) is <strike><font color='red'>not in</font></strike> <strong><font color='green'>out of</font></strong> scope for this document.
+
+   o  The rest of <strike><font color='red'>the</font></strike> <strong><font color='green'>this</font></strong> document assumes that PIM-SSM and BGP are used
+      across the peering <strike><font color='red'>point</font></strike> <strong><font color='green'>point,</font></strong> plus <strike><font color='red'>AMT</font></strike> <strong><font color='green'>Automatic Multicast Tunneling (AMT)
+      [RFC7450]</font></strong> and/or <strike><font color='red'>GRE</font></strike> <strong><font color='green'>Generic Routing Encapsulation (GRE),</font></strong> according to
+      <strike><font color='red'>scenario.</font></strike>
+      <strong><font color='green'>the scenario in question.</font></strong>  The use of other protocols is beyond
+      the scope of this document.
+
+   o  <strike><font color='red'>An Automatic Multicast Tunnel (AMT) [RFC7450]</font></strike>  <strong><font color='green'>AMT</font></strong> is <strike><font color='red'>setup</font></strike> <strong><font color='green'>set up</font></strong> at the peering point if either the peering point or
+      AD-2 is not multicast enabled.  It is assumed that an AMT <strike><font color='red'>Relay</font></strike> <strong><font color='green'>relay</font></strong>
+      will be available to a client for multicast delivery.  The
+      selection of an optimal AMT relay by a client is out of scope for
+      this document.  Note that <strong><font color='green'>using</font></strong> AMT <strike><font color='red'>use</font></strike> is necessary only when native
+      multicast is unavailable in the peering point (Use Case 3.3) or in
+      the downstream administrative domain (Use Cases <strike><font color='red'>3.4,</font></strike> <strong><font color='green'>3.4</font></strong> and 3.5).
+
+   o  <strike><font color='red'>The</font></strike>  <strong><font color='green'>It is assumed that the</font></strong> collection of billing data is <strike><font color='red'>assumed to be</font></strike> done at the
+      application level and is not considered to be a networking issue.
+      The settlements process for <strike><font color='red'>end user</font></strike> <strong><font color='green'>EU</font></strong> billing and/or inter-provider
+      billing is out of scope for this document.
+
+   o  Inter-domain network connectivity troubleshooting is only
+      considered within the context of a cooperative process between the
+      two domains.
+
+   This document also attempts to identify ways by which the peering
+   process can be improved.  Development of new methods for improvement
+   is beyond the scope of this document.
+
+2.  Overview of Inter-domain Multicast Application Transport
+
+   A multicast-based application delivery scenario is as follows:
+
+   o  Two independent administrative domains are interconnected via a
+      peering point.
+
+   o  The peering point is either multicast enabled (end-to-end native
+      multicast across the two domains) or <strike><font color='red'>it is</font></strike> connected by one of two
+      possible tunnel types:
+
+      <strike><font color='red'>o</font></strike>
+
+      <strong><font color='green'>*</font></strong>  A <strike><font color='red'>Generic Routing Encapsulation (GRE) Tunnel</font></strike> <strong><font color='green'>GRE tunnel</font></strong> [RFC2784] allowing multicast tunneling across the
+         peering point, or
+
+      <strike><font color='red'>o  An Automatic Multicast Tunnel (AMT)</font></strike>
+
+      <strong><font color='green'>*  AMT</font></strong> [RFC7450].
+
+   o  A service provider controls one or more application sources in
+      AD-1 <strike><font color='red'>which</font></strike> <strong><font color='green'>that</font></strong> will send multicast IP packets via one or more (S,G)s
+      (multicast traffic <strike><font color='red'>flows,</font></strike> <strong><font color='green'>flows;</font></strong> see Section 4.2.1 if you are unfamiliar
+      with IP multicast).  It is assumed that the service being provided
+      is suitable for delivery via multicast <strike><font color='red'>(e.g.</font></strike> <strong><font color='green'>(e.g.,</font></strong> live video streaming
+      of popular events, software downloads to many <strike><font color='red'>devices, etc.),</font></strike> <strong><font color='green'>devices)</font></strong> and that
+      the packet streams will <strong><font color='green'>be</font></strong> carried by a suitable multicast
+      transport protocol.
+
+   o  An <strike><font color='red'>End User (EU)</font></strike> <strong><font color='green'>EU</font></strong> controls a device connected to AD-2, which runs an
+      application client compatible with the service provider's
+      application source.
+
+   o  The application client joins appropriate (S,G)s in order to
+      receive the data necessary to provide the service to the EU.  The
+      mechanisms by which the application client learns the appropriate
+      (S,G)s are an implementation detail of the <strike><font color='red'>application,</font></strike> <strong><font color='green'>application</font></strong> and are out
+      of scope for this document.
+
+   The assumption here is that AD-1 has ultimate responsibility for
+   delivering the <strike><font color='red'>multicast based</font></strike> <strong><font color='green'>multicast-based</font></strong> service on behalf of the content
+   source(s).  All relevant interactions between the two domains
+   described in this document are based on this assumption.
+
+   Note that <strike><font color='red'>domain 2</font></strike> <strong><font color='green'>AD-2</font></strong> may be an independent network domain <strike><font color='red'>(e.g.:</font></strike> <strong><font color='green'>(e.g., a</font></strong> Tier 1
+   network operator domain).  Alternately, <strike><font color='red'>domain 2</font></strike> <strong><font color='green'>AD-2</font></strong> could also be an
+   <strike><font color='red'>Enterprise</font></strike>
+   <strong><font color='green'>enterprise</font></strong> network domain operated by a single customer of AD-1.  The
+   peering point architecture and requirements may have some unique
+   aspects associated with <strike><font color='red'>the Enterprise case.</font></strike> <strong><font color='green'>enterprise networks; see Section 3.</font></strong>
+
+   The <strike><font color='red'>Use Cases</font></strike> <strong><font color='green'>use cases</font></strong> describing various architectural configurations for <strike><font color='red'>the</font></strike>
+   multicast <strike><font color='red'>distribution</font></strike> <strong><font color='green'>distribution,</font></strong> along with associated <strike><font color='red'>requirements is</font></strike> <strong><font color='green'>requirements, are</font></strong>
+   described in <strike><font color='red'>section</font></strike> <strong><font color='green'>Section</font></strong> 3.  <strike><font color='red'>Unique aspects related to the Enterprise
+   network possibility will be described in this section.</font></strike>  Section 4 contains a comprehensive list of
+   pertinent information that needs to be exchanged between the two
+   domains in order to support functions to enable <strike><font color='red'>the</font></strike> application
+   transport.
+
+   <strike><font color='red'>Note</font></strike>
+
+<strong><font color='green'>3.  Inter-domain Peering Point Requirements for Multicast
+
+   The transport of applications using multicast requires</font></strong> that <strike><font color='red'>domain 2 may be an independent network domain (e.g., Tier 1
+   network operator domain).  Alternately, domain 2 could also</font></strike> <strong><font color='green'>the
+   inter-domain peering point</font></strong> be <strike><font color='red'>an
+   Enterprise network domain operated by</font></strike> <strong><font color='green'>enabled to support such</font></strong> a <strike><font color='red'>single customer.
+
+   The Use Cases describing various architectural configurations</font></strike> <strong><font color='green'>process.
+   This section presents five use cases</font></strong> for <strike><font color='red'>the</font></strike> <strong><font color='green'>consideration.
+
+3.1.  Native Multicast
+
+   This use case involves end-to-end native</font></strong> multicast <strike><font color='red'>distribution along with associated requirements is
+   described in Section 3.  The peering point architecture and
+   requirements may have some unique aspects associated with the
+   Enterprise case.  These unique aspects will also be described in
+   Section 3.  Section 4 contains a comprehensive list of pertinent
+   information that needs to be exchanged between the two domains in
+   order to support functions to enable the application transport.
+
+3.  Inter-domain Peering Point Requirements for Multicast
+
+   The transport of applications using multicast requires that the
+   inter-domain peering point is enabled to support such a process.
+   There are five Use Cases for consideration in this document.
+
+3.1.  Native Multicast
+
+   This Use Case involves end-to-end Native Multicast between the two
+   administrative domains and the</font></strike> <strong><font color='green'>between the two
+   administrative domains, and the</font></strong> peering point is also native
+   multicast
+   <strike><font color='red'>enabled - see</font></strike> <strong><font color='green'>enabled.  See</font></strong> Figure 1.
+
+      -------------------               -------------------
+     /       AD-1        \             /        AD-2       \
+    / (Multicast Enabled) \           / (Multicast Enabled) \
+   /                       \         /                       \
+   | +----+                |         |                       |
+   | |    |       +------+ |         |  +------+             |   +----+
+   | | AS |------&gt;|  BR  |-|---------|-&gt;|  BR  |-------------|--&gt;| EU |
+   | |    |       +------+ |   I1    |  +------+             |I2 +----+
+   \ +----+                /         \                       /
+    \                     /           \                     /
+     \                   /             \                   /
+      -------------------               -------------------
+
+   AD = Administrative Domain <strike><font color='red'>(Independent Autonomous System)</font></strike> <strong><font color='green'>(independent autonomous system)</font></strong>
+   AS = <strike><font color='red'>Application</font></strike> <strong><font color='green'>multicast</font></strong> (e.g., <strike><font color='red'>Content) Multicast</font></strike> <strong><font color='green'>content) Application</font></strong> Source
+   BR = Border Router
+   I1 = AD-1 and AD-2 <strike><font color='red'>Multicast Interconnection</font></strike> <strong><font color='green'>multicast interconnection</font></strong> (e.g., <strike><font color='red'>MBGP)</font></strike> <strong><font color='green'>MP-BGP)</font></strong>
+   I2 = AD-2 and EU <strike><font color='red'>Multicast Connection</font></strike> <strong><font color='green'>multicast connection</font></strong>
+
+      Figure 1: Content Distribution via <strike><font color='red'>End to End</font></strike> <strong><font color='green'>End-to-End</font></strong> Native Multicast
+
+   Advantages of this <strike><font color='red'>configuration are:</font></strike> <strong><font color='green'>configuration:</font></strong>
+
+   o  Most efficient use of bandwidth in both domains.
+
+   o  Fewer devices in the path traversed by the multicast stream when
+      compared to an <strike><font color='red'>AMT enabled</font></strike> <strong><font color='green'>AMT-enabled</font></strong> peering point.
+
+   From the perspective of AD-1, the one disadvantage associated with
+   native multicast <strike><font color='red'>into</font></strike> <strong><font color='green'>to</font></strong> AD-2 instead of individual unicast to every EU in
+   AD-2 is that it does not have the ability to count the number of
+   <strike><font color='red'>End Users</font></strike> <strong><font color='green'>EUs</font></strong>
+   as well as the transmitted bytes delivered to them.  This information
+   is relevant from the perspective of customer billing and operational
+   logs.  It is assumed that such data will be collected by the
+   application layer.  The <strike><font color='red'>application layer</font></strike> <strong><font color='green'>application-layer</font></strong> mechanisms for generating
+   this information need to be robust enough <strike><font color='red'>such</font></strike> <strong><font color='green'>so</font></strong> that all pertinent
+   requirements for the source provider and the AD operator are
+   satisfactorily met.  The specifics of these methods are beyond the
+   scope of this document.
+
+   Architectural guidelines for this configuration are as follows:
+
+   a.  Dual homing for peering points between domains is recommended as
+       a way to ensure reliability with full BGP table visibility.
+
+   b.  If the peering point between AD-1 and AD-2 is a controlled
+       network environment, then bandwidth can be allocated accordingly
+       by the two domains to permit the transit of <strike><font color='red'>non- rate adaptive</font></strike> <strong><font color='green'>non-rate-adaptive</font></strong>
+       multicast traffic.  If this is not the case, then the multicast
+       traffic must support <strike><font color='red'>rate-adaption (see [BCP145]).</font></strike> <strong><font color='green'>congestion control via any of the mechanisms
+       described in Section 4.1 of [BCP145].</font></strong>
+
+   c.  The sending and receiving of multicast traffic between two
+       domains is typically determined by local policies associated with
+       each domain.  For example, if AD-1 is a service provider and AD-2
+       is an enterprise, then AD-1 may support local policies for
+       traffic delivery to, but not traffic reception from, AD-2.
+       Another example is the use of a policy by which AD-1 delivers
+       specified content to AD-2 only if such delivery has been accepted
+       by contract.
+
+   d.  <strike><font color='red'>Relevant</font></strike>  <strong><font color='green'>It is assumed that relevant</font></strong> information on multicast streams
+       delivered to <strike><font color='red'>End Users</font></strike> <strong><font color='green'>EUs</font></strong> in AD-2 is <strike><font color='red'>assumed to be</font></strike> collected by available capabilities
+       in the application layer.  The precise nature and formats of the
+       collected information will be determined by directives from the
+       source owner and the domain operators.
+
+3.2.  Peering Point Enabled with GRE Tunnel
+
+   The peering point is not native multicast enabled in this <strike><font color='red'>Use Case.</font></strike> <strong><font color='green'>use case.</font></strong>
+   There is a <strike><font color='red'>Generic Routing Encapsulation Tunnel</font></strike> <strong><font color='green'>GRE tunnel</font></strong> provisioned over the peering point.  See
+   Figure 2.
+
+       -------------------              -------------------
+      /       AD-1        \            /        AD-2       \
+     / (Multicast Enabled) \          / (Multicast Enabled) \
+    /                       \        /                       \
+    | +----+          +---+ |  (I1)  | +---+                 |
+    | |    |   +--+   |uBR|-|--------|-|uBR|   +--+          |   +----+
+    | | AS |--&gt;|BR|   +---+-|        | +---+   |BR| --------&gt;|--&gt;| EU |
+    | |    |   <strike><font color='red'>+--+ &lt;.......|........|........&gt;+--+</font></strike>   <strong><font color='green'>+--+&lt;........|........|........&gt;+--+</font></strong>          |I2 +----+
+    \ +----+                /   I1   \                       /
+     \                     /   GRE    \                     /
+      \                   /   Tunnel   \                   /
+       -------------------              -------------------
+
+   AD = Administrative Domain <strike><font color='red'>(Independent Autonomous System)</font></strike> <strong><font color='green'>(independent autonomous system)</font></strong>
+   AS = <strike><font color='red'>Application</font></strike> <strong><font color='green'>multicast</font></strong> (e.g., <strike><font color='red'>Content) Multicast</font></strike> <strong><font color='green'>content) Application</font></strong> Source
+   uBR = unicast Border Router - not necessarily multicast <strike><font color='red'>enabled</font></strike> <strong><font color='green'>enabled;</font></strong>
+         may be the same router as BR
+   BR = Border Router - for multicast
+   I1 = AD-1 and AD-2 <strike><font color='red'>Multicast Interconnection</font></strike> <strong><font color='green'>multicast interconnection</font></strong> (e.g., <strike><font color='red'>MBGP)</font></strike> <strong><font color='green'>MP-BGP)</font></strong>
+   I2 = AD-2 and EU <strike><font color='red'>Multicast Connection</font></strike> <strong><font color='green'>multicast connection</font></strong>
+
+               Figure 2: Content Distribution via GRE Tunnel
+   In this case, <strike><font color='red'>the</font></strike> interconnection I1 between AD-1 and AD-2 in Figure 2 is
+   multicast enabled via a <strike><font color='red'>Generic Routing Encapsulation
+   Tunnel (GRE)</font></strike> <strong><font color='green'>GRE tunnel</font></strong> [RFC2784] between the two <strike><font color='red'>BR</font></strike> <strong><font color='green'>BRs</font></strong> and
+   encapsulating the multicast protocols across it.
+
+   Normally, this approach is <strike><font color='red'>choosen</font></strike> <strong><font color='green'>chosen</font></strong> if the uBR <strike><font color='red'>physcially</font></strike> <strong><font color='green'>physically</font></strong> connected to
+   the peering link <strike><font color='red'>can</font></strike> <strong><font color='green'>cannot</font></strong> or should not be enabled for IP multicast.
+   This approach may also be beneficial if <strong><font color='green'>the</font></strong> BR and uBR are the same <strike><font color='red'>device,</font></strike>
+   <strong><font color='green'>device</font></strong> but the peering link is a broadcast domain <strike><font color='red'>(IXP),</font></strike> <strong><font color='green'>(IXP);</font></strong> see <strike><font color='red'>Figure 6.</font></strike>
+   <strong><font color='green'>Section 4.2.4.</font></strong>
+
+   The routing configuration is basically unchanged: <strike><font color='red'>Instead</font></strike> <strong><font color='green'>instead</font></strong> of <strong><font color='green'>running</font></strong>
+   BGP
+   <strike><font color='red'>(SAFI2)</font></strike> <strong><font color='green'>(SAFI-2) ("SAFI" stands for "Subsequent Address Family
+   Identifier")</font></strong> across the native IP multicast link between AD-1 and
+   AD-2, BGP <strike><font color='red'>(SAFI2)</font></strike> <strong><font color='green'>(SAFI-2)</font></strong> is now run across the GRE tunnel.
+
+   Advantages of this configuration:
+
+   o  Highly efficient use of bandwidth in both domains, although not as
+      efficient as the fully native multicast <strike><font color='red'>Use Case.</font></strike> <strong><font color='green'>use case (Section 3.1).</font></strong>
+
+   o  Fewer devices in the path traversed by the multicast stream when
+      compared to an <strike><font color='red'>AMT enabled</font></strike> <strong><font color='green'>AMT-enabled</font></strong> peering point.
+
+   o  Ability to support partial and/or incremental IP multicast
+      deployments in <strike><font color='red'>AD- 1</font></strike> <strong><font color='green'>AD-1</font></strong> and/or AD-2: <strike><font color='red'>Only</font></strike> <strong><font color='green'>only</font></strong> the <strike><font color='red'>path(s)</font></strike> <strong><font color='green'>path or paths</font></strong> between
+      <strong><font color='green'>the</font></strong> AS/BR (AD-1) and <strong><font color='green'>the</font></strong> BR/EU (AD-2) need to be multicast
+      enabled.  The uBRs may not support IP multicast or enabling it
+      could be seen as operationally risky on that important edge <strike><font color='red'>node</font></strike> <strong><font color='green'>node,</font></strong>
+      whereas dedicated BR nodes for IP multicast may <strong><font color='green'>(at least
+      initially)</font></strong> be more <strike><font color='red'>acceptable at least
+      initially.</font></strike> <strong><font color='green'>acceptable.  The</font></strong> BR can also be located such
+      that only parts of the domain may need to support native IP
+      multicast <strike><font color='red'>(e.g.:</font></strike> <strong><font color='green'>(e.g.,</font></strong> only the core in AD-1 but not edge networks
+      towards <strong><font color='green'>the</font></strong> uBR).
+
+   o  GRE is an existing technology and is relatively simple to
+      implement.
+
+   Disadvantages of this configuration:
+
+   o  Per Use Case 3.1, current router technology cannot count the
+      number of <strike><font color='red'>end users</font></strike> <strong><font color='green'>EUs</font></strong> or the number <strong><font color='green'>of</font></strong> bytes transmitted.
+
+   o  <strong><font color='green'>The</font></strong> GRE tunnel requires manual configuration.
+
+   o  The GRE <strong><font color='green'>tunnel</font></strong> must be established prior to <strike><font color='red'>stream starting.</font></strike> <strong><font color='green'>starting the stream.</font></strong>
+
+   o  The GRE tunnel is often left pinned up.
+
+   Architectural guidelines for this configuration include the
+   following:
+
+   Guidelines (a) through (d) are the same as those described in
+   Use Case 3.1.  Two additional guidelines are as follows:
+
+   e.  GRE tunnels are typically configured manually between peering
+       points to support multicast delivery between domains.
+
+   f.  It is recommended that the GRE tunnel (tunnel server)
+       configuration in the source network <strike><font color='red'>is</font></strike> <strong><font color='green'>be</font></strong> such that it only
+       advertises the routes to the application sources and not to the
+       entire network.  This practice will prevent unauthorized delivery
+       of applications through the tunnel <strike><font color='red'>(e.g.,</font></strike> <strong><font color='green'>(for example,</font></strong> if <strong><font color='green'>the</font></strong>
+       application <strike><font color='red'>- e.g.,
+      content -</font></strike> <strong><font color='green'>(e.g., content)</font></strong> is not part of an <strike><font color='red'>agreed</font></strike> <strong><font color='green'>agreed-upon</font></strong>
+       inter-domain partnership).
+
+3.3.  Peering Point Enabled with <strike><font color='red'>an</font></strike> AMT - Both Domains Multicast Enabled
+
+   <strike><font color='red'>Both</font></strike>
+
+   <strong><font color='green'>It is assumed that both</font></strong> administrative domains in this <strike><font color='red'>Use Case</font></strike> <strong><font color='green'>use case</font></strong> are <strike><font color='red'>assumed to be</font></strike>
+   native multicast enabled here; however, the peering point is not.
+
+   The peering point is enabled with <strike><font color='red'>an Automatic Multicast Tunnel.</font></strike> <strong><font color='green'>AMT.</font></strong>  The basic configuration is
+   depicted in Figure <strike><font color='red'>2.</font></strike> <strong><font color='green'>3.</font></strong>
+
+       -------------------              -------------------
+      /       AD-1        \            /        AD-2       \
+     / (Multicast Enabled) \          / (Multicast Enabled) \
+    /                       \        /                       \
+    | +----+          +---+ |   I1   | +---+                 |
+    | |    |   +--+   |uBR|-|--------|-|uBR|   +--+          |   +----+
+    | | AS |--&gt;|AR|   +---+-|        | +---+   |AG| --------&gt;|--&gt;| EU |
+    | |    |   <strike><font color='red'>+--+ &lt;.......|........|........&gt;+--+</font></strike>   <strong><font color='green'>+--+&lt;........|........|........&gt;+--+</font></strong>          |I2 +----+
+    \ +----+                /  AMT   \                       /
+     \                     /  Tunnel  \                     /
+      \                   /            \                   /
+       -------------------              -------------------
+
+   AD = Administrative Domain <strike><font color='red'>(Independent Autonomous System)</font></strike> <strong><font color='green'>(independent autonomous system)</font></strong>
+   AS = <strike><font color='red'>Application</font></strike> <strong><font color='green'>multicast</font></strong> (e.g., <strike><font color='red'>Content) Multicast</font></strike> <strong><font color='green'>content) Application</font></strong> Source
+   AR = AMT Relay
+   AG = AMT Gateway
+   uBR = unicast Border Router - not multicast <strike><font color='red'>enabled
+         otherwise AR=uBR (AD-1), uBR=AG</font></strike> <strong><font color='green'>enabled;
+         otherwise, AR = uBR (AD-1) and uBR = AG</font></strong> (AD-2)
+   I1 = AMT <strike><font color='red'>Interconnection</font></strike> <strong><font color='green'>interconnection</font></strong> between AD-1 and AD-2
+   I2 = AD-2 and EU <strike><font color='red'>Multicast Connection</font></strike> <strong><font color='green'>multicast connection</font></strong>
+
+            Figure 3: <strike><font color='red'>-</font></strike> AMT Interconnection between AD-1 and AD-2
+   Advantages of this configuration:
+
+   o  Highly efficient use of bandwidth in AD-1.
+
+   o  AMT is an existing technology and is relatively simple to
+      implement.  Attractive properties of AMT include the following:
+
+      <strike><font color='red'>o</font></strike>
+
+      <strong><font color='green'>*</font></strong>  Dynamic interconnection between <strike><font color='red'>Gateway-Relay</font></strike> <strong><font color='green'>the gateway-relay</font></strong> pair across
+         the peering point.
+
+      <strike><font color='red'>o</font></strike>
+
+      <strong><font color='green'>*</font></strong>  Ability to serve clients and servers with differing policies.
+
+   Disadvantages of this configuration:
+
+   o  Per Use Case 3.1 (AD-2 is native multicast), current router
+      technology cannot count the number of <strike><font color='red'>end users</font></strike> <strong><font color='green'>EUs</font></strong> or the number of bytes
+      transmitted to all <strike><font color='red'>end users.</font></strike> <strong><font color='green'>EUs.</font></strong>
+
+   o  Additional devices (AMT <strike><font color='red'>Gateway</font></strike> <strong><font color='green'>gateway</font></strong> and <strike><font color='red'>Relay</font></strike> <strong><font color='green'>relay</font></strong> pairs) may be introduced
+      into the path if these services are not incorporated <strike><font color='red'>in</font></strike> <strong><font color='green'>into</font></strong> the
+      existing routing nodes.
+
+   o  Currently undefined mechanisms for the AG to automatically select
+      the optimal AR.
+
+   Architectural guidelines for this configuration are as follows:
+
+   Guidelines (a) through (d) are the same as those described in
+   Use Case 3.1.  In addition,
+
+   e.  It is recommended that AMT <strike><font color='red'>Relay</font></strike> <strong><font color='green'>relay</font></strong> and <strike><font color='red'>Gateway</font></strike> <strong><font color='green'>gateway</font></strong> pairs be configured
+       at the peering points to support multicast delivery between
+       domains.  AMT tunnels will then configure dynamically across the
+       peering points once the <strike><font color='red'>Gateway</font></strike> <strong><font color='green'>gateway</font></strong> in AD-2 receives the <strike><font color='red'>(S, G)</font></strike> <strong><font color='green'>(S,G)</font></strong>
+       information from the EU.
+
+3.4.  Peering Point Enabled with <strike><font color='red'>an</font></strike> AMT - AD-2 Not Multicast Enabled
+
+   In this AMT <strike><font color='red'>Use Case, the second administrative domain</font></strike> <strong><font color='green'>use case,</font></strong> AD-2 is not multicast enabled.  Hence, the
+   interconnection between AD-2 and the
+   <strike><font color='red'>End User</font></strike> <strong><font color='green'>EU</font></strong> is also not multicast
+   enabled.  This <strike><font color='red'>Use Case</font></strike> <strong><font color='green'>use case</font></strong> is depicted in Figure <strike><font color='red'>3.</font></strike> <strong><font color='green'>4.</font></strong>
+
+      -------------------               -------------------
+      /       AD-1        \            /        AD-2       \
+     / (Multicast Enabled) \          / <strike><font color='red'>(Non</font></strike> <strong><font color='green'>(Not</font></strong> Multicast      \
+    /                       \        /              Enabled) \ N(large)
+    | +----+          +---+ |        | +---+                 |  <strike><font color='red'>#EU</font></strike>  <strong><font color='green'># EUs</font></strong>
+    | |    |   +--+   |uBR|-|--------|-|uBR|                 |   +----+
+    | | AS |--&gt;|AR|   +---+-|        | +---+    ................&gt;|EU/G|
+    | |    |   <strike><font color='red'>+--+ &lt;.......|........|...........</font></strike>   <strong><font color='green'>+--+&lt;........|........|...........</font></strong>            |I2 +----+
+    \ +----+                / N x AMT\                       /
+     \                     /  Tunnel  \                     /
+      \                   /            \                   /
+       -------------------              -------------------
+
+   AS = <strong><font color='green'>multicast (e.g., content)</font></strong> Application <strike><font color='red'>Multicast</font></strike> Source
+   uBR = unicast Border Router - not multicast <strike><font color='red'>enabled,
+         otherwise</font></strike> <strong><font color='green'>enabled;
+         otherwise,</font></strong> AR = uBR (in <strike><font color='red'>AD-1).</font></strike> <strong><font color='green'>AD-1)</font></strong>
+   AR = AMT Relay
+   EU/G = Gateway client embedded in EU device
+   I2 = AMT <strike><font color='red'>Tunnel Connecting</font></strike> <strong><font color='green'>tunnel connecting</font></strong> EU/G to AR in AD-1 through <strike><font color='red'>Non-Multicast
+      Enabled AD-2.</font></strike>
+        <strong><font color='green'>non-multicast-enabled AD-2</font></strong>
+
+       Figure 4: AMT Tunnel Connecting AD-1 AMT Relay and EU Gateway
+
+   This <strike><font color='red'>Use Case</font></strike> <strong><font color='green'>use case</font></strong> is equivalent to having unicast distribution of the
+   application through AD-2.  The total number of AMT tunnels would be
+   equal to the total number of <strike><font color='red'>End Users</font></strike> <strong><font color='green'>EUs</font></strong> requesting the application.  The
+   peering point thus needs to accommodate the total number of AMT
+   tunnels between the two domains.  Each AMT tunnel can provide the
+   data usage associated with each <strike><font color='red'>End User.</font></strike> <strong><font color='green'>EU.</font></strong>
+
+   Advantages of this configuration:
+
+   o  Efficient use of bandwidth in AD-1 <strike><font color='red'>(The</font></strike> <strong><font color='green'>(the</font></strong> closer <strong><font color='green'>the</font></strong> AR is to <strong><font color='green'>the</font></strong>
+      uBR, the more efficient).
+
+   o  Ability <strike><font color='red'>for</font></strike> <strong><font color='green'>of</font></strong> AD-1 to introduce <strike><font color='red'>IP multicast based</font></strike> content delivery <strong><font color='green'>based on IP
+      multicast,</font></strong> without any support by network devices in AD-2: <strike><font color='red'>Only</font></strike> <strong><font color='green'>only
+      the</font></strong> application side in the EU device needs to perform AMT gateway
+      library functionality to receive traffic from <strong><font color='green'>the</font></strong> AMT relay.
+
+   o  Allows <strike><font color='red'>for</font></strike> AD-2 to "upgrade" to Use Case 3.5 (see <strike><font color='red'>below)</font></strike> <strong><font color='green'>Section 3.5)</font></strong> at a
+      later <strike><font color='red'>time</font></strike> <strong><font color='green'>time,</font></strong> without any change in AD-1 at that time.
+
+   o  AMT is an existing technology and is relatively simple to
+      implement.  Attractive properties of AMT include the following:
+
+      <strike><font color='red'>o</font></strike>
+
+      <strong><font color='green'>*</font></strong>  Dynamic interconnection between <strike><font color='red'>Gateway-Relay</font></strike> <strong><font color='green'>the AMT gateway-relay</font></strong> pair
+         across the peering point.
+
+      <strike><font color='red'>o</font></strike>
+
+      <strong><font color='green'>*</font></strong>  Ability to serve clients and servers with differing policies.
+
+   o  Each AMT tunnel serves as a count for each <strike><font color='red'>End User</font></strike> <strong><font color='green'>EU</font></strong> and is also able to
+      track data usage (bytes) delivered to the EU.
+
+   Disadvantages of this configuration:
+
+   o  Additional devices (AMT <strike><font color='red'>Gateway</font></strike> <strong><font color='green'>gateway</font></strong> and <strike><font color='red'>Relay</font></strike> <strong><font color='green'>relay</font></strong> pairs) are introduced
+      into the transport path.
+
+   o  Assuming multiple peering points between the domains, the EU
+      <strike><font color='red'>Gateway</font></strike>
+      <strong><font color='green'>gateway</font></strong> needs to be able to find the "correct" AMT <strike><font color='red'>Relay</font></strike> <strong><font color='green'>relay</font></strong> in AD-1.
+
+   Architectural guidelines for this configuration are as follows:
+
+   Guidelines (a) through (c) are the same as those described in
+   Use Case 3.1.  <strong><font color='green'>In addition,</font></strong>
+
+   d.  It is necessary that proper procedures <strike><font color='red'>are</font></strike> <strong><font color='green'>be</font></strong> implemented such that
+       the AMT <strike><font color='red'>Gateway</font></strike> <strong><font color='green'>gateway</font></strong> at the <strike><font color='red'>End User</font></strike> <strong><font color='green'>EU</font></strong> device is able to find the correct AMT <strike><font color='red'>Relay</font></strike>
+       <strong><font color='green'>relay</font></strong> for each (S,G) content stream.  Standard mechanisms for
+       that selection are still subject to ongoing work.  This includes
+       <strong><font color='green'>the</font></strong> use of anycast gateway addresses, anycast DNS names, <strong><font color='green'>or</font></strong>
+       explicit configuration that <strike><font color='red'>is mapping</font></strike> <strong><font color='green'>maps</font></strong> (S,G) to a relay <strike><font color='red'>address</font></strike> <strong><font color='green'>address;</font></strong> or
+       letting the application in the EU/G provide the relay address to
+       the embedded AMT gateway function.
+
+   e.  The AMT <strike><font color='red'>tunnel</font></strike> <strong><font color='green'>tunnel's</font></strong> capabilities are expected to be sufficient for
+       the purpose of collecting relevant information on the multicast
+       streams delivered to <strike><font color='red'>End Users</font></strike> <strong><font color='green'>EUs</font></strong> in AD-2.
+
+3.5.  AD-2 Not Multicast Enabled - Multiple AMT Tunnels <strike><font color='red'>Through</font></strike> <strong><font color='green'>through</font></strong> AD-2
+
+   <strike><font color='red'>This is</font></strike>
+
+   <strong><font color='green'>Figure 5 illustrates</font></strong> a variation of Use Case <strike><font color='red'>3.4 as follows:</font></strike> <strong><font color='green'>3.4:</font></strong>
+
+      -------------------               -------------------
+      /       AD-1        \            /        AD-2       \
+     / (Multicast Enabled) \          / <strike><font color='red'>(Non</font></strike> <strong><font color='green'>(Not</font></strong> Multicast      \
+    /                 +---+ \  (I1)  / +---+        Enabled) \
+    | +----+          |uBR|-|--------|-|uBR|                 |
+    | |    |   +--+   +---+ |        | +---+           +---+ |   +----+
+    | | AS |--&gt;|AR|&lt;........|....    | +---+           |AG/|....&gt;|EU/G|
+    | |    |   +--+         |  ......|.|AG/|..........&gt;|AR2| |I3 +----+
+    \ +----+                /   I1   \ |AR1|   I2      +---+ /
+     \                     /  <strike><font color='red'>single</font></strike>  <strong><font color='green'>Single</font></strong>  \+---+                /
+      \                   / AMT Tunnel \                   /
+       -------------------              -------------------
+
+   uBR = unicast Border Router - not multicast <strike><font color='red'>enabled
+         otherwise AR=uBR</font></strike> <strong><font color='green'>enabled;
+         otherwise, AR = uBR</font></strong> (AD-1) or <strike><font color='red'>ubr=AGAR1</font></strike> <strong><font color='green'>uBR = AGAR1</font></strong> (AD-2)
+   AS = <strong><font color='green'>multicast (e.g., content)</font></strong> Application Source
+   AR = AMT Relay in AD-1
+   AGAR1 = AMT Gateway/Relay node in AD-2 across <strike><font color='red'>Peering Point</font></strike> <strong><font color='green'>peering point</font></strong>
+   I1 = AMT <strike><font color='red'>Tunnel Connecting</font></strike> <strong><font color='green'>tunnel connecting</font></strong> AR in AD-1 to <strike><font color='red'>GW</font></strike> <strong><font color='green'>gateway</font></strong> in AGAR1 in AD-2
+   AGAR2 = AMT Gateway/Relay node at AD-2 <strike><font color='red'>Network Edge</font></strike> <strong><font color='green'>network edge</font></strong>
+   I2 = AMT <strike><font color='red'>Tunnel Connecting Relay</font></strike> <strong><font color='green'>tunnel connecting relay</font></strong> in AGAR1 to <strike><font color='red'>GW</font></strike> <strong><font color='green'>gateway</font></strong> in AGAR2
+   EU/G = Gateway client embedded in EU device
+   I3 = AMT <strike><font color='red'>Tunnel Connecting</font></strike> <strong><font color='green'>tunnel connecting</font></strong> EU/G to AR in AGAR2
+
+          Figure 5: AMT Tunnel Connecting AMT <strike><font color='red'>Relay</font></strike> <strong><font color='green'>Gateways</font></strong> and Relays
+
+   Use Case 3.4 results in several long AMT tunnels crossing the entire
+   network of AD-2 linking the EU device and the AMT <strike><font color='red'>Relay</font></strike> <strong><font color='green'>relay</font></strong> in AD-1
+   through the peering point.  Depending on the number of <strike><font color='red'>End Users,</font></strike> <strong><font color='green'>EUs,</font></strong> there is
+   a likelihood of an unacceptably high amount of traffic due to the
+   large number of AMT tunnels <strike><font color='red'>-</font></strike> <strong><font color='green'>--</font></strong> and unicast streams <strike><font color='red'>-</font></strike> <strong><font color='green'>--</font></strong> through the
+   peering point.  This situation can be alleviated as follows:
+
+   o  Provisioning of strategically located AMT nodes in <strike><font color='red'>AD-2</font></strike> AD-2.  An
+      AMT node comprises co-location of an AMT <strike><font color='red'>Gateway</font></strike> <strong><font color='green'>gateway</font></strong> and an AMT <strike><font color='red'>Relay.</font></strike> <strong><font color='green'>relay.</font></strong>
+      No change is required by <strike><font color='red'>AD-1</font></strike> <strong><font color='green'>AD-1, as</font></strong> compared to <strong><font color='green'>Use Case</font></strong> 3.4.  This
+      can be done whenever AD-2 <strike><font color='red'>seems</font></strike> <strong><font color='green'>sees</font></strong> fit <strike><font color='red'>(too</font></strike> <strong><font color='green'>(e.g., too</font></strong> much traffic across
+      <strong><font color='green'>the</font></strong> peering <strike><font color='red'>point.</font></strike> <strong><font color='green'>point).</font></strong>
+
+   o  One such node is <strike><font color='red'>at</font></strike> <strong><font color='green'>on</font></strong> the AD-2 side of the peering point <strike><font color='red'>(node</font></strike> <strong><font color='green'>(AMT node</font></strong>
+      AGAR1 in <strike><font color='red'>above Figure).</font></strike> <strong><font color='green'>Figure 5).</font></strong>
+
+   o  <strike><font color='red'>Single</font></strike>  <strong><font color='green'>A single</font></strong> AMT tunnel established across <strong><font color='green'>the</font></strong> peering point linking
+      <strong><font color='green'>the</font></strong> AMT
+      <strike><font color='red'>Relay</font></strike> <strong><font color='green'>relay</font></strong> in AD-1 to the AMT <strike><font color='red'>Gateway</font></strike> <strong><font color='green'>gateway</font></strong> in <strike><font color='red'>the</font></strike> AMT node AGAR1
+      in AD-2.
+
+   o  AMT tunnels linking AMT node AGAR1 at <strong><font color='green'>the</font></strong> peering point in AD-2 to
+      other AMT nodes located at the edges of AD-2: e.g., AMT tunnel I2
+      linking <strong><font color='green'>the</font></strong> AMT <strike><font color='red'>Relay</font></strike> <strong><font color='green'>relay</font></strong> in AGAR1 to <strong><font color='green'>the</font></strong> AMT <strike><font color='red'>Gateway</font></strike> <strong><font color='green'>gateway</font></strong> in AMT
+      node AGAR2 <strike><font color='red'>in
+      Figure 4.</font></strike> <strong><font color='green'>(Figure 5).</font></strong>
+
+   o  AMT tunnels linking <strong><font color='green'>an</font></strong> EU device (via <strike><font color='red'>Gateway</font></strike> <strong><font color='green'>a gateway</font></strong> client embedded in
+      <strong><font color='green'>the</font></strong> device) and <strong><font color='green'>an</font></strong> AMT <strike><font color='red'>Relay</font></strike> <strong><font color='green'>relay</font></strong> in <strong><font color='green'>an</font></strong> appropriate AMT node at <strong><font color='green'>the</font></strong>
+      edge of AD-2: e.g., I3 linking <strong><font color='green'>the</font></strong> EU <strike><font color='red'>Gateway</font></strike> <strong><font color='green'>gateway</font></strong> in <strong><font color='green'>the</font></strong> device to <strong><font color='green'>the</font></strong>
+      AMT <strike><font color='red'>Relay</font></strike> <strong><font color='green'>relay</font></strong> in AMT node AGAR2.
+
+   o  In the <strike><font color='red'>most simple</font></strike> <strong><font color='green'>simplest</font></strong> option (not shown), AD-2 only deploys a single
+      AGAR1 <strong><font color='green'>node</font></strong> and lets <strong><font color='green'>the</font></strong> EU/G build AMT tunnels directly to it.
+      This setup already solves the problem of replicated traffic across
+      the peering point.  As soon as there is <strong><font color='green'>a</font></strong> need to support more AMT
+      tunnels to <strong><font color='green'>the</font></strong> EU/G, then additional AGAR2 nodes can be deployed
+      by AD-2.
+
+   The advantage <strike><font color='red'>for</font></strike> <strong><font color='green'>of</font></strong> such a chained set of AMT tunnels is that the total
+   number of unicast streams across AD-2 is significantly reduced, thus
+   freeing up bandwidth.  Additionally, there will be a single unicast
+   stream across the peering point instead <strike><font color='red'>of</font></strike> <strong><font color='green'>of,</font></strong> possibly, an unacceptably
+   large number of such streams per Use Case 3.4.  However, this implies
+   that several AMT tunnels will need to be dynamically configured by
+   the various AMT <strike><font color='red'>Gateways</font></strike> <strong><font color='green'>gateways,</font></strong> based solely on the (S,G) information
+   received from the application client at the EU device.  A suitable
+   mechanism for such dynamic configurations is therefore critical.
+
+   Architectural guidelines for this configuration are as follows:
+
+   Guidelines (a) through (c) are the same as those described in
+   Use Case 3.1.  <strong><font color='green'>In addition,</font></strong>
+
+   d.  It is necessary that proper procedures <strike><font color='red'>are</font></strike> <strong><font color='green'>be</font></strong> implemented such that
+       the various AMT <strike><font color='red'>Gateways</font></strike> <strong><font color='green'>gateways</font></strong> (at the <strike><font color='red'>End User</font></strike> <strong><font color='green'>EU</font></strong> devices and the AMT nodes in
+       AD-2) are able to find the correct AMT <strike><font color='red'>Relay</font></strike> <strong><font color='green'>relay</font></strong> in other AMT nodes
+       as appropriate.  Standard mechanisms for that selection are still
+       subject to ongoing work.  This includes <strong><font color='green'>the</font></strong> use of anycast
+       gateway addresses, anycast DNS names, or explicit configuration
+       that <strike><font color='red'>is mapping</font></strike> <strong><font color='green'>maps</font></strong> (S,G) to a relay address.  On the EU/G, this mapping
+       information may come from the application.
+
+   e.  The AMT <strike><font color='red'>tunnel</font></strike> <strong><font color='green'>tunnel's</font></strong> capabilities are expected to be sufficient for
+       the purpose of collecting relevant information on the multicast
+       streams delivered to <strike><font color='red'>End Users</font></strike> <strong><font color='green'>EUs</font></strong> in AD-2.
+
+4.  Functional Guidelines
+
+   Supporting functions and related interfaces over the peering point
+   that enable the multicast transport of the application are listed in
+   this section.  Critical information parameters that need to be
+   exchanged in support of these functions are enumerated, along with
+   guidelines as appropriate.  Specific interface functions for
+   consideration are as follows.
+
+4.1.  Network Interconnection Transport Guidelines
+
+   The term <strike><font color='red'>"Network Interconnection Transport"</font></strike> <strong><font color='green'>"network interconnection transport"</font></strong> refers to the
+   interconnection points between the two <strike><font color='red'>Administrative Domains.</font></strike> <strong><font color='green'>administrative domains.</font></strong>  The
+   following is a representative set of attributes that <strike><font color='red'>will need to be
+   agreed to between</font></strike> the two
+   administrative domains <strong><font color='green'>will need to agree on</font></strong> to support multicast
+   delivery.
+
+   o  Number of <strike><font color='red'>Peering Points.</font></strike> <strong><font color='green'>peering points.</font></strong>
+
+   o  Peering <strike><font color='red'>Point Addresses</font></strike> <strong><font color='green'>point addresses</font></strong> and <strike><font color='red'>Locations.</font></strike> <strong><font color='green'>locations.</font></strong>
+
+   o  Connection <strike><font color='red'>Type</font></strike> <strong><font color='green'>type</font></strong> - Dedicated for <strike><font color='red'>Multicast</font></strike> <strong><font color='green'>multicast</font></strong> delivery or shared with
+      other services.
+
+   o  Connection <strike><font color='red'>Mode</font></strike> <strong><font color='green'>mode</font></strong> - Direct connectivity between the two <strike><font color='red'>AD's</font></strike> <strong><font color='green'>ADs</font></strong> or via
+      another ISP.
+
+   o  Peering <strike><font color='red'>Point Protocol Support</font></strike> <strong><font color='green'>point protocol support</font></strong> - Multicast protocols that will be
+      used for multicast delivery will need to be supported at these
+      points.  Examples of <strong><font color='green'>such</font></strong> protocols include <strike><font color='red'>eBGP</font></strike> <strong><font color='green'>External BGP (EBGP)</font></strong>
+      [RFC4760] <strike><font color='red'>and MBGP</font></strike> <strong><font color='green'>peering via MP-BGP (Multiprotocol BGP) SAFI-2</font></strong> [RFC4760].
+
+   o  Bandwidth <strike><font color='red'>Allocation</font></strike> <strong><font color='green'>allocation</font></strong> - If shared with other services, then there
+      needs to be a determination of the share of bandwidth reserved for
+      multicast delivery.  See <strike><font color='red'>section</font></strike> <strong><font color='green'>Section</font></strong> 4.1.1 below for more details.
+
+   o  QoS <strike><font color='red'>Requirements</font></strike> <strong><font color='green'>requirements</font></strong> - Delay and/or latency specifications that need
+      to be specified in an SLA.
+
+   o  AD <strike><font color='red'>Roles</font></strike> <strong><font color='green'>roles</font></strong> and <strike><font color='red'>Responsibilities</font></strike> <strong><font color='green'>responsibilities</font></strong> - <strike><font color='red'>the</font></strike> <strong><font color='green'>The</font></strong> role played by each AD for
+      provisioning and maintaining the set of peering points to support
+      multicast delivery.
+
+4.1.1.  Bandwidth Management
+
+   Like IP unicast traffic, IP multicast traffic carried across <strike><font color='red'>non-
+   controlled</font></strike>
+   <strong><font color='green'>non-controlled</font></strong> networks must comply <strike><font color='red'>to Congestion Control Principles</font></strike> <strong><font color='green'>with congestion control
+   principles</font></strong> as described in [BCP41] and <strong><font color='green'>as</font></strong> explained in detail for UDP
+   IP multicast in [BCP145].
+
+   Non-controlled networks (such as the Internet) are <strike><font color='red'>those</font></strike> <strong><font color='green'>networks</font></strong> where
+   there is no policy for managing bandwidth other than best effort with
+   <strong><font color='green'>a</font></strong> fair share of bandwidth under congestion.  As a simplified rule of
+   thumb, complying <strike><font color='red'>to</font></strike> <strong><font color='green'>with</font></strong> congestion control principles means <strike><font color='red'>to reduce</font></strike> <strong><font color='green'>reducing</font></strong>
+   bandwidth under congestion in a way that is fair to competing <strike><font color='red'>competing</font></strike>
+   (typically TCP) <strike><font color='red'>flow</font></strike> <strong><font color='green'>flows</font></strong> ("rate adaptive").
+
+   In many instances, multicast content delivery evolves from <strike><font color='red'>intra-
+   domain</font></strike>
+   <strong><font color='green'>intra-domain</font></strong> deployments where it is handled as a controlled network
+   service and <strike><font color='red'>of</font></strike> <strong><font color='green'>does</font></strong> not <strike><font color='red'>complyng to</font></strike> <strong><font color='green'>comply with</font></strong> congestion control principles.  It
+   was given a reserved amount of bandwidth and admitted to the network
+   so that congestion never occurs.  <strike><font color='red'>Therefore</font></strike>  <strong><font color='green'>Therefore,</font></strong> the congestion control
+   issue should be given specific attention when evolving to an <strike><font color='red'>interdomain</font></strike>
+   <strong><font color='green'>inter-domain</font></strong> peering deployment.
+
+   In the case where end-to-end IP multicast traffic passes across the
+   network of two ADs (and their subsidiaries/customers), both ADs must
+   agree on a consistent <strike><font color='red'>traffic management</font></strike> <strong><font color='green'>traffic-management</font></strong> policy.  <strike><font color='red'>If</font></strike>  <strong><font color='green'>If,</font></strong> for <strike><font color='red'>example</font></strike> <strong><font color='green'>example,</font></strong>
+   AD-1 sources <strike><font color='red'>non congestion aware</font></strike> <strong><font color='green'>non-congestion-aware</font></strong> IP multicast traffic and AD-2
+   carries it as <strike><font color='red'>best effort</font></strike> <strong><font color='green'>best-effort</font></strong> traffic across links shared with other
+   Internet traffic <strike><font color='red'>and subject</font></strike> <strong><font color='green'>(subject</font></strong> to <strike><font color='red'>congestion,</font></strike> <strong><font color='green'>congestion),</font></strong> this will not work: <strike><font color='red'>Under</font></strike> <strong><font color='green'>under</font></strong>
+   congestion, some amount of that traffic will be dropped, <strong><font color='green'>often</font></strong>
+   rendering the remaining packets <strike><font color='red'>often</font></strike> as <strike><font color='red'>undecodeable</font></strike> <strong><font color='green'>undecodable</font></strong> garbage clogging up
+   the network in <strike><font color='red'>AD-2 and</font></strike> <strong><font color='green'>AD-2;</font></strong> because this <strong><font color='green'>traffic</font></strong> is not congestion aware,
+   the loss does not reduce this rate.  Competing traffic will not get
+   their fair share under congestion, and EUs will be <strike><font color='red'>frusted</font></strike> <strong><font color='green'>frustrated</font></strong> by <strong><font color='green'>the</font></strong>
+   extremely bad quality of both their IP multicast <strong><font color='green'>traffic</font></strong> and other <strike><font color='red'>(e.g.:</font></strike>
+   <strong><font color='green'>(e.g.,</font></strong> TCP) traffic.  Note that this is not an IP multicast
+   technology <strike><font color='red'>issue,</font></strike> <strong><font color='green'>issue</font></strong> but <strong><font color='green'>is</font></strong> solely a
+   <strike><font color='red'>transport/application layer</font></strike> <strong><font color='green'>transport-layer / application-layer</font></strong>
+   issue: <strike><font color='red'>The</font></strike> <strong><font color='green'>the</font></strong> problem would <strike><font color='red'>equally</font></strike> <strong><font color='green'>just as likely</font></strong> happen if AD-1 <strike><font color='red'>would</font></strike> <strong><font color='green'>were to</font></strong> send <strike><font color='red'>non-rate adaptive</font></strike>
+   <strong><font color='green'>non-rate-adaptive</font></strong> unicast <strike><font color='red'>traffic,,</font></strike> <strong><font color='green'>traffic --</font></strong> for <strike><font color='red'>example</font></strike> <strong><font color='green'>example,</font></strong> legacy IPTV
+   video-on-demand <strike><font color='red'>traffic</font></strike> <strong><font color='green'>traffic,</font></strong> which <strike><font color='red'>typically</font></strike> is <strong><font color='green'>typically</font></strong> also <strike><font color='red'>non
+   congestion</font></strike> <strong><font color='green'>non-congestion</font></strong>
+   aware.  <strike><font color='red'>Because</font></strike>  <strong><font color='green'>Note that because</font></strong> rate adaption in IP unicast video is
+   commonplace today <strike><font color='red'>because</font></strike> <strong><font color='green'>due to the availability</font></strong> of ABR (Adaptive <strike><font color='red'>Bitrate Video),</font></strike> <strong><font color='green'>Bitrate)
+   video,</font></strong> it is very unlikely <strike><font color='red'>for</font></strike> <strong><font color='green'>that</font></strong> this <strike><font color='red'>to</font></strike> <strong><font color='green'>will</font></strong> happen <strike><font color='red'>though</font></strike> in reality with IP
+   unicast.
+
+   While the rules for traffic management apply whether <strike><font color='red'>or not</font></strike> IP multicast is
+   tunneled or not, the one feature that can make AMT tunnels more
+   difficult is the unpredictability of bandwidth requirements across
+   underlying links because of the way they can be used: <strike><font color='red'>With</font></strike> <strong><font color='green'>with</font></strong> native IP
+   multicast or GRE tunnels, the amount of bandwidth depends on the
+   amount of <strike><font color='red'>content,</font></strike> <strong><font color='green'>content --</font></strong> not the number of EUs <strike><font color='red'>-</font></strike> <strong><font color='green'>--</font></strong> and is therefore easier
+   to plan for.  AMT tunnels terminating in <strike><font color='red'>EU/G</font></strike> <strong><font color='green'>the EU/G,</font></strong> on the other <strike><font color='red'>hand</font></strike> <strong><font color='green'>hand,</font></strong>
+   scale with the number of EUs.  In the vicinity of the AMT <strike><font color='red'>relay</font></strike> <strong><font color='green'>relay,</font></strong> they
+   can introduce <strong><font color='green'>a</font></strong> very large amount of replicated
+   <strike><font color='red'>traffic</font></strike> <strong><font color='green'>traffic,</font></strong> and it is
+   not always feasible to provision enough bandwidth for all possible <strike><font color='red'>EU</font></strike>
+   <strong><font color='green'>EUs</font></strong> to get the highest quality for all their content during peak
+   utilization in such setups <strike><font color='red'>-</font></strike> <strong><font color='green'>--</font></strong> unless the AMT relays are very close to
+   the EU edge.  <strike><font color='red'>Therefore</font></strike>  <strong><font color='green'>Therefore,</font></strong> it is also recommended <strike><font color='red'>to use</font></strike> <strong><font color='green'>that</font></strong> IP multicast
+   rate adaptation <strong><font color='green'>be used,</font></strong> even inside controlled <strike><font color='red'>networks</font></strike> <strong><font color='green'>networks,</font></strong> when using
+   AMT tunnels directly to <strong><font color='green'>the</font></strong> EU/G.
+
+   Note that rate-adaptive IP multicast traffic in general does not mean
+   that the sender is reducing the <strike><font color='red'>bitrate,</font></strike> <strong><font color='green'>bitrate</font></strong> but rather that the EUs that
+   experience congestion are joining to a <strike><font color='red'>lower bitrate</font></strike> <strong><font color='green'>lower-bitrate</font></strong> (S,G) stream of
+   the content, similar to <strike><font color='red'>adaptive bitrate</font></strike> <strong><font color='green'>ABR</font></strong> streaming over TCP.
+   <strike><font color='red'>Migration</font></strike>  <strong><font color='green'>Therefore, migration</font></strong>
+   from <strike><font color='red'>non rate-adaptive</font></strike> <strong><font color='green'>a non-rate-adaptive bitrate</font></strong> to <strike><font color='red'>rate adaptive</font></strike> <strong><font color='green'>a rate-adaptive</font></strong> bitrate in IP
+   multicast <strike><font color='red'>does therefore</font></strike> <strong><font color='green'>will</font></strong> also change the dynamic (S,G) join behavior in the <strike><font color='red'>network</font></strike>
+   <strong><font color='green'>network,</font></strong> resulting in potentially higher performance
+   <strike><font color='red'>requirement</font></strike> <strong><font color='green'>requirements</font></strong> for
+   IP multicast protocols (IGMP/PIM), especially on the last hops where
+   dynamic changes occur (including AMT <strike><font color='red'>gateway/relays):
+   In non rate-adaptive</font></strike> <strong><font color='green'>gateways/relays): in non-rate-
+   adaptive</font></strong> IP multicast, only "channel change" causes state change, <strong><font color='green'>but</font></strong>
+   in rate-adaptive <strike><font color='red'>also the</font></strike> <strong><font color='green'>multicast,</font></strong> congestion <strike><font color='red'>situation</font></strike> <strong><font color='green'>also</font></strong> causes state change.
+
+   Even though not fully specified in this document, peerings that rely
+   on GRE/AMT tunnels may be across one or more transit ADs instead of
+   an exclusive (non-shared, L1/L2) path.  Unless those transit ADs are
+   explicitly contracted to provide other than "best effort" transit for
+   the tunneled traffic, the <strong><font color='green'>tunneled</font></strong> IP multicast traffic <strike><font color='red'>tunneled</font></strike> must be
+   rate adaptive <strong><font color='green'>in order</font></strong> to not violate <strike><font color='red'>BCP41</font></strike> <strong><font color='green'>BCP 41</font></strong> across those
+   transit ADs.
+
+4.2.  Routing Aspects and Related Guidelines
+
+   The main objective for multicast delivery routing is to ensure that
+   the <strike><font color='red'>End User</font></strike> <strong><font color='green'>EU</font></strong> receives the multicast stream from the "most optimal" source <strike><font color='red'>[INF_ATIS_10]</font></strike>
+   <strong><font color='green'>[INF_ATIS_10],</font></strong> which typically:
+
+   o  Maximizes the multicast portion of the transport and minimizes any
+      unicast portion of the delivery, and
+
+   o  Minimizes the overall combined <strike><font color='red'>network(s)</font></strike> route <strike><font color='red'>distance.</font></strike> <strong><font color='green'>distance of the network(s).</font></strong>
+
+   This routing objective applies to both <strike><font color='red'>Native</font></strike> <strong><font color='green'>native multicast</font></strong> and AMT; the
+   actual methodology of the solution will be different for each.
+   Regardless, the routing solution is <strike><font color='red'>expected:</font></strike> <strong><font color='green'>expected to:</font></strong>
+
+   o  <strike><font color='red'>To be</font></strike>  <strong><font color='green'>Be</font></strong> scalable,
+
+   o  <strike><font color='red'>To avoid</font></strike>  <strong><font color='green'>Avoid</font></strong> or minimize new protocol development or modifications, and
+
+   o  <strike><font color='red'>To be</font></strike>  <strong><font color='green'>Be</font></strong> robust enough to achieve high reliability and <strong><font color='green'>to</font></strong> automatically
+      adjust to changes and problems in the multicast infrastructure.
+
+   For both <strike><font color='red'>Native</font></strike> <strong><font color='green'>native</font></strong> and AMT environments, having a source as close as
+   possible to the EU network is most desirable; therefore, in some
+   cases, an AD may prefer to have multiple sources near different
+   peering points.  However, that is entirely an implementation issue.
+
+4.2.1.  Native Multicast Routing Aspects
+
+   Native multicast simply requires that the <strike><font color='red'>Administrative Domains</font></strike> <strong><font color='green'>administrative domains</font></strong>
+   coordinate and advertise the correct source address(es) at their
+   network interconnection peering <strike><font color='red'>points(i.e., border routers).</font></strike> <strong><font color='green'>points (i.e., BRs).</font></strong>  An example of
+   multicast delivery via a <strike><font color='red'>Native Multicast</font></strike> <strong><font color='green'>native multicast</font></strong> process across two <strike><font color='red'>Administrative Domains</font></strike>
+   <strong><font color='green'>administrative domains</font></strong> is as <strike><font color='red'>follows</font></strike> <strong><font color='green'>follows,</font></strong> assuming that the
+   interconnecting peering points are also multicast enabled:
+
+   o  Appropriate information is obtained by the EU <strike><font color='red'>client</font></strike> <strong><font color='green'>client,</font></strong> who is a
+      subscriber to AD-2 (see Use Case 3.1).  This information is in the
+      form of <strike><font color='red'>metadata</font></strike> <strong><font color='green'>metadata,</font></strong> and it contains instructions directing the EU
+      client to launch an appropriate application if necessary, as well
+      as additional information for the application about the source
+      location and the group (or stream) <strike><font color='red'>id</font></strike> <strong><font color='green'>ID</font></strong> in the form of <strike><font color='red'>the "S,G"</font></strike> <strong><font color='green'>(S,G)</font></strong> data.
+      The "S" portion provides the name or IP address of the source of
+      the multicast stream.  The metadata may also contain alternate
+      delivery <strike><font color='red'>information</font></strike> <strong><font color='green'>information,</font></strong> such as specifying the unicast address of
+      the stream.
+
+   o  The client uses the join message with <strike><font color='red'>S,G</font></strike> <strong><font color='green'>(S,G)</font></strong> to join the multicast
+      stream [RFC4604].  To facilitate this process, the two <strike><font color='red'>AD's</font></strike> <strong><font color='green'>ADs</font></strong> need to
+      do the following:
+
+      <strike><font color='red'>o</font></strike>
+
+      <strong><font color='green'>*</font></strong>  Advertise the source <strike><font color='red'>id(s)</font></strike> <strong><font color='green'>ID(s)</font></strong> over the <strike><font color='red'>Peering Points.
+
+      o</font></strike> <strong><font color='green'>peering points.
+
+      *</font></strong>  Exchange <strong><font color='green'>such</font></strong> relevant <strike><font color='red'>Peering Point</font></strike> <strong><font color='green'>peering point</font></strong> information <strike><font color='red'>such</font></strike> as <strike><font color='red'>Capacity</font></strike> <strong><font color='green'>capacity</font></strong>
+         and <strike><font color='red'>Utilization.
+
+      o</font></strike> <strong><font color='green'>utilization.
+
+      *</font></strong>  Implement compatible multicast protocols to ensure proper
+         multicast delivery across the peering points.
+
+4.2.2.  GRE Tunnel over Interconnecting Peering Point
+
+   If the interconnecting peering point is not multicast enabled and
+   both <strike><font color='red'>AD's</font></strike> <strong><font color='green'>ADs</font></strong> are multicast enabled, then a simple solution is to
+   provision a GRE tunnel between the two <strike><font color='red'>AD's -</font></strike> <strong><font color='green'>ADs;</font></strong> see Use Case <strike><font color='red'>3.2.2.</font></strike> <strong><font color='green'>3.2
+   (Section 3.2).</font></strong>  The termination points of the tunnel will usually be
+   a network engineering <strike><font color='red'>decision,</font></strike> <strong><font color='green'>decision</font></strong> but generally will be between the <strike><font color='red'>border
+   routers</font></strike> <strong><font color='green'>BRs</font></strong>
+   or even between the <strike><font color='red'>AD 2 border router</font></strike> <strong><font color='green'>AD-2 BR</font></strong> and the <strike><font color='red'>AD 1</font></strike> <strong><font color='green'>AD-1</font></strong> source (or source access
+   router).  The GRE tunnel would allow end-to-end native multicast or
+   AMT multicast to traverse the interface.  Coordination and
+   advertisement of the source IP <strike><font color='red'>is</font></strike> <strong><font color='green'>are</font></strong> still required.
+
+   The two <strike><font color='red'>AD's</font></strike> <strong><font color='green'>ADs</font></strong> need to follow the same process as <strong><font color='green'>the process</font></strong> described
+   in <strong><font color='green'>Section</font></strong> 4.2.1 to facilitate multicast delivery across the <strike><font color='red'>Peering Points.</font></strike> <strong><font color='green'>peering
+   points.</font></strong>
+
+4.2.3.  Routing Aspects with AMT Tunnels
+
+   Unlike <strike><font color='red'>Native Multicast</font></strike> <strong><font color='green'>native multicast</font></strong> (with or without GRE), an AMT <strike><font color='red'>Multicast</font></strike> <strong><font color='green'>multicast</font></strong>
+   environment is more complex.  It presents a <strike><font color='red'>dual layered</font></strike> <strong><font color='green'>two-layered</font></strong> problem
+   <strike><font color='red'>because</font></strike>
+   <strong><font color='green'>in that</font></strong> there are two criteria that should be simultaneously met:
+
+   o  Find the closest AMT relay to the <strike><font color='red'>end-user</font></strike> <strong><font color='green'>EU</font></strong> that also has multicast
+      connectivity to the content source, and
+
+   o  Minimize the AMT unicast tunnel distance.
+
+   There are essentially two components <strike><font color='red'>to</font></strike> <strong><font color='green'>in</font></strong> the AMT <strike><font color='red'>specification</font></strike> <strong><font color='green'>specification:</font></strong>
+
+   AMT <strike><font color='red'>Relays:</font></strike> <strong><font color='green'>relays:</font></strong>  These serve the purpose of tunneling UDP multicast
+      traffic to the receivers (i.e., <strike><font color='red'>End-Points).</font></strike> <strong><font color='green'>endpoints).</font></strong>  The AMT <strike><font color='red'>Relay</font></strike> <strong><font color='green'>relay</font></strong> will
+      receive the traffic natively from the multicast media source and
+      will replicate the stream on behalf of the downstream AMT
+      <strike><font color='red'>Gateways,</font></strike>
+      <strong><font color='green'>gateways,</font></strong> encapsulating the multicast packets into unicast packets
+      and sending them over the tunnel toward the AMT <strike><font color='red'>Gateway.</font></strike> <strong><font color='green'>gateways.</font></strong>  In
+      addition, the AMT <strike><font color='red'>Relay</font></strike> <strong><font color='green'>relay</font></strong> may <strike><font color='red'>perform</font></strike> <strong><font color='green'>collect</font></strong> various usage and activity
+      <strike><font color='red'>statistics collection.</font></strike>
+      <strong><font color='green'>statistics.</font></strong>  This results in moving the replication point closer
+      to the <strike><font color='red'>end user,</font></strike> <strong><font color='green'>EU</font></strong> and cuts down on traffic across the network.  Thus, the
+      linear costs of adding unicast subscribers can be avoided.
+      However, unicast replication is still required for each requesting <strike><font color='red'>End-Point</font></strike>
+      <strong><font color='green'>endpoint</font></strong> within the unicast-only network.
+
+   AMT <strike><font color='red'>Gateway (GW):</font></strike> <strong><font color='green'>gateway:</font></strong>  The <strike><font color='red'>Gateway</font></strike> <strong><font color='green'>gateway</font></strong> will reside on an <strike><font color='red'>End-Point -</font></strike> <strong><font color='green'>endpoint;</font></strong> this could be
+      any type of IP <strike><font color='red'>host</font></strike> <strong><font color='green'>host,</font></strong> such as a Personal Computer (PC), mobile
+      phone, <strike><font color='red'>Set Top</font></strike> <strong><font color='green'>Set-Top</font></strong> Box <strike><font color='red'>(STB)</font></strike> <strong><font color='green'>(STB),</font></strong> or appliances.  The AMT <strike><font color='red'>Gateway</font></strike> <strong><font color='green'>gateway</font></strong> receives
+      join and leave requests from the <strike><font color='red'>Application</font></strike> <strong><font color='green'>application</font></strong> via an Application
+      Programming Interface (API).  In this manner, the
+      <strike><font color='red'>Gateway</font></strike> <strong><font color='green'>gateway</font></strong> allows
+      the <strike><font color='red'>End-Point</font></strike> <strong><font color='green'>endpoint</font></strong> to conduct itself as a true <strike><font color='red'>Multicast
+      End-Point.</font></strike> <strong><font color='green'>multicast endpoint.</font></strong>  The
+      AMT <strike><font color='red'>Gateway</font></strike> <strong><font color='green'>gateway</font></strong> will encapsulate AMT messages into UDP packets and
+      send them through a tunnel (across the unicast-only
+      infrastructure) to the AMT <strike><font color='red'>Relay.</font></strike> <strong><font color='green'>relay.</font></strong>
+
+   The simplest AMT <strike><font color='red'>Use Case (section</font></strike> <strong><font color='green'>use case (Section</font></strong> 3.3) involves peering points that
+   are not multicast enabled between two <strike><font color='red'>multicast enabled AD's.</font></strike> <strong><font color='green'>multicast-enabled ADs.</font></strong>  An
+   AMT tunnel is deployed between an AMT <strike><font color='red'>Relay</font></strike> <strong><font color='green'>relay</font></strong> on the <strike><font color='red'>AD 1</font></strike> <strong><font color='green'>AD-1</font></strong> side of the
+   peering point and an AMT <strike><font color='red'>Gateway</font></strike> <strong><font color='green'>gateway</font></strong> on the <strike><font color='red'>AD 2</font></strike> <strong><font color='green'>AD-2</font></strong> side of the peering
+   point.  One advantage <strike><font color='red'>to</font></strike> <strong><font color='green'>of</font></strong> this arrangement is that the tunnel is
+   established on an <strike><font color='red'>as needed</font></strike> <strong><font color='green'>as-needed</font></strong> basis and need not be a provisioned
+   element.  The two <strike><font color='red'>AD's</font></strike> <strong><font color='green'>ADs</font></strong> can coordinate and advertise special AMT <strike><font color='red'>Relay
+   Anycast</font></strike> <strong><font color='green'>relay
+   anycast</font></strong> addresses <strike><font color='red'>with</font></strike> <strong><font color='green'>with, and to,</font></strong> each other.  Alternately, they may
+   decide to simply provision <strike><font color='red'>Relay</font></strike> <strong><font color='green'>relay</font></strong> addresses, though this would not be
+   an optimal solution in terms of scalability.
+
+   Use Cases 3.4 and 3.5 describe <strike><font color='red'>more complicated</font></strike> AMT situations <strong><font color='green'>that are more
+   complicated,</font></strong> as AD-2 is not multicast <strike><font color='red'>enabled.</font></strike> <strong><font color='green'>enabled in these two cases.</font></strong>
+   For these cases, the <strike><font color='red'>End User</font></strike> <strong><font color='green'>EU</font></strong> device needs to be able to <strike><font color='red'>setup</font></strike> <strong><font color='green'>set up</font></strong> an AMT
+   tunnel in the most optimal manner.  There are many methods by which
+   relay selection can be <strike><font color='red'>done</font></strike> <strong><font color='green'>done,</font></strong> including the use of <strike><font color='red'>DNS based</font></strike> <strong><font color='green'>DNS-based</font></strong> queries
+   and static lookup tables [RFC7450].  The choice of the method is
+   implementation dependent and is up to the network operators.
+   Comparison of various methods is out of scope for this <strike><font color='red'>document; it</font></strike> <strong><font color='green'>document and</font></strong>
+   is <strong><font color='green'>left</font></strong> for further study.
+
+   An illustrative example of a relay selection based on DNS queries <strike><font color='red'>and
+   Anycast</font></strike> <strong><font color='green'>as
+   part of an anycast</font></strong> IP <strike><font color='red'>addresses</font></strike> <strong><font color='green'>address</font></strong> process <strong><font color='green'>is described here</font></strong> for Use
+   Cases 3.4 and 3.5 <strike><font color='red'>is described
+   here.</font></strike> <strong><font color='green'>(Sections 3.4 and 3.5).</font></strong>  Using an <strike><font color='red'>Anycast</font></strike> <strong><font color='green'>anycast</font></strong>
+   IP address for AMT <strike><font color='red'>Relays</font></strike> <strong><font color='green'>relays</font></strong> allows <strike><font color='red'>for</font></strike> all AMT
+   <strike><font color='red'>Gateways</font></strike> <strong><font color='green'>gateways</font></strong> to find the
+   "closest" AMT <strike><font color='red'>Relay -</font></strike> <strong><font color='green'>relay --</font></strong> the nearest edge of the multicast topology of
+   the source.  Note that this is strictly illustrative; the choice of
+   the method is up to the network operators.  The basic process is as
+   follows:
+
+   o  Appropriate metadata is obtained by the EU client application.
+      The metadata contains instructions directing the EU client to an
+      ordered list of particular destinations to seek the requested
+      stream and, for multicast, specifies the source location and the
+      group (or stream) ID in the form of <strike><font color='red'>the "S,G"</font></strike> <strong><font color='green'>(S,G)</font></strong> data.  The "S" portion
+      provides the URI (name or IP address) of the source of the
+      multicast <strike><font color='red'>stream</font></strike> <strong><font color='green'>stream,</font></strong> and the "G" identifies the particular stream
+      originated by that source.  The metadata may also contain
+      alternate delivery information such as the address of the unicast
+      form of the content to be <strike><font color='red'>used,</font></strike> <strong><font color='green'>used --</font></strong> for example, if the multicast
+      stream becomes unavailable.
+
+   o  Using the information from the <strike><font color='red'>metadata, and possibly</font></strike> <strong><font color='green'>metadata and, possibly,</font></strong> information
+      provisioned directly in the EU client, a DNS query is initiated in
+      order to connect the EU <strike><font color='red'>client/AMT Gateway</font></strike> <strong><font color='green'>client / AMT gateway</font></strong> to an AMT <strike><font color='red'>Relay.</font></strike> <strong><font color='green'>relay.</font></strong>
+
+   o  Query results are <strike><font color='red'>obtained,</font></strike> <strong><font color='green'>obtained</font></strong> and may return an <strike><font color='red'>Anycast</font></strike> <strong><font color='green'>anycast</font></strong> address or a
+      specific unicast address of a relay.  Multiple relays will
+      typically exist.  The <strike><font color='red'>Anycast</font></strike> <strong><font color='green'>anycast</font></strong> address is a routable <strike><font color='red'>"pseudo-
+      address"</font></strike>
+      <strong><font color='green'>"pseudo-address"</font></strong> shared among the relays that can gain multicast
+      access to the source.
+
+   o  If a specific IP address unique to a relay was not obtained, the
+      AMT <strike><font color='red'>Gateway</font></strike> <strong><font color='green'>gateway</font></strong> then sends a message (e.g., the discovery message) to
+      the <strike><font color='red'>Anycast</font></strike> <strong><font color='green'>anycast</font></strong> address such that the network is making the routing
+      choice of <strong><font color='green'>a</font></strong> particular <strike><font color='red'>relay -</font></strike> <strong><font color='green'>relay,</font></strong> e.g., <strike><font color='red'>closest</font></strike> <strong><font color='green'>the</font></strong> relay <strong><font color='green'>that is closest</font></strong> to
+      the EU.  Details are outside the scope <strike><font color='red'>for</font></strike> <strong><font color='green'>of</font></strong> this document.  See
+      [RFC4786].
+
+   o  The contacted AMT <strike><font color='red'>Relay</font></strike> <strong><font color='green'>relay</font></strong> then returns its specific unicast IP
+      address (after which the <strike><font color='red'>Anycast</font></strike> <strong><font color='green'>anycast</font></strong> address is no longer required).
+      Variations may exist as well.
+
+   o  The AMT <strike><font color='red'>Gateway</font></strike> <strong><font color='green'>gateway</font></strong> uses that unicast IP address to initiate a <strike><font color='red'>three-
+      way</font></strike>
+      <strong><font color='green'>three-way</font></strong> handshake with the AMT <strike><font color='red'>Relay.</font></strike> <strong><font color='green'>relay.</font></strong>
+
+   o  <strong><font color='green'>The</font></strong> AMT <strike><font color='red'>Gateway</font></strike> <strong><font color='green'>gateway</font></strong> provides <strike><font color='red'>"S,G"</font></strike> <strong><font color='green'>the (S,G) information</font></strong> to the AMT <strike><font color='red'>Relay</font></strike> <strong><font color='green'>relay</font></strong>
+      (embedded in AMT protocol messages).
+
+   o  <strong><font color='green'>The</font></strong> AMT <strike><font color='red'>Relay</font></strike> <strong><font color='green'>relay</font></strong> receives the <strike><font color='red'>"S,G"</font></strike> <strong><font color='green'>(S,G)</font></strong> information and uses <strike><font color='red'>the S,G</font></strike> <strong><font color='green'>it</font></strong> to join
+      the appropriate multicast stream, if it has not already subscribed
+      to that stream.
+
+   o  <strong><font color='green'>The</font></strong> AMT <strike><font color='red'>Relay</font></strike> <strong><font color='green'>relay</font></strong> encapsulates the multicast stream into the tunnel
+      between the <strike><font color='red'>Relay</font></strike> <strong><font color='green'>relay</font></strong> and the <strike><font color='red'>Gateway,</font></strike> <strong><font color='green'>gateway,</font></strong> providing the requested content
+      to the EU.
+
+4.2.4.  Public Peering Routing Aspects
+
+   <strong><font color='green'>Figure 6 shows an example of a broadcast peering point.</font></strong>
+
+              AD-1a            AD-1b
+              BR                BR
+               |                 |
+             --+-+---------------+-+-- broadcast peering point LAN
+                 |                 |
+                 BR               BR
+                AD-2a            AD-2b
+
+                     Figure 6: Broadcast Peering Point
+
+   A broadcast peering point is an L2 subnet connecting <strike><font color='red'>3</font></strike> <strong><font color='green'>three</font></strong> or more
+   ADs.  It is common in IXPs and usually consists of <strike><font color='red'>ethernet</font></strike> <strong><font color='green'>Ethernet</font></strong>
+   switch(es) operated by the IXP connecting to BRs operated by the ADs.
+
+   In an example setup <strike><font color='red'>domain</font></strike> <strong><font color='green'>domain,</font></strong> AD-2a peers with AD-1a and wants to
+   receive IP multicast from it.  <strike><font color='red'>Likewise</font></strike>  <strong><font color='green'>Likewise,</font></strong> AD-2b peers with AD-1b and
+   wants to receive IP multicast from it.
+
+   Assume <strong><font color='green'>that</font></strong> one or more IP multicast (S,G) traffic streams can be
+   served by both AD-1a and <strike><font color='red'>AD-1b,</font></strike> <strong><font color='green'>AD-1b --</font></strong> for <strike><font color='red'>example</font></strike> <strong><font color='green'>example,</font></strong> because both AD-1a and
+   AD-1b <strike><font color='red'>do
+   contract</font></strike> <strong><font color='green'>contact</font></strong> this content from the same content source.
+
+   In this case, AD-2a and AD-2b can <strike><font color='red'>not</font></strike> <strong><font color='green'>no longer</font></strong> control <strike><font color='red'>anymore</font></strike> which upstream
+   <strike><font color='red'>domain,</font></strike>
+   <strong><font color='green'>domain --</font></strong> AD-1a or AD-1b <strong><font color='green'>--</font></strong> will forward this (S,G) into the LAN.
+   <strong><font color='green'>The</font></strong> AD-2a BR requests the (S,G) from <strong><font color='green'>the</font></strong> AD-1a <strike><font color='red'>BR</font></strike> <strong><font color='green'>BR,</font></strong> and <strong><font color='green'>the</font></strong> AD-2b BR
+   requests the same (S,G) from <strong><font color='green'>the</font></strong> AD-1b BR.  To avoid duplicate
+   packets, an (S,G) can be forwarded by only one router onto the <strike><font color='red'>LAN, and PIM-SM/PIM-SSM</font></strike> <strong><font color='green'>LAN;
+   PIM-SM / PIM-SSM</font></strong> detects requests for duplicate <strike><font color='red'>transmission</font></strike> <strong><font color='green'>transmissions</font></strong> and <strike><font color='red'>resolve it</font></strike>
+   <strong><font color='green'>resolves them</font></strong> via the so-called "assert" protocol <strike><font color='red'>operation</font></strike> <strong><font color='green'>operation,</font></strong> which
+   results in only one BR forwarding the traffic.  Assume <strong><font color='green'>that</font></strong> this is
+   <strong><font color='green'>the</font></strong> AD-1a BR.  AD-2b will then receive <strike><font color='red'>the</font></strike> <strong><font color='green'>unexpected</font></strong> multicast traffic <strike><font color='red'>unexpectedly</font></strike>
+   from a provider with whom it does not have a mutual agreement for <strike><font color='red'>the</font></strike>
+   <strong><font color='green'>that</font></strong> traffic.  Quality issues in EUs behind AD-2b caused by AD-1a
+   will cause a lot of <strike><font color='red'>responsiblity</font></strike> <strong><font color='green'>issues related to responsibility</font></strong> and
+   <strike><font color='red'>troubleshooting issues.</font></strike>
+   <strong><font color='green'>troubleshooting.</font></strong>
+
+   In <strike><font color='red'>face</font></strike> <strong><font color='green'>light</font></strong> of <strike><font color='red'>this</font></strike> <strong><font color='green'>these</font></strong> technical issues, we <strike><font color='red'>describe</font></strike> <strong><font color='green'>describe, via</font></strong> the following <strike><font color='red'>options</font></strike>
+   <strong><font color='green'>options,</font></strong> how IP multicast can be carried across broadcast peering
+   point LANs:
+
+   1.  IP multicast is tunneled across the LAN.  Any of the GRE/AMT
+       tunneling solutions mentioned in this document are applicable.
+       This is the one case where <strike><font color='red'>specifically</font></strike> a GRE tunnel between the upstream BR <strike><font color='red'>(e.g.:</font></strike>
+       <strong><font color='green'>(e.g.,</font></strong> AD-1a) and downstream BR <strike><font color='red'>(e.g.:</font></strike> <strong><font color='green'>(e.g.,</font></strong> AD-2a) is
+       <strike><font color='red'>recommended</font></strike> <strong><font color='green'>specifically
+       recommended,</font></strong> as opposed to tunneling across uBRs <strike><font color='red'>which</font></strike> <strong><font color='green'>(which</font></strong> are not
+       the actual <strike><font color='red'>BRs.</font></strike> <strong><font color='green'>BRs).</font></strong>
+
+   2.  The LAN has only one upstream AD that is sourcing IP <strike><font color='red'>multicast</font></strike> <strong><font color='green'>multicast,</font></strong>
+       and native IP multicast is used.  This is an efficient way to
+       distribute the same IP multicast content to multiple downstream
+       ADs.  Misbehaving downstream BRs can still disrupt the delivery
+       of IP multicast from the upstream BR to other downstream <strike><font color='red'>BRs,
+       therefore</font></strike> <strong><font color='green'>BRs;
+       therefore,</font></strong> strict rules must be <strike><font color='red'>follow</font></strike> <strong><font color='green'>followed</font></strong> to prohibit <strike><font color='red'>that</font></strike> <strong><font color='green'>such a</font></strong> case.
+       The downstream BRs must ensure that they will always consider
+       only the upstream BR as a source for multicast traffic: <strike><font color='red'>e.g.:</font></strike> <strong><font color='green'>e.g.,</font></strong> no
+       BGP SAFI-2 peerings between the downstream ADs across the peering
+       point LAN, so that <strike><font color='red'>only</font></strike> the upstream BR is the only possible
+       <strike><font color='red'>next-hop</font></strike> <strong><font color='green'>next hop</font></strong>
+       reachable across this LAN.  <strike><font color='red'>And</font></strike>  <strong><font color='green'>Also,</font></strong> routing policies <strong><font color='green'>can be</font></strong>
+       configured to avoid <strike><font color='red'>fall</font></strike> <strong><font color='green'>falling</font></strong> back to <strike><font color='red'>the use of</font></strike> <strong><font color='green'>using</font></strong> SAFI-1 (unicast) routes
+       for IP multicast if unicast BGP peering is not limited in the
+       same way.
+
+   3.  The LAN has multiple <strike><font color='red'>upstreams,</font></strike> <strong><font color='green'>upstream ADs,</font></strong> but they are federated and
+       agree on a consistent policy for IP multicast traffic across the
+       LAN.  One policy is that each possible source is only announced
+       by one upstream BR.  Another policy is that sources are
+       redundantly announced <strike><font color='red'>(problematic</font></strike> <strong><font color='green'>(the problematic</font></strong> case mentioned in <strike><font color='red'>above example),</font></strike> <strong><font color='green'>the
+       example in Figure 6 above),</font></strong> but the upstream domains also provide
+       mutual operational insight to help <strong><font color='green'>with</font></strong> troubleshooting (outside
+       the scope of this document).
+
+4.3.  <strike><font color='red'>Back Office</font></strike>  <strong><font color='green'>Back-Office</font></strong> Functions - Provisioning and Logging Guidelines
+
+   <strike><font color='red'>Back Office</font></strike>
+
+   <strong><font color='green'>"Back office"</font></strong> refers to the following:
+
+   o  Servers and <strike><font color='red'>Content Management</font></strike> <strong><font color='green'>content-management</font></strong> systems that support the delivery
+      of applications via multicast and interactions between <strike><font color='red'>AD's.</font></strike> <strong><font color='green'>ADs.</font></strong>
+
+   o  Functionality associated with logging, reporting, ordering,
+      provisioning, maintenance, service assurance, settlement, etc.
+
+4.3.1.  Provisioning Guidelines
+
+   Resources for basic connectivity between <strike><font color='red'>AD's Providers</font></strike> <strong><font color='green'>ADs' providers</font></strong> need to be
+   provisioned as follows:
+
+   o  Sufficient capacity must be provisioned to support multicast-based
+      delivery across <strike><font color='red'>AD's.</font></strike> <strong><font color='green'>ADs.</font></strong>
+
+   o  Sufficient capacity must be provisioned for connectivity between
+      all supporting <strike><font color='red'>back-offices</font></strike> <strong><font color='green'>back offices</font></strong> of the <strike><font color='red'>AD's</font></strike> <strong><font color='green'>ADs</font></strong> as appropriate.  This
+      includes activating proper security treatment for these <strike><font color='red'>back-
+      office</font></strike>
+      <strong><font color='green'>back-office</font></strong> connections (gateways, firewalls, <strike><font color='red'>etc)</font></strike> <strong><font color='green'>etc.)</font></strong> as
+      appropriate.
+
+   <strike><font color='red'>o  Routing protocols as needed, e.g. configuring routers to support
+      these.</font></strike>
+
+   Provisioning aspects related to <strike><font color='red'>Multicast-Based</font></strike> <strong><font color='green'>multicast-based</font></strong> inter-domain delivery
+   are as follows.
+
+   The ability to receive <strong><font color='green'>a</font></strong> requested application via multicast is
+   triggered via receipt of the necessary metadata.  Hence, this
+   metadata must be provided to the EU regarding <strong><font color='green'>the</font></strong> multicast URL <strike><font color='red'>-</font></strike> <strong><font color='green'>--</font></strong>
+   and unicast fallback if applicable.  AD-2 must enable the delivery of
+   this metadata to the EU and provision appropriate resources for this
+   purpose.
+
+   <strike><font color='red'>Native</font></strike>
+
+   <strong><font color='green'>It is assumed that native</font></strong> multicast functionality is <strike><font color='red'>assumed to be</font></strike> available across
+   many ISP backbones, peering <strong><font color='green'>points,</font></strong> and access networks.  If,
+   however, native multicast is not an option (Use Cases 3.4 and 3.5),
+   then:
+
+   o  <strong><font color='green'>The</font></strong> EU must have <strong><font color='green'>a</font></strong> multicast client to use AMT multicast obtained <strike><font color='red'>either</font></strike>
+      from <strike><font color='red'>Application Source</font></strike> <strong><font color='green'>either (1) the application source</font></strong> (per agreement with AD-1)
+      or <strike><font color='red'>from</font></strike> <strong><font color='green'>(2)</font></strong> AD-1 or AD-2 (if delegated by the <strike><font color='red'>Application Source).</font></strike> <strong><font color='green'>application source).</font></strong>
+
+   o  If provided by <strike><font color='red'>AD-1/AD-2,</font></strike> <strong><font color='green'>AD-1 or AD-2,</font></strong> then the EU could be redirected to a
+      client download <strike><font color='red'>site (note: this</font></strike> <strong><font color='green'>site.  (Note: This</font></strong> could be an <strike><font color='red'>Application Source
+      site).</font></strike> <strong><font color='green'>application source
+      site.)</font></strong>  If provided by the <strike><font color='red'>Application Source,</font></strike> <strong><font color='green'>application source,</font></strong> then this <strike><font color='red'>Source</font></strike> <strong><font color='green'>source</font></strong>
+      would have to coordinate with AD-1 to ensure <strong><font color='green'>that</font></strong> the proper
+      client is provided (assuming multiple possible clients).
+
+   o  Where AMT <strike><font color='red'>Gateways</font></strike> <strong><font color='green'>gateways</font></strong> support different application sets, all AD-2
+      AMT <strike><font color='red'>Relays</font></strike> <strong><font color='green'>relays</font></strong> need to be provisioned with all source <strike><font color='red'>&amp;</font></strike> <strong><font color='green'>and</font></strong> group
+      addresses for streams it is allowed to join.
+
+   o  DNS across each AD must be provisioned to enable a client <strike><font color='red'>GW</font></strike> <strong><font color='green'>gateway</font></strong>
+      to locate the optimal AMT <strike><font color='red'>Relay (i.e.</font></strike> <strong><font color='green'>relay (i.e.,</font></strong> longest multicast path and
+      shortest unicast tunnel) with connectivity to the content's
+      multicast source.
+
+   Provisioning <strike><font color='red'>Aspects Related</font></strike> <strong><font color='green'>aspects related</font></strong> to <strike><font color='red'>Operations</font></strike> <strong><font color='green'>operations</font></strong> and <strike><font color='red'>Customer Care</font></strike> <strong><font color='green'>customer care</font></strong> are
+   <strike><font color='red'>stated</font></strike> as
+   follows.
+
+   <strike><font color='red'>Each AD provider</font></strike>
+
+   <strong><font color='green'>It</font></strong> is assumed <strike><font color='red'>to</font></strike> <strong><font color='green'>that each AD provider will</font></strong> provision operations and
+   customer care access to their own systems.
+
+   AD-1's operations and customer care functions must <strike><font color='red'>have visibility</font></strike> <strong><font color='green'>be able</font></strong> to <strong><font color='green'>see
+   enough of</font></strong> what is happening in AD-2's network or <strike><font color='red'>to</font></strike> <strong><font color='green'>in</font></strong> the service
+   provided by <strike><font color='red'>AD-
+   2, sufficient</font></strike> <strong><font color='green'>AD-2</font></strong> to verify their mutual goals and operations, <strike><font color='red'>e.g.</font></strike> <strong><font color='green'>e.g.,</font></strong>
+   to know how the <strike><font color='red'>EU's</font></strike> <strong><font color='green'>EUs</font></strong> are being served.  This can be done in two ways:
+
+   o  Automated interfaces are built between AD-1 and AD-2 such that
+      operations and customer care continue using their own systems.
+      This requires coordination between the two <strike><font color='red'>AD's</font></strike> <strong><font color='green'>ADs,</font></strong> with appropriate
+      provisioning of necessary resources.
+
+   o  AD-1's operations and customer care personnel are provided <strong><font color='green'>direct</font></strong>
+      access
+      <strike><font color='red'>directly</font></strike> to AD-2's <strike><font color='red'>system.</font></strike> <strong><font color='green'>systems.</font></strong>  In this scenario, additional
+      provisioning in these systems will be needed to provide necessary
+      access.  <strike><font color='red'>Additional provisioning must be agreed to by the</font></strike>  <strong><font color='green'>The</font></strong> two <strike><font color='red'>AD's</font></strike> <strong><font color='green'>ADs must agree on additional provisioning</font></strong> to
+      support this option.
+
+4.3.2.  <strike><font color='red'>Interdomain</font></strike>  <strong><font color='green'>Inter-domain</font></strong> Authentication Guidelines
+
+   All interactions between pairs of <strike><font color='red'>AD's</font></strike> <strong><font color='green'>ADs</font></strong> can be discovered and/or <strike><font color='red'>be</font></strike>
+   associated with the account(s) utilized for delivered applications.
+   Supporting guidelines are as follows:
+
+   o  A unique identifier is recommended to designate each master
+      account.
+
+   o  AD-2 is expected to set up "accounts" <strike><font color='red'>(logical</font></strike> <strong><font color='green'>(a logical</font></strong> facility
+      generally protected by credentials such as login passwords) for
+      use by AD-1.  Multiple <strike><font color='red'>accounts</font></strike> <strong><font color='green'>accounts,</font></strong> and multiple types or partitions
+      of <strike><font color='red'>accounts</font></strike> <strong><font color='green'>accounts,</font></strong> can apply, <strike><font color='red'>e.g.</font></strike> <strong><font color='green'>e.g.,</font></strong> customer accounts, security <strike><font color='red'>accounts, etc.</font></strike>
+      <strong><font color='green'>accounts.</font></strong>
+
+   The reason to specifically mention the need for AD-1 to initiate
+   interactions with AD-2 (and use some account for that), as opposed to
+   the <strike><font color='red'>opposite direction</font></strike> <strong><font color='green'>opposite,</font></strong> is based on the recommended workflow initiated by
+   customers (see Section 4.4): <strike><font color='red'>The</font></strike> <strong><font color='green'>the</font></strong> customer contacts <strong><font color='green'>the</font></strong> content <strike><font color='red'>source
+   (part</font></strike>
+   <strong><font color='green'>source, which is part</font></strong> of <strike><font color='red'>AD-1), when</font></strike> <strong><font color='green'>AD-1.  Consequently, if</font></strong> AD-1 sees the need
+   to <strike><font color='red'>propagate</font></strike> <strong><font color='green'>escalate</font></strong> the <strike><font color='red'>issue,</font></strike> <strong><font color='green'>issue to AD-2,</font></strong> it will interact with AD-2 using the
+   aforementioned guidelines.
+
+4.3.3.  <strike><font color='red'>Log Management</font></strike>  <strong><font color='green'>Log-Management</font></strong> Guidelines
+
+   Successful delivery (in terms of user experience) of applications or
+   content via multicast between pairs of interconnecting <strike><font color='red'>AD's</font></strike> <strong><font color='green'>ADs</font></strong> can be
+   improved through the ability to exchange appropriate logs for various
+   workflows <strike><font color='red'>-</font></strike> <strong><font color='green'>--</font></strong> troubleshooting, accounting and billing, <strong><font color='green'>optimization of</font></strong>
+   traffic and content <strike><font color='red'>transmission optimization,</font></strike> <strong><font color='green'>transmission, optimization of</font></strong> content and
+   application
+   <strike><font color='red'>development optimization</font></strike> <strong><font color='green'>development,</font></strong> and so on.
+
+   <strike><font color='red'>The basic model as explained in before is that the content source and
+   on its behalf</font></strike>
+
+   <strong><font color='green'>Specifically,</font></strong> AD-1 take over primary responsibility for customer
+   experience <strike><font color='red'>and</font></strike> <strong><font color='green'>on behalf of</font></strong> the <strike><font color='red'>AD-2's</font></strike> <strong><font color='green'>content source, with</font></strong> support <strike><font color='red'>this.</font></strike> <strong><font color='green'>from AD-2 as
+   needed.</font></strong>  The application/content owner is the only participant who <strike><font color='red'>has</font></strike>
+   <strong><font color='green'>has,</font></strong> and <strike><font color='red'>needs</font></strike> <strong><font color='green'>needs,</font></strong> full insight into the application level and can map
+   the customer application experience to the network traffic flows <strike><font color='red'>- which it then</font></strike> <strong><font color='green'>--
+   which,</font></strong> with the help of AD-2 or logs from <strike><font color='red'>AD-2</font></strike> <strong><font color='green'>AD-2, it</font></strong> can <strong><font color='green'>then</font></strong> analyze
+   and interpret.
+
+   The main difference between unicast delivery and multicast delivery
+   is that the content source can infer a lot more about downstream
+   network problems from a <strike><font color='red'>unicasted</font></strike> <strong><font color='green'>unicast</font></strong> stream than from a <strike><font color='red'>multicasted</font></strike> <strong><font color='green'>multicast</font></strong> stream: <strike><font color='red'>The multicasted</font></strike>
+   <strong><font color='green'>the multicast</font></strong> stream is not <strike><font color='red'>per-EU</font></strike> <strong><font color='green'>per EU,</font></strong> except after the last
+   replication, which is in most cases not in AD-1.  Logs from the
+   application, including the receiver side at the EU, can provide
+   <strike><font color='red'>insight,</font></strike>
+   <strong><font color='green'>insight</font></strong> but <strike><font color='red'>can not</font></strike> <strong><font color='green'>cannot</font></strong> help to fully isolate network problems because of
+   the IP multicast per-application operational state built across AD-1
+   and AD-2 <strike><font color='red'>(aka:</font></strike> <strong><font color='green'>(aka</font></strong> the (S,G) state and any other <strike><font color='red'>feature operational
+   state</font></strike> <strong><font color='green'>operational-state
+   features,</font></strong> such as DiffServ QoS).
+
+   See Section 7 for more <strike><font color='red'>discussions about</font></strike> <strong><font color='green'>discussion regarding</font></strong> the privacy
+   considerations of the model described here.
+
+   Different <strike><font color='red'>type</font></strike> <strong><font color='green'>types</font></strong> of logs are known to help support operations in AD-1
+   when provided by AD-2.  This could be done as part of AD-1/AD-2
+   contracts.  Note that except for implied <strike><font color='red'>multicast specific</font></strike> <strong><font color='green'>multicast-specific</font></strong> elements,
+   the options listed here are not unique or novel for IP multicast, but
+   they are more important for services novel to the operators than for
+   operationally <strike><font color='red'>well established</font></strike> <strong><font color='green'>well-established</font></strong> services (such as unicast).  <strike><font color='red'>Therefore
+   we</font></strike>  <strong><font color='green'>We
+   therefore</font></strong> detail them as follows:
+
+   o  Usage information logs at <strong><font color='green'>an</font></strong> aggregate level.
+
+   o  Usage failure instances at an aggregate level.
+
+   o  Grouped or sequenced application <strike><font color='red'>access.</font></strike> <strong><font color='green'>access:</font></strong> performance, <strike><font color='red'>behavior</font></strike> <strong><font color='green'>behavior,</font></strong>
+      and failure at an aggregate level to support potential <strike><font color='red'>Application
+      Provider-driven</font></strike>
+      <strong><font color='green'>application-provider-driven</font></strong> strategies.  Examples of aggregate
+      levels include grouped video clips, web pages, and <strike><font color='red'>sets of software download.</font></strike> <strong><font color='green'>software-
+      download sets.</font></strong>
+
+   o  Security logs, aggregated or summarized according to agreement
+      (with additional detail potentially provided during security
+      events, by agreement).
+
+   o  Access logs (EU), when needed for troubleshooting.
+
+   o  Application logs <strike><font color='red'>(what</font></strike> <strong><font color='green'>("What</font></strong> is the application <strike><font color='red'>doing),</font></strike> <strong><font color='green'>doing?"),</font></strong> when needed
+      for shared troubleshooting.
+
+   o  Syslogs (network management), when needed for shared
+      troubleshooting.
+
+   The two <strike><font color='red'>AD's</font></strike> <strong><font color='green'>ADs</font></strong> may supply additional security logs to each <strike><font color='red'>other</font></strike> <strong><font color='green'>other,</font></strong> as
+   agreed <strike><font color='red'>to by</font></strike> <strong><font color='green'>upon in</font></strong> contract(s).  Examples include the following:
+
+   o  Information related to general security-relevant <strike><font color='red'>activity</font></strike> <strong><font color='green'>activity,</font></strong> which
+      may be of use from a <strike><font color='red'>protective</font></strike> <strong><font color='green'>protection</font></strong> or response <strike><font color='red'>perspective, such as</font></strike> <strong><font color='green'>perspective:</font></strong> types and
+      counts of attacks detected, related source information, related
+      target information, etc.
+
+   o  Aggregated or summarized logs according to agreement (with
+      additional detail potentially provided during security events, by
+      agreement).
+
+4.4.  Operations - Service Performance and Monitoring Guidelines
+
+   <strike><font color='red'>Service Performance</font></strike>
+
+   <strong><font color='green'>"Service performance"</font></strong> refers to monitoring metrics related to
+   multicast delivery via probes.  The focus is on the service provided
+   by AD-2 to AD-1 on behalf of all multicast application sources
+   (metrics may be specified for SLA use or otherwise).  Associated
+   guidelines are as follows:
+
+   o  Both <strike><font color='red'>AD's</font></strike> <strong><font color='green'>ADs</font></strong> are expected to monitor, collect, and analyze service
+      performance metrics for multicast applications.  AD-2 provides
+      relevant performance information to AD-1; this enables AD-1 to
+      create an end-to-end performance view on behalf of the multicast
+      application source.
+
+   o  Both <strike><font color='red'>AD's</font></strike> <strong><font color='green'>ADs</font></strong> are expected to agree on the <strike><font color='red'>type</font></strike> <strong><font color='green'>types</font></strong> of probes to be used
+      to monitor multicast delivery performance.  For example, AD-2 may
+      permit AD-1's probes to be utilized in the AD-2 multicast service
+      footprint.  Alternately, AD-2 may deploy its own probes and relay
+      performance information back to AD-1.
+
+   <strike><font color='red'>Service Monitoring</font></strike>
+
+   <strong><font color='green'>"Service monitoring"</font></strong> generally refers to a service (as a whole)
+   provided on behalf of a particular multicast application source
+   provider.  It thus involves complaints from <strike><font color='red'>End Users</font></strike> <strong><font color='green'>EUs</font></strong> when service problems
+   occur.  EUs direct their complaints to the source provider;
+   <strike><font color='red'>in turn</font></strike> the
+   source provider <strong><font color='green'>in turn</font></strong> submits these complaints to AD-1.  The
+   responsibility for service delivery lies with AD-1; as <strike><font color='red'>such</font></strike> <strong><font color='green'>such,</font></strong> AD-1
+   will need to determine where the service problem is occurring <strike><font color='red'>-</font></strike> <strong><font color='green'>-- in</font></strong>
+   its own network or in AD-2.  It is expected that each AD will have
+   tools to monitor multicast service status in its own network.
+
+   o  Both <strike><font color='red'>AD's</font></strike> <strong><font color='green'>ADs</font></strong> will determine how best to deploy multicast service
+      monitoring tools.  Typically, each AD will deploy its own set of
+      monitoring <strike><font color='red'>tools;</font></strike> <strong><font color='green'>tools,</font></strong> in which <strike><font color='red'>case,</font></strike> <strong><font color='green'>case</font></strong> both <strike><font color='red'>AD's</font></strike> <strong><font color='green'>ADs</font></strong> are expected to inform
+      each other when multicast delivery problems are detected.
+
+   o  AD-2 may experience some problems in its network.  For example,
+      for the AMT <strike><font color='red'>Use Cases,</font></strike> <strong><font color='green'>use cases (Sections 3.3, 3.4, and 3.5),</font></strong> one or more
+      AMT <strike><font color='red'>Relays</font></strike> <strong><font color='green'>relays</font></strong> may be experiencing difficulties.  AD-2 may be able to
+      fix the problem by rerouting the multicast streams via alternate
+      AMT <strike><font color='red'>Relays.</font></strike> <strong><font color='green'>relays.</font></strong>  If the fix is not successful and multicast service
+      delivery degrades, then AD-2 needs to report the issue to AD-1.
+
+   o  When <strong><font color='green'>a</font></strong> problem notification is received from a multicast
+      application source, AD-1 determines whether the cause of the
+      problem is within its own network or within <strike><font color='red'>the AD-2 domain.</font></strike> <strong><font color='green'>AD-2.</font></strong>  If the cause is
+      within
+      <strike><font color='red'>the AD-2 domain,</font></strike> <strong><font color='green'>AD-2,</font></strong> then AD-1 supplies all necessary information to AD-2.
+      Examples of supporting information include the following:
+
+      <strike><font color='red'>o  Kind</font></strike>
+
+      <strong><font color='green'>*  Kind(s)</font></strong> of problem(s).
+
+      <strike><font color='red'>o</font></strike>
+
+      <strong><font color='green'>*</font></strong>  Starting point <strike><font color='red'>&amp;</font></strike> <strong><font color='green'>and</font></strong> duration of problem(s).
+
+      <strike><font color='red'>o</font></strike>
+
+      <strong><font color='green'>*</font></strong>  Conditions in which <strike><font color='red'>problem(s)</font></strike> <strong><font color='green'>one or more problems</font></strong> occur.
+
+      <strike><font color='red'>o</font></strike>
+
+      <strong><font color='green'>*</font></strong>  IP address blocks of affected users.
+
+      <strike><font color='red'>o</font></strike>
+
+      <strong><font color='green'>*</font></strong>  ISPs of affected users.
+
+      <strike><font color='red'>o</font></strike>
+
+      <strong><font color='green'>*</font></strong>  Type of <strike><font color='red'>access</font></strike> <strong><font color='green'>access,</font></strong> e.g., mobile versus desktop.
+
+      <strike><font color='red'>o</font></strike>
+
+      <strong><font color='green'>*</font></strong>  Network locations of affected EUs.
+
+   o  Both <strike><font color='red'>AD's</font></strike> <strong><font color='green'>ADs</font></strong> conduct some form of <strike><font color='red'>root cause</font></strike> <strong><font color='green'>root-cause</font></strong> analysis for multicast
+      service delivery problems.  Examples of various factors for
+      consideration include:
+
+      <strike><font color='red'>o</font></strike>
+
+      <strong><font color='green'>*</font></strong>  Verification that the service configuration matches the product
+         features.
+
+      <strike><font color='red'>o</font></strike>
+
+      <strong><font color='green'>*</font></strong>  Correlation and consolidation of the various customer problems
+         and resource troubles into a single <strike><font color='red'>root service</font></strike> <strong><font color='green'>root-service</font></strong> problem.
+
+      <strike><font color='red'>o</font></strike>
+
+      <strong><font color='green'>*</font></strong>  Prioritization of currently open service problems, giving
+         consideration to problem <strike><font color='red'>impact, service level agreement,</font></strike> <strong><font color='green'>impacts, SLAs,</font></strong> etc.
+
+      <strike><font color='red'>o  Conduction of</font></strike>
+
+      <strong><font color='green'>*  Conducting</font></strong> service tests, including <strike><font color='red'>one time</font></strike> tests <strong><font color='green'>performed once</font></strong> or a
+         series of tests over a period of time.
+
+      <strike><font color='red'>o</font></strike>
+
+      <strong><font color='green'>*</font></strong>  Analysis of test results.
+
+      <strike><font color='red'>o</font></strike>
+
+      <strong><font color='green'>*</font></strong>  Analysis of relevant network fault or performance data.
+
+      <strike><font color='red'>o</font></strike>
+
+      <strong><font color='green'>*</font></strong>  Analysis of the problem information provided by the <strike><font color='red'>customer
+         (CP).</font></strike> <strong><font color='green'>customer.</font></strong>
+
+   o  Once the cause of the problem has been determined and the problem
+      has been fixed, both <strike><font color='red'>AD's</font></strike> <strong><font color='green'>ADs</font></strong> need to work jointly to verify and
+      validate the success of the fix.
+
+4.5.  Client Reliability <strike><font color='red'>Models/Service</font></strike> <strong><font color='green'>Models / Service</font></strong> Assurance Guidelines
+
+   There are multiple options for instituting reliability <strike><font color='red'>architectures,
+   most</font></strike> <strong><font color='green'>architectures.
+   Most</font></strong> are at the application level.  Both <strike><font color='red'>AD's</font></strike> <strong><font color='green'>ADs</font></strong> should work <strike><font color='red'>those</font></strike> <strong><font color='green'>these
+   options</font></strong> out
+   <strike><font color='red'>with</font></strike> <strong><font color='green'>per</font></strong> their contract or agreement and <strong><font color='green'>also</font></strong> with the
+   multicast application source providers.
+
+   Network reliability can also be enhanced by the two <strike><font color='red'>AD's by
+   provisioning</font></strike> <strong><font color='green'>ADs if they
+   provision</font></strong> alternate delivery mechanisms via unicast means.
+
+4.6.  Application Accounting Guidelines
+
+   <strike><font color='red'>Application level</font></strike>
+
+   <strong><font color='green'>Application-level</font></strong> accounting needs to be handled differently in the
+   application than in IP <strike><font color='red'>unicast</font></strike> <strong><font color='green'>unicast,</font></strong> because the source side does not
+   directly deliver packets to individual receivers.  Instead, this
+   needs to be <strike><font color='red'>signalled</font></strike> <strong><font color='green'>signaled</font></strong> back by the receiver to the source.
+
+   For network transport diagnostics, AD-1 and AD-2 should have
+   mechanisms in place to ensure proper accounting for the volume of
+   bytes delivered through the peering point <strike><font color='red'>and separately</font></strike> <strong><font color='green'>and, separately,</font></strong> the number
+   of bytes delivered to EUs.
+
+5.  Troubleshooting and Diagnostics
+
+   Any service provider supporting multicast delivery of content should
+   <strike><font color='red'>have the capability</font></strike>
+   <strong><font color='green'>be able</font></strong> to collect diagnostics as part of multicast troubleshooting
+   practices and resolve network issues accordingly.  Issues may become
+   apparent or <strike><font color='red'>identified either</font></strike> <strong><font color='green'>identifiable</font></strong> through <strong><font color='green'>either (1)</font></strong> network monitoring
+   functions or <strike><font color='red'>by customer reported</font></strike> <strong><font color='green'>(2)</font></strong> problems <strong><font color='green'>reported by customers,</font></strong> as described in
+   <strike><font color='red'>section</font></strike>
+   <strong><font color='green'>Section</font></strong> 4.4.
+
+   It is recommended that multicast diagnostics <strike><font color='red'>will</font></strike> be <strike><font color='red'>performed</font></strike> <strong><font color='green'>performed,</font></strong> leveraging
+   established operational practices such as those documented in <strike><font color='red'>[MDH-04].</font></strike>
+   <strong><font color='green'>[MDH-05].</font></strong>  However, given that inter-domain multicast creates a
+   significant interdependence of proper networking functionality
+   between <strike><font color='red'>providers</font></strike> <strong><font color='green'>providers,</font></strong> there <strike><font color='red'>does exist</font></strike> <strong><font color='green'>exists</font></strong> a need for providers to be able to
+   signal (or otherwise alert) each other if there are any issues noted
+   by either one.
+
+   <strike><font color='red'>Service</font></strike>
+
+   <strong><font color='green'>For troubleshooting purposes, service</font></strong> providers may also wish to
+   allow limited read-only administrative access to their routers to
+   their AD <strike><font color='red'>peers for
+   troubleshooting.  Of specific interest are access</font></strike> <strong><font color='green'>peers.  Access</font></strong> to active troubleshooting tools <strong><font color='green'>--</font></strong> especially
+   [Traceroute] and
+   <strike><font color='red'>[I-D.ietf-mboned-mtrace-v2].</font></strike> <strong><font color='green'>the tools discussed in [Mtrace-v2] -- is of specific
+   interest.</font></strong>
+
+   Another option is to include this functionality <strike><font color='red'>into</font></strike> <strong><font color='green'>in</font></strong> the IP multicast
+   receiver application on the EU device and allow <strike><font color='red'>for</font></strike> these diagnostics to
+   be remotely used by support operations.  <strike><font color='red'>Note though</font></strike>  <strong><font color='green'>Note, though,</font></strong> that AMT does
+   not allow <strike><font color='red'>to pass</font></strike> <strong><font color='green'>the passing of</font></strong> traceroute or mtrace <strike><font color='red'>requests, therefore</font></strike> <strong><font color='green'>requests; therefore,</font></strong>
+   troubleshooting in the presence of AMT does not work as well <strike><font color='red'>end-to-</font></strike> <strong><font color='green'>end to</font></strong>
+   end as it can with native (or even <strike><font color='red'>GRE encapsulated)</font></strike> <strong><font color='green'>GRE-encapsulated)</font></strong> IP multicast,
+   especially <strike><font color='red'>wrt.</font></strike> <strong><font color='green'>with regard</font></strong> to traceroute and mtrace.  Instead,
+   troubleshooting directly on the actual network devices is then more
+   likely necessary.
+
+   The specifics of <strike><font color='red'>the notification</font></strike> <strong><font color='green'>notifications</font></strong> and alerts are beyond the scope of
+   this document, but general guidelines are similar to those described
+   in <strike><font color='red'>section 4.4 (Service Performance and Monitoring).</font></strike> <strong><font color='green'>Section 4.4.</font></strong>  Some general communications issues are <strike><font color='red'>stated</font></strike> as follows.
+
+   o  Appropriate communications channels will be established between
+      the customer service and operations groups from both <strike><font color='red'>AD's</font></strike> <strong><font color='green'>ADs</font></strong> to
+      facilitate <strike><font color='red'>information sharing</font></strike> <strong><font color='green'>information-sharing</font></strong> related to diagnostic
+      troubleshooting.
+
+   o  A default resolution period may be considered to resolve open
+      issues.  Alternately, mutually acceptable resolution periods could
+      be <strike><font color='red'>established</font></strike> <strong><font color='green'>established,</font></strong> depending on the severity of the identified
+      trouble.
+
+6.  Security Considerations
+
+6.1.  DoS <strike><font color='red'>attacks</font></strike> <strong><font color='green'>Attacks</font></strong> (against <strike><font color='red'>state</font></strike> <strong><font color='green'>State</font></strong> and <strike><font color='red'>bandwidth)</font></strike> <strong><font color='green'>Bandwidth)</font></strong>
+
+   Reliable <strike><font color='red'>operations of</font></strike> IP multicast <strike><font color='red'>requires</font></strike> <strong><font color='green'>operations require</font></strong> some basic protection
+   against DoS (Denial of Service) attacks.
+
+   SSM IP multicast is <strike><font color='red'>self protecting</font></strike> <strong><font color='green'>self-protecting</font></strong> against attacks from illicit
+   <strike><font color='red'>sources.  Their</font></strike>
+   <strong><font color='green'>sources; such</font></strong> traffic will not be forwarded beyond the <strike><font color='red'>first hop
+   router</font></strike> <strong><font color='green'>first-hop
+   router,</font></strong> because that would require (S,G) <strike><font color='red'>memership</font></strike> <strong><font color='green'>membership</font></strong> reports from <strong><font color='green'>the</font></strong>
+   receiver.  <strike><font color='red'>Traffic</font></strike>  <strong><font color='green'>Only valid traffic</font></strong> from sources will <strike><font color='red'>only</font></strike> be <strike><font color='red'>forwarded from the valid
+   source</font></strike> <strong><font color='green'>forwarded,</font></strong> because
+   RPF ("Reverse Path Forwarding") is part of the protocols.  One can
+   say that <strike><font color='red'>[BCP38] style</font></strike> protection against spoofed source traffic <strong><font color='green'>performed in the
+   style of [BCP38]</font></strong> is therefore built into <strike><font color='red'>PIM-SM/PIM-SSM.</font></strike> <strong><font color='green'>PIM-SM / PIM-SSM.</font></strong>
+
+   Receivers can attack SSM IP multicast by originating such (S,G)
+   membership reports.  This can result in a DoS attack against state
+   through the creation of a large number of (S,G) states that create
+   high <strike><font color='red'>control plane</font></strike> <strong><font color='green'>control-plane</font></strong> load or even inhibit <strong><font color='green'>the</font></strong> later creation of <strong><font color='green'>a</font></strong> valid
+   (S,G).  In conjunction with collaborating illicit <strike><font color='red'>sources</font></strike> <strong><font color='green'>sources,</font></strong> it can
+   also result in <strike><font color='red'>illicit sources</font></strike> <strong><font color='green'>the forwarding of</font></strong> traffic <strike><font color='red'>being forwarded.</font></strike> <strong><font color='green'>from illicit sources.</font></strong>
+
+   Today, these <strike><font color='red'>type</font></strike> <strong><font color='green'>types</font></strong> of attacks are usually mitigated by explicitly
+   defining the set of permissible (S,G) <strike><font color='red'>on e.g.:</font></strike> <strong><font color='green'>on, for example,</font></strong> the <strike><font color='red'>last hop</font></strike> <strong><font color='green'>last-hop</font></strong>
+   routers in replicating IP multicast to <strike><font color='red'>EUs; For example</font></strike> <strong><font color='green'>EUs (e.g.,</font></strong> via (S,G) <strike><font color='red'>Access
+   Control Lists</font></strike> <strong><font color='green'>access
+   control lists</font></strong> applied to IGMP/MLD membership state <strike><font color='red'>creation.</font></strike> <strong><font color='green'>creation).</font></strong>  Each
+   AD <strong><font color='green'>(say, "ADi")</font></strong> is expected to <strike><font color='red'>prohibit (S,G) state creation for invalid</font></strike> <strong><font color='green'>know what</font></strong> sources
+   <strike><font color='red'>inside their own AD.
+
+   In the peering case, AD-2 is</font></strike> <strong><font color='green'>located in ADi are
+   permitted to be sent and what their valid (S,G)s are.  ADi can
+   therefore also filter invalid (S,G)s for any "S" located inside ADi
+   (but not sources located in another AD).
+
+   In the peering case,</font></strong> without further <strike><font color='red'>information</font></strike> <strong><font color='green'>information, AD-2 is</font></strong> not aware
+   of the set of valid (S,G) from AD-1, so this set needs to be
+   communicated via operational procedures from AD-1 to AD-2 to provide
+   protection against this type of DoS <strike><font color='red'>attacks.</font></strike> <strong><font color='green'>attack.</font></strong>  Future work could signal
+   this information in an automated way: BGP extensions, DNS
+   <strike><font color='red'>Resource Records</font></strike> <strong><font color='green'>resource
+   records,</font></strong> or backend automation between AD-1 and AD-2.  Backend
+   automation <strike><font color='red'>is</font></strike> <strong><font color='green'>is, in</font></strong> the short <strike><font color='red'>term</font></strike> <strong><font color='green'>term, the</font></strong> most viable <strike><font color='red'>solution because it</font></strike> <strong><font color='green'>solution: unlike
+   BGP extensions or DNS resource records, backend automation</font></strong> does not
+   require router software <strike><font color='red'>extensions like the other two.</font></strike> <strong><font color='green'>extensions.</font></strong>  Observation of traffic flowing
+   via (S,G) state could also be used to automate <strong><font color='green'>the</font></strong> recognition of
+   invalid (S,G) state created by receivers in the absence of explicit
+   information from AD-1.
+
+   The second <strong><font color='green'>type of</font></strong> DoS attack through (S,G) membership reports <strike><font color='red'>is</font></strike> <strong><font color='green'>exists</font></strong>
+   when
+   <strike><font color='red'>receivers create</font></strike> <strong><font color='green'>the attacking receiver creates</font></strong> too much valid (S,G) state <strike><font color='red'>to attack</font></strike> <strong><font color='green'>and
+   the traffic carried by these (S,G)s congests</font></strong> bandwidth
+   <strike><font color='red'>available to</font></strike> <strong><font color='green'>on links
+   shared with</font></strong> other <strike><font color='red'>EU.</font></strike> <strong><font color='green'>EUs.</font></strong>  Consider the uplink <strike><font color='red'>into</font></strike> <strong><font color='green'>to</font></strong> a <strike><font color='red'>last-hop-router</font></strike> <strong><font color='green'>last-hop router</font></strong>
+   connecting to 100 <strike><font color='red'>EU.</font></strike> <strong><font color='green'>EUs.</font></strong>  If one EU joins to more multicast content
+   than what fits into this link, then this would <strike><font color='red'>impact</font></strike> also <strong><font color='green'>impact</font></strong> the
+   quality of the same content for the other 99 <strike><font color='red'>EU.</font></strike> <strong><font color='green'>EUs.</font></strong>  If traffic is not
+   rate adaptive, the effects are even worse.
+
+   The mitigation <strong><font color='green'>technique</font></strong> is the same as what is often employed for
+   unicast:
+   <strike><font color='red'>Policing</font></strike> <strong><font color='green'>policing</font></strong> of <strong><font color='green'>the</font></strong> per-EU total <strike><font color='red'>amont</font></strike> <strong><font color='green'>amount</font></strong> of traffic.  Unlike <strike><font color='red'>unicast</font></strike>
+   <strong><font color='green'>unicast,</font></strong> though, this <strike><font color='red'>can not</font></strike> <strong><font color='green'>cannot</font></strong> be done anywhere along the path <strike><font color='red'>(e.g.:</font></strike> <strong><font color='green'>(e.g.,</font></strong>
+   on an arbitrary bottleneck <strike><font color='red'>link), but</font></strike> <strong><font color='green'>link);</font></strong> it has to happen at the point of
+   last replication to the different EU.  Simple solutions such as
+   limiting the maximum number of joined <strike><font color='red'>(S,G)</font></strike> <strong><font color='green'>(S,G)s</font></strong> per EU are readily <strike><font color='red'>available,</font></strike>
+   <strong><font color='green'>available;</font></strong> solutions that <strike><font color='red'>consider bandwidth</font></strike> <strong><font color='green'>take</font></strong> consumed <strike><font color='red'>exist</font></strike> <strong><font color='green'>bandwidth into account are
+   available</font></strong> as <strike><font color='red'>vendor specific
+   feature</font></strike> <strong><font color='green'>vendor-specific features</font></strong> in routers.  Note that this is
+   primarily a non-peering issue in <strike><font color='red'>AD-2,</font></strike> <strong><font color='green'>AD-2;</font></strong> it only becomes a peering
+   issue if the <strike><font color='red'>peering-link</font></strike> <strong><font color='green'>peering link</font></strong> itself is not big enough to carry all
+   possible content from AD-1 <strike><font color='red'>or</font></strike> <strong><font color='green'>or, as</font></strong> in <strike><font color='red'>case
+   3.4 where</font></strike> <strong><font color='green'>Use Case 3.4, when</font></strong> the AMT relay
+   in AD-1 is that last replication point.
+
+   Limiting the amount of (S,G) state per EU is also a good first
+   measure to prohibit too much undesired "empty" state <strike><font color='red'>to be</font></strike> <strong><font color='green'>from being</font></strong> built
+   (state not carrying traffic), but it would not suffice in <strong><font color='green'>the</font></strong> case of
+   DDoS <strike><font color='red'>attack -</font></strike> <strong><font color='green'>attacks, e.g.,</font></strong> viruses that impact a large number of EU devices.
+
+6.2.  Content Security
+
+   Content confidentiality, DRM (Digital <strike><font color='red'>Restrictions</font></strike> <strong><font color='green'>Rights</font></strong> Management),
+   <strike><font color='red'>authentication</font></strike>
+   <strong><font color='green'>authentication,</font></strong> and authorization are <strike><font color='red'>optional</font></strike> <strong><font color='green'>optional,</font></strong> based on the content
+   delivered.  For content that is "FTA" (Free To Air), the following
+   considerations can be <strike><font color='red'>ignored</font></strike> <strong><font color='green'>ignored,</font></strong> and content can be sent unencrypted
+   and without EU authentication and authorization.  <strike><font color='red'>Note though</font></strike>  <strong><font color='green'>Note, though,</font></strong> that
+   the mechanisms described here may also be <strike><font color='red'>desireable by</font></strike> <strong><font color='green'>desirable for</font></strong> the
+   application source to better track users even if the content itself
+   would not require it.
+
+   For <strike><font color='red'>interdomain</font></strike> <strong><font color='green'>inter-domain</font></strong> content, there are at least two models for content
+   confidentiality, <strong><font color='green'>including (1)</font></strong> DRM <strong><font color='green'>authentication</font></strong> and <strike><font color='red'>end-user</font></strike> <strong><font color='green'>authorization
+   and (2) EU</font></strong> authentication and authorization:
+
+   <strong><font color='green'>o</font></strong>  In the classical (IP)TV model, responsibility is <strike><font color='red'>per-domain</font></strike> <strong><font color='green'>per domain,</font></strong> and
+      content is and can be passed on unencrypted.  AD-1 delivers
+      content to <strike><font color='red'>AD-2,</font></strike> <strong><font color='green'>AD-2;</font></strong> AD-2 can further process the <strike><font color='red'>content</font></strike> <strong><font color='green'>content,</font></strong> including
+      features like
+   <strike><font color='red'>ad-insertion</font></strike> <strong><font color='green'>ad insertion,</font></strong> and AD-2 is the sole point of contact
+      regarding the contact for its EUs.  In this document, we do not
+      consider this case because it typically involves <strike><font color='red'>higher than network layer</font></strike> service aspects
+      operated by AD-2 <strike><font color='red'>and</font></strike> <strong><font color='green'>that are higher than the network layer;</font></strong> this
+      document <strike><font color='red'>focusses</font></strike> <strong><font color='green'>focuses</font></strong> on the <strike><font color='red'>network
+   layer</font></strike> <strong><font color='green'>network-layer</font></strong> AD-1/AD-2 peering <strike><font color='red'>case,</font></strike> <strong><font color='green'>case</font></strong> but
+      not the <strike><font color='red'>application layer</font></strike> <strong><font color='green'>application-layer</font></strong> peering case.  Nevertheless, this model
+      can be derived through additional work <strike><font color='red'>from</font></strike> <strong><font color='green'>beyond</font></strong> what is <strike><font color='red'>describe</font></strike> <strong><font color='green'>described</font></strong>
+      here.
+
+   <strong><font color='green'>o</font></strong>  The other <strike><font color='red'>case</font></strike> <strong><font color='green'>model</font></strong> is the one in which content confidentiality, DRM, <strike><font color='red'>end-
+   user authentication</font></strike>
+      <strong><font color='green'>EU authentication,</font></strong> and <strong><font color='green'>EU</font></strong> authorization are <strike><font color='red'>end-to-end:</font></strike> <strong><font color='green'>end to end:</font></strong>
+      responsibilities of the multicast application source provider and
+      receiver application.  This is the model assumed here.  It is also
+      the model used in Internet <strike><font color='red'>OTT</font></strike> <strong><font color='green'>"Over the Top" (OTT)</font></strong> video delivery.  <strike><font color='red'>We</font></strike>
+      <strong><font color='green'>Below, we</font></strong> discuss the
+   <strike><font color='red'>threads</font></strike> <strong><font color='green'>threats</font></strong> incurred in this model due to the
+      use of IP multicast in <strike><font color='red'>AD-
+   1/AD-2</font></strike> <strong><font color='green'>AD-1 or AD-2</font></strong> and across the <strike><font color='red'>peering.</font></strike> <strong><font color='green'>peering point.</font></strong>
+
+   End-to-end encryption enables end-to-end EU authentication and
+   authorization: <strike><font color='red'>The</font></strike> <strong><font color='green'>the</font></strong> EU may be able to <strike><font color='red'>IGMP/MLD</font></strike> join <strong><font color='green'>(via IGMP/MLD)</font></strong> and receive
+   the content, but it can only decrypt it when it receives the
+   decryption key from the content source in AD-1.  The key is the
+   authorization.  Keeping that key to itself and prohibiting playout of
+   the decrypted content to non-copy-protected interfaces are typical
+   DRM features in that receiver application or EU device operating
+   system.
+
+   End-to-end <strike><font color='red'>ecnryption</font></strike> <strong><font color='green'>encryption</font></strong> is continuously attacked.  Keys may be subject
+   to <strike><font color='red'>brute force attack</font></strike> <strong><font color='green'>brute-force attacks</font></strong> so that content can <strong><font color='green'>potentially</font></strong> be decrypted <strike><font color='red'>potentially</font></strike>
+   later, or keys are extracted from the EU application/device and
+   shared with other unauthenticated receivers.  One important class of
+   content is where the value is in live consumption, such as sports or
+   other event <strike><font color='red'>(concert)</font></strike> <strong><font color='green'>(e.g., concert)</font></strong> streaming.  Extraction of keying material
+   from compromised authenticated <strike><font color='red'>EU</font></strike> <strong><font color='green'>EUs</font></strong> and sharing with unauthenticated <strike><font color='red'>EU is</font></strike>
+   <strong><font color='green'>EUs are</font></strong> not sufficient.  It is also necessary for those
+   unauthenticated EUs to get a streaming copy of the content itself.
+   In unicast streaming, they <strike><font color='red'>can not</font></strike> <strong><font color='green'>cannot</font></strong> get such a copy from the content
+   source (because they
+   <strike><font color='red'>can not authenticate) and</font></strike> <strong><font color='green'>cannot authenticate), and,</font></strong> because of asymmetric
+   bandwidths, it is often impossible to get the content from
+   compromised EUs to <strong><font color='green'>a</font></strong> large number of unauthenticated EUs.  EUs behind
+   classical <strike><font color='red'>16</font></strike> <strong><font color='green'>"16</font></strong> Mbps down, 1 Mbps <strike><font color='red'>up</font></strike> <strong><font color='green'>up"</font></strong> ADSL links are the best example.
+   With increasing broadband access <strike><font color='red'>speeds</font></strike> <strong><font color='green'>speeds,</font></strong> unicast peer-to-peer copying
+   of content becomes easier, but it likely will always be easily
+   detectable by the ADs because of its traffic patterns and volume.
+
+   When IP multicast is being used without <strike><font color='red'>additionals</font></strike> <strong><font color='green'>additional</font></strong> security, AD-2 is
+   not aware <strong><font color='green'>of</font></strong> which EU is authenticated for which content.  Any
+   unauthenticated EU in AD-2 could therefore get a copy of the
+   encrypted content without <strong><font color='green'>triggering</font></strong> suspicion <strike><font color='red'>by</font></strike> <strong><font color='green'>on the part of</font></strong> AD-2 or
+   AD-1 and <strong><font color='green'>then</font></strong> either <strike><font color='red'>live-
+   deode it</font></strike> <strong><font color='green'>(1) live-decode it,</font></strong> in the presence of <strong><font color='green'>the</font></strong>
+   compromised authenticated EU and <strike><font color='red'>key
+   sharing,</font></strike> <strong><font color='green'>key-sharing</font></strong> or <strike><font color='red'>later</font></strike> <strong><font color='green'>(2)</font></strong> decrypt it <strong><font color='green'>later,</font></strong>
+   in the presence of federated <strike><font color='red'>brute force
+   key cracking.</font></strike> <strong><font color='green'>brute-force key-cracking.</font></strong>
+
+   To mitigate this issue, the last replication point that is creating
+   (S,G) copies to EUs would need to permit those copies only after
+   authentication of <strong><font color='green'>the</font></strong> EUs.  This would establish the same
+   authenticated
+   <strike><font color='red'>EU only</font></strike> <strong><font color='green'>"EU only"</font></strong> copy <strike><font color='red'>deliver thast</font></strike> <strong><font color='green'>that</font></strong> is used in unicast.
+
+   Schemes for <strike><font color='red'>per EU</font></strike> <strong><font color='green'>per-EU</font></strong> IP multicast authentication/authorization <strike><font color='red'>(and in
+   result non-delivery/copying</font></strike> <strong><font color='green'>(and, as
+   a result, non-delivery or copying</font></strong> of per-content IP multicast
+   traffic) have been built in the past and are deployed in service
+   providers for
+   <strike><font color='red'>intradomain</font></strike> <strong><font color='green'>intra-domain</font></strong> IPTV services, but no <strike><font color='red'>standard</font></strike> <strong><font color='green'>standards</font></strong> exist for
+   this.  For example, there is no standardized <strike><font color='red'>radius</font></strike> <strong><font color='green'>RADIUS</font></strong> attribute for
+   authenticating the IGMP/MLD filter set, but <strong><font color='green'>such</font></strong> implementations <strike><font color='red'>of this</font></strike>
+   exist.  The authors <strike><font color='red'>are specifically</font></strike> <strong><font color='green'>of this document are specifically</font></strong> also not aware
+   of schemes where the same authentication credentials used to get the
+   encryption key from the content source could also be used to
+   authenticate and authorize the
+   <strike><font color='red'>network layer</font></strike> <strong><font color='green'>network-layer</font></strong> IP multicast replication
+   for the content.  Such schemes are technically not difficult to build
+   and would avoid creating and maintaining a separate network <strike><font color='red'>forwarding authentication/
+   authorization</font></strike>
+   <strong><font color='green'>traffic-forwarding authentication/authorization</font></strong> scheme decoupled from
+   the end-to-end <strike><font color='red'>authentication/
+   authorization</font></strike> <strong><font color='green'>authentication/authorization</font></strong> system of the
+   application.
+
+   If delivery of such <strike><font color='red'>high value</font></strike> <strong><font color='green'>high-value</font></strong> content in conjunction with the
+   peering described here is desired, the <strike><font color='red'>short term</font></strike> <strong><font color='green'>short-term</font></strong> recommendations are
+   for sources to clearly isolate the source and group addresses used
+   for different content bundles, communicate those (S,G) patterns from
+   AD-1 to <strike><font color='red'>the AD-2</font></strike> <strong><font color='green'>AD-2,</font></strong> and let AD-2 leverage existing per-EU authentication/
+   authorization mechanisms in network devices to establish filters for
+   (S,G) sets to each EU.
+
+6.3.  Peering Encryption
+
+   Encryption at peering points for multicast delivery may be used per
+   agreement between <strike><font color='red'>AD-1/AD-2.</font></strike> <strong><font color='green'>AD-1 and AD-2.</font></strong>
+
+   In the case of a private peering link, IP multicast does not have
+   attack vectors on a peering link different from those of IP unicast,
+   but the content owner may have defined <strike><font color='red'>high bars</font></strike> <strong><font color='green'>strict constraints</font></strong> against
+   unauthenticated copying of even the end-to-end encrypted <strike><font color='red'>content, and</font></strike> <strong><font color='green'>content;</font></strong> in
+   this <strike><font color='red'>case AD-1/AD-2</font></strike> <strong><font color='green'>case, AD-1 and AD-2</font></strong> can agree on additional transport encryption
+   across that peering link.  In the case of a broadcast peering
+   connection <strike><font color='red'>(e.g.:</font></strike> <strong><font color='green'>(e.g.,</font></strong> IXP), transport encryption is <strike><font color='red'>also</font></strike> <strong><font color='green'>again</font></strong> the easiest way
+   to prohibit unauthenticated copies by other ADs on the same peering
+   point.
+
+   If peering is across a tunnel <strike><font color='red'>going across</font></strike> <strong><font color='green'>that spans</font></strong> intermittent transit ADs
+   (not <strike><font color='red'>discused</font></strike> <strong><font color='green'>discussed</font></strong> in detail in this document), then encryption of that
+   tunnel traffic is recommended.  It not only prohibits possible
+   "leakage" of <strike><font color='red'>content,</font></strike> <strong><font color='green'>content</font></strong> but also <strike><font color='red'>to</font></strike> protects the <strike><font color='red'>the</font></strike> information <strong><font color='green'>regarding</font></strong> what
+   content is being consumed in AD-2 (aggregated privacy protection).
+
+   See <strike><font color='red'>the following subsection</font></strike> <strong><font color='green'>Section 6.4</font></strong> for reasons why the peering point may also need to be
+   encrypted for operational reasons.
+
+6.4.  Operational Aspects
+
+   Section 4.3.3 discusses <strong><font color='green'>the</font></strong> exchange of log information, <strike><font color='red'>this section
+   discussed exchange of (S,G) information</font></strike> and
+   Section 7 discusses
+   <strike><font color='red'>exhange</font></strike> <strong><font color='green'>the exchange</font></strong> of program information.  All these
+   operational pieces of data should by default be exchanged via
+   authenticated and encrypted <strike><font color='red'>peer-
+   to-peer</font></strike> <strong><font color='green'>peer-to-peer</font></strong> communication protocols
+   between AD-1 and AD-2 so that only the intended <strike><font color='red'>recipient</font></strike> <strong><font color='green'>recipients</font></strong> in the <strike><font color='red'>peers</font></strike>
+   <strong><font color='green'>peers'</font></strong> AD have access to it.  Even exposure of the least sensitive
+   information to third parties opens up attack vectors.  Putting <strike><font color='red'>for example</font></strike> valid
+   (S,G) <strike><font color='red'>information</font></strike> <strong><font color='green'>information, for example,</font></strong> into DNS (as opposed to passing it
+   via secured channels from AD-1 to AD-2) to allow easier filtering of
+   invalid (S,G) <strong><font color='green'>information</font></strong> would also allow attackers to
+   <strike><font color='red'>easier</font></strike> <strong><font color='green'>more easily</font></strong>
+   identify valid (S,G) <strong><font color='green'>information</font></strong> and change their attack vector.
+
+   From the perspective of the ADs, security is most critical for <strike><font color='red'>the</font></strike> log <strike><font color='red'>information</font></strike>
+   <strong><font color='green'>information,</font></strong> as it provides operational insight into the originating <strike><font color='red'>AD,</font></strike>
+   <strong><font color='green'>AD</font></strong> but <strike><font color='red'>it</font></strike> also contains sensitive user <strike><font color='red'>data:</font></strike> <strong><font color='green'>data.</font></strong>
+
+   Sensitive user data exported from AD-2 to AD-1 as part of logs could
+   be as much as the equivalent of 5-tuple unicast traffic flow
+   accounting (but not more, <strike><font color='red'>e.g.:</font></strike> <strong><font color='green'>e.g.,</font></strong> no <strike><font color='red'>application level</font></strike> <strong><font color='green'>application-level</font></strong> information).
+   As mentioned in Section 7, in unicast, AD-1 could capture these
+   traffic statistics itself because this is all about <strike><font color='red'>AD-1 originated</font></strike> traffic flows
+   <strong><font color='green'>(originated by AD-1)</font></strong> to EU receivers in AD-2, and operationally
+   passing it from AD-2 to AD-1 may be necessary when IP multicast is
+   used because of the replication <strike><font color='red'>happening</font></strike> <strong><font color='green'>taking place</font></strong> in AD-2.
+
+   Nevertheless, passing such traffic statistics inside AD-1 from a
+   capturing router to a backend system is likely less subject to <strike><font color='red'>third
+   party</font></strike>
+   <strong><font color='green'>third-party</font></strong> attacks <strike><font color='red'>then</font></strike> <strong><font color='green'>than</font></strong> passing it <strike><font color='red'>interdomain</font></strike> <strong><font color='green'>"inter-domain"</font></strong> from AD-2 to AD-1,
+   so more diligence needs to be applied to secure it.
+
+   If any protocols used for the operational <strike><font color='red'>information</font></strike> exchange <strong><font color='green'>of information</font></strong> are
+   not easily secured at <strong><font color='green'>the</font></strong> transport layer or higher (because of the
+   use of legacy products or protocols in the network), then AD-1 and
+   AD-2 can also consider <strike><font color='red'>to ensure</font></strike> <strong><font color='green'>ensuring</font></strong> that all operational data <strike><font color='red'>exchange goes</font></strike> <strong><font color='green'>exchanges
+   go</font></strong> across the same peering point as the traffic and use <strike><font color='red'>network layer</font></strike> <strong><font color='green'>network-layer</font></strong>
+   encryption of the peering point <strike><font color='red'>as</font></strike> <strong><font color='green'>(as</font></strong> discussed <strike><font color='red'>in before</font></strike> <strong><font color='green'>previously)</font></strong> to
+   protect it.
+
+   End-to-end authentication and authorization of <strike><font color='red'>EU</font></strike> <strong><font color='green'>EUs</font></strong> may involve some
+   kind of token authentication and <strike><font color='red'>is</font></strike> <strong><font color='green'>are</font></strong> done at the application <strike><font color='red'>layer</font></strike> <strong><font color='green'>layer,</font></strong>
+   independently of the two <strike><font color='red'>AD's.</font></strike> <strong><font color='green'>ADs.</font></strong>  If there are problems related to <strong><font color='green'>the</font></strong>
+   failure of token authentication when <strike><font color='red'>end-users</font></strike> <strong><font color='green'>EUs</font></strong> are supported by AD-2, then
+   some means of validating proper <strike><font color='red'>working</font></strike> <strong><font color='green'>operation</font></strong> of the token authentication
+   process (e.g., <strike><font color='red'>back-end</font></strike> <strong><font color='green'>validating that backend</font></strong> servers querying the multicast
+   application source provider's token authentication server are
+   communicating properly) should be considered.  Implementation details
+   are beyond the scope of this document.
+
+   <strike><font color='red'>Security Breach Mitigation Plan -</font></strike>
+
+   In the event of a security breach, the two <strike><font color='red'>AD's</font></strike> <strong><font color='green'>ADs</font></strong> are expected to have a
+   mitigation plan for shutting down the peering point and directing
+   multicast traffic over alternative peering points.  It is also
+   expected that appropriate information will be shared for the purpose
+   of securing the identified breach.
+
+7.  Privacy Considerations
+
+   The described flow of information about content and <strike><font color='red'>the end-user</font></strike> <strong><font color='green'>EUs as</font></strong> described
+   in this document aims to maintain privacy:
+
+   AD-1 is operating on behalf <strong><font color='green'>of</font></strong> (or owns) the content source and is
+   therefore part of the content-consumption relationship with the <strike><font color='red'>end-
+   user.</font></strike> <strong><font color='green'>EU.</font></strong>
+   The privacy considerations between the EU and AD-1 are therefore <strike><font color='red'>in general (exception see below)</font></strike>
+   <strong><font color='green'>generally</font></strong> the same <strong><font color='green'>(with one exception; see below)</font></strong> as <strong><font color='green'>they would be</font></strong>
+   if no IP multicast was used, especially because <strike><font color='red'>for any privacy conscious
+   content,</font></strike> end-to-end encryption
+   can and should be <strike><font color='red'>used.
+
+   Interdomain</font></strike> <strong><font color='green'>used for any privacy-conscious content.
+
+   Information related to inter-domain</font></strong> multicast transport service <strike><font color='red'>related information</font></strike> is
+   provided <strong><font color='green'>to AD-1</font></strong> by the AD-2 <strike><font color='red'>operators to AD-1.</font></strike> <strong><font color='green'>operators.</font></strong>  AD-2 is not required to gain
+   additional insight into the <strike><font color='red'>user</font></strike> <strong><font color='green'>user's</font></strong> behavior through this process <strike><font color='red'>that</font></strike>
+   <strong><font color='green'>other than what</font></strong> it would <strike><font color='red'>not</font></strike> already have without <strike><font color='red'>the</font></strike> service collaboration
+   with <strike><font color='red'>AD-1
+   -</font></strike> <strong><font color='green'>AD-1,</font></strong> unless AD-1 and AD-2 agree on it and get approval from
+   the EU.
+
+   For example, if it is deemed beneficial for <strong><font color='green'>the</font></strong> EU to <strike><font color='red'>directly</font></strike> get support
+   <strong><font color='green'>directly</font></strong> from <strike><font color='red'>AD-2</font></strike> <strong><font color='green'>AD-2,</font></strong> then it would <strike><font color='red'>in general</font></strike> <strong><font color='green'>generally</font></strong> be necessary for AD-2 to
+   be aware of the mapping between content and network (S,G) state so
+   that AD-2 knows which (S,G) to troubleshoot when the EU complains
+   about problems with <strike><font color='red'>a</font></strike> specific content.  The degree to which this
+   dissemination is done by AD-1 explicitly to meet privacy expectations
+   of EUs is typically easy to assess by AD-1.  Two simple <strike><font color='red'>examples:</font></strike> <strong><font color='green'>examples are
+   as follows:
+
+   o</font></strong>  For a sports content bundle, every EU will happily click on the <strike><font color='red'>"i</font></strike>
+      <strong><font color='green'>"I</font></strong> approve that the content program information is shared with
+      your service provider" button, to ensure best service <strike><font color='red'>reliability</font></strike> <strong><font color='green'>reliability,</font></strong>
+      because
+   <strike><font color='red'>service conscious</font></strike> <strong><font color='green'>service-conscious</font></strong> AD-2 would likely also try to ensure
+      that <strike><font color='red'>high
+   value</font></strike> <strong><font color='green'>high-value</font></strong> content, such as the (S,G) for <strike><font color='red'>SuperBowl like content</font></strike> <strong><font color='green'>the Super Bowl,</font></strong>
+      would be the first to receive care in <strong><font color='green'>the</font></strong> case of network issues.
+
+   <strong><font color='green'>o</font></strong>  If the content in question was <strike><font color='red'>one where</font></strike> <strong><font color='green'>content for which</font></strong> the EU expected
+      more privacy, the EU should prefer a content bundle that included
+      this content in a large variety of other content, have all content <strike><font color='red'>end-to-
+   end encrypted</font></strike>
+      <strong><font color='green'>end-to-end encrypted,</font></strong> and <strike><font color='red'>the</font></strike> <strong><font color='green'>not share</font></strong> programming information <strike><font color='red'>not be shared</font></strike> with <strike><font color='red'>AD-2</font></strike>
+      <strong><font color='green'>AD-2,</font></strong> to maximize privacy.  Nevertheless, the privacy of the EU
+      against AD-2 observing traffic would still be lower than in the
+      equivalent setup using unicast, because in unicast, AD-2 could not
+      correlate which EUs are watching the same content and use that to
+      deduce the content.  Note that even the setup in Section <strike><font color='red'>3.4</font></strike> <strong><font color='green'>3.4,</font></strong>
+      where AD-2 is not involved in IP multicast at <strike><font color='red'>all</font></strike> <strong><font color='green'>all,</font></strong> does not
+      provide privacy against this level of analysis by <strike><font color='red'>AD-2</font></strike> <strong><font color='green'>AD-2,</font></strong> because
+      there is no <strike><font color='red'>transport layer</font></strike> <strong><font color='green'>transport-layer</font></strong> encryption in <strike><font color='red'>AMT and therefore</font></strike> <strong><font color='green'>AMT; therefore,</font></strong> AD-2 can
+      correlate by <strike><font color='red'>onpath</font></strike> <strong><font color='green'>on-path</font></strong> traffic analysis who is consuming the same
+      content from an AMT relay from both the (S,G) join messages in AMT
+      and the identical content segments (that <strike><font color='red'>where</font></strike> <strong><font color='green'>were</font></strong> replicated at the
+      AMT relay).
+
+   In <strike><font color='red'>summary: Because</font></strike> <strong><font color='green'>summary, because</font></strong> only content to be consumed by multiple EUs is
+   carried via IP multicast <strike><font color='red'>here,</font></strike> <strong><font color='green'>here</font></strong> and all <strong><font color='green'>of</font></strong> that content can be
+   end-to-end encrypted, the only <strike><font color='red'>IP multicast specific</font></strike> privacy consideration <strong><font color='green'>specific to IP
+   multicast</font></strong> is for AD-2 to know or reconstruct what content an EU is
+   consuming.  For content for which this is undesirable, some form of
+   protections as explained above are possible, but ideally, the model <strike><font color='red'>of</font></strike>
+   <strong><font color='green'>described in</font></strong> Section 3.4 could be used in conjunction with future <strike><font color='red'>work</font></strike>
+   <strong><font color='green'>work, e.g.,</font></strong> adding <strike><font color='red'>e.g.: dTLS
+   [RFC6347]</font></strike> <strong><font color='green'>Datagram Transport Layer Security (DTLS)</font></strong>
+   encryption <strong><font color='green'>[RFC6347]</font></strong> between <strong><font color='green'>the</font></strong> AMT relay and <strong><font color='green'>the</font></strong> EU.
+
+   Note that IP multicast by nature would permit the <strike><font color='red'>EU</font></strike> <strong><font color='green'>EU's</font></strong> privacy
+   against the <strike><font color='red'>countent</font></strike> <strong><font color='green'>content</font></strong> source operator <strike><font color='red'>because</font></strike> <strong><font color='green'>because,</font></strong> unlike unicast, the
+   content source does not natively know which EU is consuming which
+   content: <strike><font color='red'>In</font></strike> <strong><font color='green'>in</font></strong> all cases where AD-2 provides replication, only AD-2 <strike><font color='red'>does know</font></strike>
+   <strong><font color='green'>knows</font></strong> this directly.  This document does not attempt to describe a
+   model that
+   <strike><font color='red'>does maintain</font></strike> <strong><font color='green'>maintains</font></strong> such <strong><font color='green'>a</font></strong> level of privacy against the content <strike><font color='red'>source but
+   only against exposure to</font></strike>
+   <strong><font color='green'>source; rather, we describe a model that only protects against
+   exposure to</font></strong> intermediate <strike><font color='red'>parties,</font></strike> <strong><font color='green'>parties --</font></strong> in this <strike><font color='red'>case</font></strike> <strong><font color='green'>case,</font></strong> AD-2.
+
+8.  IANA Considerations
+
+   <strike><font color='red'>No considerations identified in this document.
+
+9.  Acknowledgments
+
+   The authors would like to thank the following individuals for their
+   suggestions, comments, and corrections:
+
+   Mikael Abrahamsson
+
+   Hitoshi Asaeda
+
+   Dale Carder
+
+   Tim Chown
+
+   Leonard Giuliano
+
+   Jake Holland
+
+   Joel Jaeggli
+
+   Albert Manfredi
+
+   Stig Venaas
+
+   Henrik Levkowetz
+
+10.  Change log [RFC Editor: Please remove]
+
+   Please see discussion on mailing list for changes before -11.
+
+   -11: version in IESG review.
+
+   -12: XML'ified version of -11, committed solely to make rfcdiff
+   easier.  XML versions hosted on https://www.github.com/toerless/
+   peering-bcp
+
+   -13:
+
+   o  IESG feedback.  Complete details in:
+      https://raw.githubusercontent.com/toerless/peering-bcp/master/11-
+      iesg-review-reply.txt
+
+   o  Ben Campbell: Location information about EU (End User) is Network
+      Locatio information
+
+   o  Ben Campbell: Added explanation of assumption to introduction that
+      traffic is sourced from AD-1 to (one or many) AD-2, mentioned that
+      sourcing from EU is out of scope.
+
+   o  Introduction: moved up bullet points about exchanges and transit
+      to clean up flow of assumptions.
+
+   o  Ben Campbell: Added picture for the GRE case, visualized tunnels
+      in all pictures.
+
+   o  Ben Campbell: See 13-discus.txt on github for more details of
+      changes for this review.
+
+   o  Alissia Cooper: Added more explanation for Log Management,
+      explained privacy context.
+
+   o  Alissia Cooper: removed pre pre-RFC5378 disclaimer.
+
+   o  Alissia Cooper: removed mentioning of potential mutual
+      compensation between domains if the other violates SLA.
+
+   o  Mirja Kuehlewind: created section 4.1.1 to discuss congestion
+      control more detailled, adding reference to BCP145, removed stub
+      CC paragraphs from section 3.1 (principle applies to every section
+      3.x, and did not want to duplicate text between 3.x and 4.x).
+
+   o  Mirja Kuehlewind: removed section 8 (conclusion).  Text was not
+      very good,</font></strike>
+
+   <strong><font color='green'>This document does</font></strong> not <strike><font color='red'>important to hae conclusion, maybe bring back with
+      better text if strong interest.
+
+   o  Introduced section about broadcast peering points because there
+      where too many places already where references to that case
+      existed (4.2.4).
+
+   o  Introduced section about privact considerations because of comment
+      by Ben Campbell and Alissa Cooper.
+
+   o  Rewrote security considerations and structured it into key
+      aspects: DoS attacks, content protection, peering point encryption
+      and operational aspects.
+
+   o  Kathleen Moriarty: Added operational aspects to security section
+      (also for Alissia), e.g.: covering securing the exchange of
+      operational data between ADs.
+
+   o  Spencer Dawkins: Various editorial fixes.  Removed BCP38 text from
+      section 3, superceeded be explanation of PIM-SM RPF check to
+      provide equvialent security to BCP38 in security section 7.1).
+
+   o  Eric Roscorla: (fixed from other reviews already).
+
+   o  Adam Roach: Fixed up text about MDH-04, added reference to
+      RFC4786.
+
+   -13: Fix for Mirja's review on must for congestion control.
+
+11.</font></strike> <strong><font color='green'>require any IANA actions.
+
+9.</font></strong>  References
+
+<strike><font color='red'>11.1.</font></strike>
+
+<strong><font color='green'>9.1.</font></strong>  Normative References
+
+   [RFC2784]  Farinacci, D., Li, T., Hanks, S., Meyer, D., and P.
+              Traina, "Generic Routing Encapsulation (GRE)", RFC 2784,
+              DOI 10.17487/RFC2784, March 2000,
+              &lt;https://www.rfc-editor.org/info/rfc2784&gt;.
+
+   [RFC3376]  Cain, B., Deering, S., Kouvelas, I., Fenner, B., and A.
+              Thyagarajan, "Internet Group Management Protocol, Version
+              3", RFC 3376, DOI 10.17487/RFC3376, October 2002,
+              &lt;https://www.rfc-editor.org/info/rfc3376&gt;.
+
+   [RFC3810]  Vida, R., Ed. and L. Costa, Ed., "Multicast Listener
+              Discovery Version 2 (MLDv2) for IPv6", RFC 3810,
+              DOI 10.17487/RFC3810, June 2004,
+              &lt;https://www.rfc-editor.org/info/rfc3810&gt;.
+
+   [RFC4760]  Bates, T., Chandra, R., Katz, D., and Y. Rekhter,
+              "Multiprotocol Extensions for BGP-4", RFC 4760,
+              DOI 10.17487/RFC4760, January 2007,
+              &lt;https://www.rfc-editor.org/info/rfc4760&gt;.
+
+   [RFC4604]  Holbrook, H., Cain, B., and B. Haberman, "Using Internet
+              Group Management Protocol Version 3 (IGMPv3) and Multicast
+              Listener Discovery Protocol Version 2 (MLDv2) for Source-
+              Specific Multicast", RFC 4604, DOI 10.17487/RFC4604,
+              August 2006, &lt;https://www.rfc-editor.org/info/rfc4604&gt;.
+
+   [RFC4609]  Savola, P., Lehtonen, R., and D. Meyer, "Protocol
+              Independent Multicast - Sparse Mode (PIM-SM) Multicast
+              Routing Security Issues and Enhancements", RFC 4609,
+              DOI 10.17487/RFC4609, October 2006,
+              &lt;https://www.rfc-editor.org/info/rfc4609&gt;.
+
+   [RFC7450]  Bumgardner, G., "Automatic Multicast Tunneling", RFC 7450,
+              DOI 10.17487/RFC7450, February 2015,
+              &lt;https://www.rfc-editor.org/info/rfc7450&gt;.
+
+   [RFC7761]  Fenner, B., Handley, M., Holbrook, H., Kouvelas, I.,
+              Parekh, R., Zhang, Z., and L. Zheng, "Protocol Independent
+              Multicast - Sparse Mode (PIM-SM): Protocol Specification
+              (Revised)", STD 83, RFC 7761, DOI 10.17487/RFC7761, March
+              2016, &lt;https://www.rfc-editor.org/info/rfc7761&gt;.
+
+   [BCP38]    Ferguson, P. and D. Senie, "Network Ingress Filtering:
+              Defeating Denial of Service Attacks which employ IP Source
+              Address Spoofing", BCP 38, RFC 2827, <strike><font color='red'>DOI 10.17487/RFC2827,</font></strike> May 2000,
+              &lt;https://www.rfc-editor.org/info/rfc2827&gt;.
+
+   [BCP41]    Floyd, S., "Congestion Control Principles", BCP 41,
+              RFC 2914, <strike><font color='red'>DOI 10.17487/RFC2914,</font></strike> September 2000,
+              &lt;https://www.rfc-editor.org/info/rfc2914&gt;.
+
+   [BCP145]   Eggert, L., Fairhurst, G., and G. Shepherd, "UDP Usage
+              Guidelines", BCP 145, RFC 8085, <strike><font color='red'>DOI 10.17487/RFC8085,</font></strike> March 2017,
+              &lt;https://www.rfc-editor.org/info/rfc8085&gt;.
+
+<strike><font color='red'>11.2.</font></strike>
+
+<strong><font color='green'>9.2.</font></strong>  Informative References
+
+   [RFC4786]  Abley, J. and K. Lindqvist, "Operation of Anycast
+              Services", BCP 126, RFC 4786, DOI 10.17487/RFC4786,
+              December 2006, &lt;https://www.rfc-editor.org/info/rfc4786&gt;.
+
+   [RFC6347]  Rescorla, E. and N. Modadugu, "Datagram Transport Layer
+              Security Version 1.2", RFC 6347, DOI 10.17487/RFC6347,
+              January 2012, &lt;https://www.rfc-editor.org/info/rfc6347&gt;.
+
+   [INF_ATIS_10]
+              "CDN Interconnection Use Cases and Requirements in a
+              Multi-Party Federation Environment", ATIS Standard
+              A-0200010, December 2012.
+
+   <strike><font color='red'>[MDH-04]</font></strike>
+
+   <strong><font color='green'>[MDH-05]</font></strong>   Thaler, D. and <strike><font color='red'>others,</font></strike> <strong><font color='green'>B. Aboba,</font></strong> "Multicast Debugging Handbook",
+              <strike><font color='red'>IETF I-D draft-ietf-mboned-mdh-04.txt, May</font></strike>
+              <strong><font color='green'>Work in Progress, draft-ietf-mboned-mdh-05, November</font></strong> 2000.
+
+   [Traceroute]
+              <strike><font color='red'>,</font></strike>
+              <strong><font color='green'>"traceroute.org",</font></strong> &lt;http://traceroute.org/#source%20code&gt;.
+
+   <strike><font color='red'>[I-D.ietf-mboned-mtrace-v2]</font></strike>
+
+   <strong><font color='green'>[Mtrace-v2]</font></strong>
+              Asaeda, H., Meyer, K., and W. Lee, <strong><font color='green'>Ed.,</font></strong> "Mtrace Version 2:
+              Traceroute Facility for IP Multicast", <strike><font color='red'>draft-ietf-mboned-
+              mtrace-v2-20 (work</font></strike> <strong><font color='green'>Work</font></strong> in <strike><font color='red'>progress), October</font></strike> <strong><font color='green'>Progress,
+              draft-ietf-mboned-mtrace-v2-21, November</font></strong> 2017.
+
+<strong><font color='green'>Acknowledgments
+
+   The authors would like to thank the following individuals for their
+   suggestions, comments, and corrections:
+
+      Mikael Abrahamsson
+      Hitoshi Asaeda
+      Dale Carder
+      Tim Chown
+      Leonard Giuliano
+      Jake Holland
+      Joel Jaeggli
+      Henrik Levkowetz
+      Albert Manfredi
+      Stig Venaas</font></strong>
+
+Authors' Addresses
+
+   Percy S. Tarapore (editor)
+   AT&amp;T
+
+   Phone: 1-732-420-4172
+   Email: tarapore@att.com
+
+   Robert Sayko
+   AT&amp;T
+
+   Phone: 1-732-420-3292
+   Email: rs1983@att.com
+
+   Greg Shepherd
+   Cisco
+
+   Email: shep@cisco.com
+
+   Toerless Eckert (editor)
+   <strong><font color='green'>Huawei USA -</font></strong> Futurewei Technologies Inc.
+
+   Email: tte+ietf@cs.fau.de
+
+   Ram Krishnan
+   SupportVectors
+
+   Email: ramkri123@gmail.com
+</pre>
+</body></html>
